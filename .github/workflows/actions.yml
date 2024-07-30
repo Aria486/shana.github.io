@@ -1,7 +1,7 @@
 name: Actions CI - Next.js version 14 static site export, GitHub Actions Build and Deploy
 on:
   push:
-    branches: [next=blog]
+    branches: [next-blog]
 # 执行的一项或多项任务
 jobs:
   build-and-deploy:

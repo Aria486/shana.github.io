@@ -25,7 +25,7 @@ jobs:
         run: pnpm install
       - name: 打包 🏗️
         run: |
-          npm run ghbuild
+          npm run build
           touch out/.nojekyll
       - name: 部署 🚀
         uses: JamesIves/github-pages-deploy-action@v4

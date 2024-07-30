@@ -14,6 +14,7 @@ if (isGithubActions) {
 const nextConfig = {
   basePath,
   assetPrefix,
+  trailingSlash: true,
   output: "export",
 };
 

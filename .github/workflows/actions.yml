@@ -1,7 +1,7 @@
 name: Actions CI - Next.js version 14 static site export, GitHub Actions Build and Deploy
 on:
   push:
-    branches: [gh-pages]
+    branches: [next=blog]
 # 执行的一项或多项任务
 jobs:
   build-and-deploy:
@@ -24,5 +24,6 @@ jobs:
       - name: 部署 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
+          branch: gh-pages
           folder: out
           clean: true

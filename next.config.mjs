@@ -7,7 +7,6 @@ let basePath = "";
 if (isGithubActions) {
   // 去掉 `<owner>/`
   const repo = process.env.GITHUB_REPOSITORY.replace(/.*?\//, "");
-
   assetPrefix = `/${repo}/`;
   basePath = `/${repo}`;
 }
@@ -18,4 +17,4 @@ const nextConfig = {
   output: "export",
 };
 
-module.exports = nextConfig;
+export default nextConfig;

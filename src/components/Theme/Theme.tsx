@@ -25,6 +25,7 @@ export const Theme = ({
           token: {
             colorBgLayout: themeType === "dark" ? "#000" : "#fff",
           },
+          cssVar: true,
         }}
       >
         <BlogLayout

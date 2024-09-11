@@ -7,25 +7,12 @@ const compressJS = () => (config) => {
   if (!config.plugins) {
     config.plugins = [];
   }
-  // config = injectBabelPlugin(
-  //   ['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }],
-  //   config,
-  // );
-  // config.plugins.push(
-  //   new CSSSplitWebpackPlugin({ filename: 'static/css/[name]-[part].[ext]', size: 4000 }),
-  // );
 
   config.plugins.push(
     new CompressionPlugin({
       include: [/\.js(\?.*)?$/i, /\.css(\?.*)?$/i],
     }),
   );
-
-  // config.plugins.push(
-  //   new CompressionPlugin({
-  //     algorithm: "gzip",
-  //   })
-  // );
 
   return config;
 };

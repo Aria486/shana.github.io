@@ -1,0 +1,23 @@
+@import 'assets/styles/globals.scss';
+
+.#{$prefix}-layout {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  &-header {
+    text-align: right;
+    position: relative;
+    z-index: 1;
+  }
+
+  &-divider {
+    border-block-start: var(--ant-line-width) solid var(--ant-color-split);
+  }
+
+  &-content {
+    overflow: auto;
+    flex: 1;
+    padding: 0 10%;
+  }
+} 

@@ -1,0 +1,11 @@
+@import 'assets/styles/globals.scss';
+
+.#{$prefix}-header {
+  display: flex;
+  align-items: center;
+  padding: 0 10%;
+
+  &-menu {
+    flex: 1;
+  }
+}

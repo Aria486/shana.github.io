@@ -1,31 +1,41 @@
 import React from "react";
-import { Theme } from "components";
+import { BlogLayout, Theme, ThemeSwitch } from "components";
 import { GlobalDataProvider } from "context";
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import { NoteList, NoteDetail } from "components";
+import { ROOT_PATH } from "utils/constants";
 import "./App.css";
 
-const rootPath = "shana.github.io"
+const RouteLayout = (content: React.ReactNode) =>
+  <BlogLayout
+    header={
+      <ThemeSwitch />
+    }
+    content={content}
+    footer="© 2024"
+  />;
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <NoteList />,
+    element: RouteLayout(<NoteList />),
   },
   {
-    path: rootPath,
-    element: <NoteList />,
+    path: ROOT_PATH,
+    element: RouteLayout(<NoteList />),
   },
   {
-    path: `${rootPath}/note/*`,
-    element: <NoteDetail />,
+    path: `${ROOT_PATH}/note/*`,
+    element: RouteLayout(<NoteDetail />),
   },
 ]);
 
 function App() {
   return (
+
     <GlobalDataProvider>
       <Theme>
         <RouterProvider router={router} />

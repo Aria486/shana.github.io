@@ -22,7 +22,9 @@ export const BlogLayout: React.FC<IBlogLayout> = (props) => {
 
   return (
     <Layout className={classnames(prefixCls, className)}>
-      <div className={classnames(`${prefixCls}-header`)}><Header reactNode={header} /></div>
+      <div className={classnames(`${prefixCls}-header`)}>
+        <Header reactNode={header} />
+      </div>
       <div className={classnames(`${prefixCls}-divider`)} />
       <Layout className={classnames(`${prefixCls}-content`)}>
         {sider && <Sider width="25%">{sider}</Sider>}

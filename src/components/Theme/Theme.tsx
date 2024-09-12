@@ -30,13 +30,7 @@ export const Theme = ({
         },
       }}
     >
-      <BlogLayout
-        header={
-          <ThemeSwitch />
-        }
-        content={children}
-        footer="© 2024"
-      />
+      {children}
     </ConfigProvider>
   );
 };

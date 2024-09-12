@@ -8,4 +8,15 @@
   &-menu {
     flex: 1;
   }
+
+  &-return {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    align-items: center;
+
+    &-title {
+      margin: 10px 6px;
+    }
+  }
 }

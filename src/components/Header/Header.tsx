@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import classnames from "classnames";
-import { Menu, MenuProps } from "antd";
+import { Button, Menu, MenuProps, Typography } from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useClsAddPrefix } from "hooks";
 import { ICommonComponent } from "interface";
 import { useGlobalData } from "context";
+import { ROOT_PATH } from "utils/constants";
 
 import "./style.scss";
 
+const { Title } = Typography;
 export interface IHeader extends ICommonComponent {
   reactNode?: React.ReactNode;
 }
@@ -41,6 +45,13 @@ export const Header: React.FC<IHeader> = (props) => {
   const prefixCls = useClsAddPrefix("header");
   const { globalData, update } = useGlobalData();
   const { menu } = globalData;
+  const { pathname } = useLocation();
+  const nav = useNavigate();
+  const isHome = `/${ROOT_PATH}` === pathname;
+
+  const getDetailTitle = (path: string) => {
+    return decodeURI(path).split("/").at(-1);
+  }
 
   const onClick: MenuProps['onClick'] = (e) => {
     update("menu", e.key)
@@ -48,13 +59,26 @@ export const Header: React.FC<IHeader> = (props) => {
 
   return (
     <div className={classnames(prefixCls, className)}>
-      <Menu
-        className={`${prefixCls}-menu`}
-        onClick={onClick}
-        selectedKeys={[menu]}
-        mode="horizontal"
-        items={items}
-      />
+      {isHome ?
+        <Menu
+          className={`${prefixCls}-menu`}
+          onClick={onClick}
+          selectedKeys={[menu]}
+          mode="horizontal"
+          items={items}
+        /> :
+        <div className={`${prefixCls}-return`}>
+          <Button
+            type="text"
+            icon={<ArrowLeftOutlined />}
+            shape="circle"
+            onClick={() => nav(-1)}
+          />
+          <Title className={`${prefixCls}-return-title`} level={4}>
+            {getDetailTitle(pathname)}
+          </Title>
+        </div>
+      }
       {reactNode}
     </div>
   );

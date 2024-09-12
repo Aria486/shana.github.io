@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkshana_blog=self.webpackChunkshana_blog||[]).push([[379],{3379:(e,a,s)=>{e.exports=s.p+"static/media/template.ecb6f2479b3fc86f3e09.md"}}]);

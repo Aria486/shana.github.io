@@ -1,0 +1,52 @@
+[
+  {
+    "name": "game",
+    "type": "directory",
+    "children": [
+      {
+        "name": "template.md",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": "history",
+    "type": "directory",
+    "children": [
+      {
+        "name": "template.md",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": "novel",
+    "type": "directory",
+    "children": [
+      {
+        "name": "template.md",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": "program",
+    "type": "directory",
+    "children": [
+      {
+        "name": "html",
+        "type": "directory",
+        "children": [
+          {
+            "name": "template.md",
+            "type": "file"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "template.md",
+    "type": "file"
+  }
+]

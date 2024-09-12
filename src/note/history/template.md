@@ -8,5 +8,3 @@
     }, 1000);
   };
 </Code>
-
-<Loading>222</Loading>

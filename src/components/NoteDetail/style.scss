@@ -1,0 +1,13 @@
+@import 'assets/styles/globals.scss';
+
+.#{$prefix}-note-detail {
+  padding: 0 40px;
+
+  &-item {
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+}

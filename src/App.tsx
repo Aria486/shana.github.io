@@ -1,19 +1,36 @@
 import React from "react";
-import { Theme, Loading, Post } from "components";
+import { Theme } from "components";
+import { GlobalDataProvider } from "context";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import { NoteList, NoteDetail } from "components";
 import "./App.css";
+
+const rootPath = "shana.github.io"
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <NoteList />,
+  },
+  {
+    path: rootPath,
+    element: <NoteList />,
+  },
+  {
+    path: `${rootPath}/note/*`,
+    element: <NoteDetail />,
+  },
+]);
 
 function App() {
   return (
-    <Theme>
-      <div className="App">
-        <header className="App-header">
-          <Post />
-          <div style={{ textAlign: "center", padding: "1rem" }}>
-            <Loading />
-          </div>
-        </header>
-      </div>
-    </Theme>
+    <GlobalDataProvider>
+      <Theme>
+        <RouterProvider router={router} />
+      </Theme>
+    </GlobalDataProvider>
   );
 }
 

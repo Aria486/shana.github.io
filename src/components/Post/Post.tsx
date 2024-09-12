@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Markdown from "markdown-to-jsx";
-import { Code } from "components/Code";
-
+import { theme } from "antd";
+import { Code, Loading } from "components";
 import "styles/post.css";
 
-export const Post = () => {
+interface IPost {
+  notePath: string
+}
+const { useToken } = theme;
+export const Post: React.FC<IPost> = (props) => {
+  const { notePath } = props;
   const [postContent, setPostcontent] = useState("");
-  const [isDark, setIsDark] = useState(true);
-
+  const isDark = useToken().token.colorBgLayout === "#000";
+  console.log(notePath)
   useEffect(() => {
-    void import("note/template.md").then((res) =>
+    void import(`note/${notePath}`).then((res) =>
       fetch(res.default)
         .then((response) => response.text())
         .then((response) => setPostcontent(response))
@@ -29,9 +34,11 @@ export const Post = () => {
                   component: Code,
                   props: {
                     isDark,
-                    setIsDark,
                   },
                 },
+                Loading: {
+                  component: Loading
+                }
               },
             }}
           >

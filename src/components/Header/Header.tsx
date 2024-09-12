@@ -3,6 +3,7 @@ import classnames from "classnames";
 import { Menu, MenuProps } from "antd";
 import { useClsAddPrefix } from "hooks";
 import { ICommonComponent } from "interface";
+import { useGlobalData } from "context";
 
 import "./style.scss";
 
@@ -11,6 +12,7 @@ export interface IHeader extends ICommonComponent {
 }
 
 type MenuItem = Required<MenuProps>['items'][number];
+
 const items: MenuItem[] = [
   {
     label: '编程',
@@ -37,10 +39,11 @@ const items: MenuItem[] = [
 export const Header: React.FC<IHeader> = (props) => {
   const { reactNode, className } = props;
   const prefixCls = useClsAddPrefix("header");
-  const [current, setCurrent] = useState('program');
+  const { globalData, update } = useGlobalData();
+  const { menu } = globalData;
 
   const onClick: MenuProps['onClick'] = (e) => {
-    setCurrent(e.key);
+    update("menu", e.key)
   };
 
   return (
@@ -48,7 +51,7 @@ export const Header: React.FC<IHeader> = (props) => {
       <Menu
         className={`${prefixCls}-menu`}
         onClick={onClick}
-        selectedKeys={[current]}
+        selectedKeys={[menu]}
         mode="horizontal"
         items={items}
       />

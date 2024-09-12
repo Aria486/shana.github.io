@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { ConfigProvider, theme } from "antd";
 import { MoonOutlined, SunOutlined } from "@ant-design/icons";
 
-import { ThemeSwitch, BlogLayout } from "components";
+import { ThemeSwitch, BlogLayout, NoteList } from "components";
+import { useGlobalData } from "context";
 
 export type IThemeType = "dark" | "light";
 
@@ -11,7 +12,8 @@ export const Theme = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const [themeType, setThemeType] = useState<IThemeType>("light");
+  const { globalData, update } = useGlobalData();
+  const { themeType } = globalData;
   return (
     <ConfigProvider
       theme={{
@@ -20,24 +22,17 @@ export const Theme = ({
         token: {
           colorBgLayout: themeType === "dark" ? "#000" : "#fff",
         },
-        cssVar: true,
+        hashed: false,
         components: {
           Menu: {
             itemBg: themeType === "dark" ? "#000" : "#fff",
           }
-        }
+        },
       }}
     >
       <BlogLayout
         header={
-          <ThemeSwitch
-            onClick={() =>
-              setThemeType((preType) =>
-                preType === "dark" ? "light" : "dark",
-              )
-            }
-            icon={themeType === "dark" ? <SunOutlined /> : <MoonOutlined />}
-          />
+          <ThemeSwitch />
         }
         content={children}
         footer="© 2024"

@@ -47,7 +47,7 @@ export const Header: React.FC<IHeader> = (props) => {
   const { menu } = globalData;
   const { pathname } = useLocation();
   const nav = useNavigate();
-  const isHome = `/${ROOT_PATH}` === pathname;
+  const isHome = ROOT_PATH === pathname.replace(/\//g, '');
 
   const getDetailTitle = (path: string) => {
     return decodeURI(path).split("/").at(-1);

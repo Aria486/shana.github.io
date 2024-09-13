@@ -13,34 +13,42 @@ export interface INoteList extends ICommonComponent {
   reactNode?: React.ReactNode;
 }
 
-
 export const NoteList: React.FC<INoteList> = (props) => {
   const { reactNode, className } = props;
   const prefixCls = useClsAddPrefix("note-list");
-  const { globalData, update } = useGlobalData();
+  const { globalData } = useGlobalData();
   const nav = useNavigate();
   const { menu } = globalData;
   const getTag = (path: string) => {
     const pathArr = path.split("/");
-    return pathArr.at(-2);
-  }
+    return pathArr.at(-1)?.substring(0, 4);
+  };
+
   return (
     <List
       className={classnames(prefixCls, className)}
-      dataSource={allPaths[menu]?.map((item) => ({ ...item, title: item.name }))}
-      renderItem={(item) =>
+      dataSource={allPaths[menu]?.map((item) => ({
+        ...item,
+        title: item.name,
+      }))}
+      renderItem={(item) => (
         <List.Item
           className={`${prefixCls}-item`}
           onClick={() => nav(`note/${item.path}`)}
         >
           <List.Item.Meta
-            avatar={<Avatar size={40} style={{ background: item?.bgColor }}>{getTag(item.path)}</Avatar>}
+            avatar={
+              <Avatar size={40} style={{ background: item?.bgColor }}>
+                {getTag(item.path)}
+              </Avatar>
+            }
             title={item.title}
             description={item.lastModified}
           />
-        </List.Item>}
+        </List.Item>
+      )}
       locale={{
-        emptyText: "还没有内容"
+        emptyText: "还没有内容",
       }}
     />
   );

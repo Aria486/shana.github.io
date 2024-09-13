@@ -1,6 +1,9 @@
 {
   "extends": [
     "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/jsx-runtime",
     "plugin:prettier/recommended"
   ],
   "globals": {
@@ -11,10 +14,7 @@
   },
   "overrides": [
     {
-      "files": [
-        "src/**/*.tsx",
-        "src/**/*.ts"
-      ],
+      "files": ["src/**/*.tsx", "src/**/*.ts"],
       "extends": [
         "plugin:react/recommended",
         "plugin:@typescript-eslint/eslint-recommended",
@@ -36,9 +36,7 @@
         "jest/globals": true
       },
       "rules": {
-        "prettier/prettier": [
-          "off"
-        ],
+        "prettier/prettier": ["error"],
         "@typescript-eslint/explicit-function-return-type": "off",
         "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-explicit-any": 0,
@@ -49,9 +47,7 @@
             "minimumDescriptionLength": 0
           }
         ],
-        "@typescript-eslint/no-floating-promises": [
-          "error"
-        ],
+        "@typescript-eslint/no-floating-promises": ["error"],
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "@typescript-eslint/no-empty-function": "off",
@@ -72,10 +68,7 @@
       }
     },
     {
-      "files": [
-        "**/*.js",
-        "src/**/*.js"
-      ],
+      "files": ["**/*.js", "src/**/*.js"],
       "env": {
         "node": true,
         "es6": true
@@ -89,9 +82,7 @@
         "document": true
       },
       "rules": {
-        "prettier/prettier": [
-          "error"
-        ]
+        "prettier/prettier": ["error"]
       }
     }
   ]

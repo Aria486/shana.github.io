@@ -6,7 +6,6 @@ import { MoonOutlined, SunOutlined } from "@ant-design/icons";
 import { useClsAddPrefix } from "hooks";
 import { useGlobalData } from "context";
 
-
 export interface IThemeSwitch {
   onClick?: () => void;
   className?: string;
@@ -24,7 +23,9 @@ export const ThemeSwitch: React.FC<IThemeSwitch> = (props) => {
       type="text"
       className={classnames(prefixCls, className)}
       shape="circle"
-      onClick={() => update("themeType", themeType === "dark" ? "light" : "dark")}
+      onClick={() =>
+        update("themeType", themeType === "dark" ? "light" : "dark")
+      }
       icon={themeType === "dark" ? <SunOutlined /> : <MoonOutlined />}
     />
   );

@@ -15,28 +15,28 @@ export interface IHeader extends ICommonComponent {
   reactNode?: React.ReactNode;
 }
 
-type MenuItem = Required<MenuProps>['items'][number];
+type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
   {
-    label: '编程',
-    key: 'program',
+    label: "编程",
+    key: "program",
   },
   {
-    label: '历史',
-    key: 'history',
+    label: "历史",
+    key: "history",
   },
   {
-    label: '游戏',
-    key: 'game',
+    label: "游戏",
+    key: "game",
   },
   {
     label: "小说",
-    key: 'novel',
+    key: "novel",
   },
   {
-    label: '宗教',
-    key: ' religion',
+    label: "宗教",
+    key: "religion",
   },
 ];
 
@@ -47,26 +47,27 @@ export const Header: React.FC<IHeader> = (props) => {
   const { menu } = globalData;
   const { pathname } = useLocation();
   const nav = useNavigate();
-  const isHome = ROOT_PATH === pathname.replace(/\//g, '');
+  const isHome = ROOT_PATH === pathname.replace(/\//g, "");
 
   const getDetailTitle = (path: string) => {
     return decodeURI(path).split("/").at(-1);
-  }
+  };
 
-  const onClick: MenuProps['onClick'] = (e) => {
-    update("menu", e.key)
+  const onClick: MenuProps["onClick"] = (e) => {
+    update("menu", e.key);
   };
 
   return (
     <div className={classnames(prefixCls, className)}>
-      {isHome ?
+      {isHome ? (
         <Menu
           className={`${prefixCls}-menu`}
           onClick={onClick}
           selectedKeys={[menu]}
           mode="horizontal"
           items={items}
-        /> :
+        />
+      ) : (
         <div className={`${prefixCls}-return`}>
           <Button
             type="text"
@@ -78,7 +79,7 @@ export const Header: React.FC<IHeader> = (props) => {
             {getDetailTitle(pathname)}
           </Title>
         </div>
-      }
+      )}
       {reactNode}
     </div>
   );

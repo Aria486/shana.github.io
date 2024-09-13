@@ -1,7 +1,7 @@
 import React from "react";
 import classnames from "classnames";
 import { Layout } from "antd";
-import { Header } from 'components';
+import { Header } from "components";
 import { useClsAddPrefix } from "hooks";
 
 import "./style.scss";
@@ -28,7 +28,11 @@ export const BlogLayout: React.FC<IBlogLayout> = (props) => {
       <div className={classnames(`${prefixCls}-divider`)} />
       <Layout className={classnames(`${prefixCls}-content`)}>
         {sider && <Sider width="25%">{sider}</Sider>}
-        {content && <Content>{content}</Content>}
+        {content && (
+          <Content className={classnames(`${prefixCls}-content-inner`)}>
+            {content}
+          </Content>
+        )}
       </Layout>
       {footer && <Footer>{footer}</Footer>}
     </Layout>

@@ -7,3 +7,4 @@ export * from "./Header";
 export * from "./Code";
 export * from "./NoteList";
 export * from "./NoteDetail";
+export * from "./DocViewer";

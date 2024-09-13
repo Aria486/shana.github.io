@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
 import Markdown from "markdown-to-jsx";
-import { theme } from "antd";
-import { Code, Loading } from "components";
-import "styles/post.css";
+import classnames from "classnames";
+import { useClsAddPrefix } from "hooks";
+import { Code, Loading, PdfViewer } from "components";
+import { ICommonComponent } from "interface";
+import { useGlobalData } from "context";
+import "./style.scss";
 
-interface IPost {
-  notePath: string
+interface IPost extends ICommonComponent {
+  notePath: string;
 }
-const { useToken } = theme;
+
 export const Post: React.FC<IPost> = (props) => {
-  const { notePath } = props;
+  const { notePath, className } = props;
+  const prefixCls = useClsAddPrefix("post");
   const [postContent, setPostcontent] = useState("");
-  const isDark = useToken().token.colorBgLayout === "#000";
-  console.log(notePath)
+  const { globalData } = useGlobalData();
+  const { themeType } = globalData;
+  const isDark = themeType === "dark";
+
   useEffect(() => {
     void import(`note/${notePath}`).then((res) =>
       fetch(res.default)
@@ -23,29 +29,27 @@ export const Post: React.FC<IPost> = (props) => {
   }, []);
 
   return (
-    <div className="article-wrapper">
-      <article>
-        <header></header>
-        <main>
-          <Markdown
-            options={{
-              overrides: {
-                Code: {
-                  component: Code,
-                  props: {
-                    isDark,
-                  },
-                },
-                Loading: {
-                  component: Loading
-                }
+    <div className={classnames(prefixCls, className)}>
+      <Markdown
+        options={{
+          overrides: {
+            Code: {
+              component: Code,
+              props: {
+                isDark,
               },
-            }}
-          >
-            {postContent}
-          </Markdown>
-        </main>
-      </article>
+            },
+            Loading: {
+              component: Loading,
+            },
+            PdfViewer: {
+              component: PdfViewer,
+            },
+          },
+        }}
+      >
+        {postContent}
+      </Markdown>
     </div>
   );
 };

@@ -12,7 +12,7 @@ export const Theme = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const { globalData, update } = useGlobalData();
+  const { globalData } = useGlobalData();
   const { themeType } = globalData;
   return (
     <ConfigProvider
@@ -26,7 +26,7 @@ export const Theme = ({
         components: {
           Menu: {
             itemBg: themeType === "dark" ? "#000" : "#fff",
-          }
+          },
         },
       }}
     >

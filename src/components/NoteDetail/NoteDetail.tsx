@@ -11,17 +11,11 @@ export interface INoteDetail extends ICommonComponent {
   reactNode?: React.ReactNode;
 }
 
-
 export const NoteDetail: React.FC<INoteDetail> = (props) => {
   const { reactNode, className } = props;
   const prefixCls = useClsAddPrefix("note-detail");
   const urlParams = useParams();
   const { globalData, update } = useGlobalData();
 
-  return (
-    <div>
-      <div>aaaa</div>
-      {urlParams["*"] && <Post notePath={urlParams["*"]} />}
-    </div>
-  );
+  return <div>{urlParams["*"] && <Post notePath={urlParams["*"]} />}</div>;
 };

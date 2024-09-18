@@ -48,6 +48,17 @@
         ]
       },
       {
+        "name": "mysql",
+        "type": "directory",
+        "children": [
+          {
+            "name": "linux 安装mysql，设置主从.md",
+            "type": "file",
+            "lastModified": "2024-09-13T08:52:01.072Z"
+          }
+        ]
+      },
+      {
         "name": "perl",
         "type": "directory",
         "children": [
@@ -70,7 +81,7 @@
           {
             "name": "react中setState是同步的还是异步.md",
             "type": "file",
-            "lastModified": "2024-09-13T07:58:39.740Z"
+            "lastModified": "2024-09-13T08:08:41.865Z"
           }
         ]
       }
@@ -88,6 +99,23 @@
             "name": "希伯来圣经发展.md",
             "type": "file",
             "lastModified": "2024-09-13T06:11:42.807Z"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "study_note",
+    "type": "directory",
+    "children": [
+      {
+        "name": "cissp",
+        "type": "directory",
+        "children": [
+          {
+            "name": "cissp-课程1.md",
+            "type": "file",
+            "lastModified": "2024-09-18T05:20:40.586Z"
           }
         ]
       }

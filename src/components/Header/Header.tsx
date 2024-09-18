@@ -23,6 +23,10 @@ const items: MenuItem[] = [
     key: "program",
   },
   {
+    label: "学习笔记",
+    key: "study_note",
+  },
+  {
     label: "历史",
     key: "history",
   },

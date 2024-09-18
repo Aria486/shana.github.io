@@ -8,3 +8,4 @@ export * from "./Code";
 export * from "./NoteList";
 export * from "./NoteDetail";
 export * from "./DocViewer";
+export * from "./Season";

@@ -2,7 +2,7 @@ import React from "react";
 import { BlogLayout, Theme, ThemeSwitch } from "components";
 import { GlobalDataProvider } from "context";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { NoteList, NoteDetail } from "components";
+import { NoteList, NoteDetail, Summer } from "components";
 import { ROOT_PATH } from "utils/constants";
 import "./App.css";
 

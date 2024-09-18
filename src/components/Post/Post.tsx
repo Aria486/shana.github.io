@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, CSSProperties } from "react";
 import Markdown from "markdown-to-jsx";
+import { theme } from "antd";
 import classnames from "classnames";
 import { useClsAddPrefix } from "hooks";
 import { Code, Loading, PdfViewer } from "components";
@@ -10,15 +11,15 @@ import "./style.scss";
 interface IPost extends ICommonComponent {
   notePath: string;
 }
-
+const { useToken } = theme;
 export const Post: React.FC<IPost> = (props) => {
   const { notePath, className } = props;
+  const { token } = useToken();
   const prefixCls = useClsAddPrefix("post");
   const [postContent, setPostcontent] = useState("");
   const { globalData } = useGlobalData();
   const { themeType } = globalData;
   const isDark = themeType === "dark";
-
   useEffect(() => {
     void import(`note/${notePath}`).then((res) =>
       fetch(res.default)
@@ -29,7 +30,15 @@ export const Post: React.FC<IPost> = (props) => {
   }, []);
 
   return (
-    <div className={classnames(prefixCls, className)}>
+    <div
+      className={classnames(prefixCls, className)}
+      style={
+        {
+          "--post-table-border-color": token["colorBorder"],
+          "--post-table-th-bg-color": token["colorPrimaryBg"],
+        } as CSSProperties
+      }
+    >
       <Markdown
         options={{
           overrides: {

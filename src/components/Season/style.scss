@@ -1,0 +1,113 @@
+@import 'assets/styles/globals.scss';
+
+.#{$prefix}-season-summer-wave {
+  display: flex;
+  width: 100%;
+  height: 160px;
+  background: #6ED3E8;
+  position: relative;
+}
+
+/* 波浪 */
+.wave{
+  display: flex;
+  width: 100%;
+  height: 160px;
+  background: #6ED3E8;
+  position: relative;
+}
+.wave-cell01{
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+}
+.wave-01{
+  width: 500px;
+  height: 300px;
+  background: #6ED3E8;
+  border-radius: 60%;
+  position: absolute;
+  bottom: -46px;
+  left: -140px;
+}
+.wave-02{
+  width: 537px;
+  height: 300px;
+  background: #6ED3E8;
+  border-radius: 60%;
+  position: absolute;
+  bottom: -72px;
+  left: 254px;
+}
+.wave-03{
+  width: 507px;
+  height: 300px;
+  background: #6ED3E8;
+  border-radius: 60%;
+  position: absolute;
+  bottom: -51px;
+  left: 714px;
+}
+.wave-04{
+  width: 462px;
+  height: 300px;
+  background: #6ED3E8;
+  border-radius: 60%;
+  position: absolute;
+  bottom: -25px;
+  left: 1114px;
+}
+.wave-05,.wave-06,
+.wave-07,.wave-08,
+.wave-09,.wave-10,
+.wave-11,.wave-12,
+.wave-13,.wave-14,
+.wave-15{
+  width: 862px;
+  height: 300px;
+  background: #6ED3E8;
+  border-radius: 60%;
+  position: absolute;
+  bottom: -25px;
+  left: 1514px;
+}
+.wave-06{
+  left: 2314px;
+}
+.wave-07{
+  left: 3114px;
+}
+.wave-08{
+  left: 3914px;
+}
+.wave-09{
+  left: 4714px;
+}
+.wave-10{
+  left: 5514px;
+}
+.wave-11{
+  left: 6314px;
+}
+.wave-12{
+  left: 7114px;
+}
+.wave-13{
+  left: 7914px;
+}
+.wave-14{
+  left: 8714px;
+}
+.wave-15{
+  left: 9514px;
+}
+
+.wave-cell02{
+  position: absolute;
+  bottom: -17px;
+  left: 56px;
+}
+.wave-cell02 > div{
+  background: #82DCEF;
+  height: 145px;
+}

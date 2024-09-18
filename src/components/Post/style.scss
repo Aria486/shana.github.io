@@ -2,4 +2,22 @@
 
 .#{$prefix}-post {
   padding: 0 6%;
+
+  table {
+    border-collapse: collapse;
+  }
+  
+  table td,
+  table th {
+    border: 1px var(--post-table-border-color) solid;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  table th {
+    background-color: var(--post-table-th-bg-color);
+    font-size: 20px;
+    font-weight: 700;
+  }
 }

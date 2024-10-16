@@ -20,28 +20,28 @@ type MenuItem = Required<MenuProps>["items"][number];
 const items: MenuItem[] = [
   {
     label: "编程",
-    key: "program",
+    key: "program"
   },
   {
     label: "学习笔记",
-    key: "study_note",
+    key: "study_note"
   },
   {
     label: "历史",
-    key: "history",
+    key: "history"
   },
   {
     label: "游戏",
-    key: "game",
+    key: "game"
   },
   {
     label: "小说",
-    key: "novel",
+    key: "novel"
   },
   {
     label: "宗教",
-    key: "religion",
-  },
+    key: "religion"
+  }
 ];
 
 export const Header: React.FC<IHeader> = (props) => {

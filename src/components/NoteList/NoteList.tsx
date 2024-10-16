@@ -29,7 +29,7 @@ export const NoteList: React.FC<INoteList> = (props) => {
       className={classnames(prefixCls, className)}
       dataSource={allPaths[menu]?.map((item) => ({
         ...item,
-        title: item.name,
+        title: item.name
       }))}
       renderItem={(item) => (
         <List.Item
@@ -48,7 +48,7 @@ export const NoteList: React.FC<INoteList> = (props) => {
         </List.Item>
       )}
       locale={{
-        emptyText: "还没有内容",
+        emptyText: "还没有内容"
       }}
     />
   );

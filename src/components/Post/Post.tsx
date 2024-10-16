@@ -25,7 +25,7 @@ export const Post: React.FC<IPost> = (props) => {
       fetch(res.default)
         .then((response) => response.text())
         .then((response) => setPostcontent(response))
-        .catch((err) => console.log(err)),
+        .catch((err) => console.log(err))
     );
   }, []);
 
@@ -35,7 +35,7 @@ export const Post: React.FC<IPost> = (props) => {
       style={
         {
           "--post-table-border-color": token["colorBorder"],
-          "--post-table-th-bg-color": token["colorPrimaryBg"],
+          "--post-table-th-bg-color": token["colorPrimaryBg"]
         } as CSSProperties
       }
     >
@@ -45,16 +45,16 @@ export const Post: React.FC<IPost> = (props) => {
             Code: {
               component: Code,
               props: {
-                isDark,
-              },
+                isDark
+              }
             },
             Loading: {
-              component: Loading,
+              component: Loading
             },
             PdfViewer: {
-              component: PdfViewer,
-            },
-          },
+              component: PdfViewer
+            }
+          }
         }}
       >
         {postContent}

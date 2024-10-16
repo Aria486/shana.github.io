@@ -14,7 +14,7 @@ type Action =
 // 初始状态
 const initialData: GlobalData = {
   themeType: "light",
-  menu: "program",
+  menu: "program"
 };
 
 // reducer 函数
@@ -47,7 +47,7 @@ const DataContext = createContext<DataContextProps | undefined>(undefined);
 
 // Context Provider 组件
 export const GlobalDataProvider: React.FC<{ children: ReactNode }> = ({
-  children,
+  children
 }) => {
   const [globalData, dispatch] = useReducer(reducer, initialData);
 

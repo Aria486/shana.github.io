@@ -4,7 +4,7 @@ import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx";
 import {
   materialDark,
-  materialLight,
+  materialLight
 } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import { ReactComponent as CopySvg } from "assets/icons/copy.svg";

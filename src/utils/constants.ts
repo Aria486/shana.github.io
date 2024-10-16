@@ -4,7 +4,7 @@ export const NOTE_MENU = [
   "history",
   "game",
   "novel",
-  "religion",
+  "religion"
 ];
 
 export const ROOT_PATH = "shana.github.io";

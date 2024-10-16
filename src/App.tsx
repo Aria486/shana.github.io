@@ -13,16 +13,16 @@ const RouteLayout = (content: React.ReactNode) => (
 const router = createBrowserRouter([
   {
     path: "/",
-    element: RouteLayout(<NoteList />),
+    element: RouteLayout(<NoteList />)
   },
   {
     path: ROOT_PATH,
-    element: RouteLayout(<NoteList />),
+    element: RouteLayout(<NoteList />)
   },
   {
     path: `${ROOT_PATH}/note/*`,
-    element: RouteLayout(<NoteDetail />),
-  },
+    element: RouteLayout(<NoteDetail />)
+  }
 ]);
 
 function App() {

@@ -8,7 +8,7 @@ import { useGlobalData } from "context";
 export type IThemeType = "dark" | "light";
 
 export const Theme = ({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
@@ -20,14 +20,14 @@ export const Theme = ({
         algorithm:
           themeType === "dark" ? theme.darkAlgorithm : theme.defaultAlgorithm,
         token: {
-          colorBgLayout: themeType === "dark" ? "#000" : "#fff",
+          colorBgLayout: themeType === "dark" ? "#000" : "#fff"
         },
         hashed: false,
         components: {
           Menu: {
-            itemBg: themeType === "dark" ? "#000" : "#fff",
-          },
-        },
+            itemBg: themeType === "dark" ? "#000" : "#fff"
+          }
+        }
       }}
     >
       {children}

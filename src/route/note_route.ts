@@ -52,8 +52,8 @@ const groupByFirstLevelDirectory = (data: FileSystemNode[]): DirectoryEntry => {
               name: node.name,
               lastModified: formattedDate,
               path: fullPath,
-              bgColor: getRandomRgbColor(),
-            },
+              bgColor: getRandomRgbColor()
+            }
           ];
         } else {
           if (result[parentDir]) {
@@ -61,7 +61,7 @@ const groupByFirstLevelDirectory = (data: FileSystemNode[]): DirectoryEntry => {
               name: node.name,
               lastModified: formattedDate,
               path: fullPath,
-              bgColor: getRandomRgbColor(),
+              bgColor: getRandomRgbColor()
             });
           }
         }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classnames from "classnames";
 import { Document, Page, pdfjs } from "react-pdf";
-import { Card, Pagination, theme } from "antd";
+import { Card, Pagination } from "antd";
 import { useClsAddPrefix } from "hooks";
 import { ICommonComponent } from "interface";
 import "./style.scss";
@@ -14,7 +14,6 @@ export interface IPdfViewer extends ICommonComponent {
   name: string;
 }
 
-const { useToken } = theme;
 export const PdfViewer: React.FC<IPdfViewer> = (props) => {
   const { className, name } = props;
   const prefixCls = useClsAddPrefix("pdf-viewer");
@@ -24,7 +23,7 @@ export const PdfViewer: React.FC<IPdfViewer> = (props) => {
   const onDocumentLoadSuccess = ({ numPages }: any) => {
     setNumPages(numPages);
   };
-  console.log(useToken());
+
   return (
     <Card
       title={name}

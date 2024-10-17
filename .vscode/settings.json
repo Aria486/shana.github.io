@@ -1,6 +1,15 @@
 {
   "editor.formatOnSave": true,
+  "eslint.nodePath": "./node_modules/eslint",
+  "eslint.packageManager": "npm",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
   "[markdown]": {
     "editor.formatOnSave": false
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

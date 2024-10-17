@@ -16,9 +16,12 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
+    "@types/mongoose": "^5.11.97",
     "antd": "^5.19.4",
+    "axios": "^1.7.7",
     "classnames": "^2.5.1",
     "install": "^0.13.0",
+    "mongoose": "^8.7.1",
     "next": "14.2.5",
     "npm": "^10.8.2",
     "react": "^18",

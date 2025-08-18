@@ -26,7 +26,7 @@ export default function Home() {
         {locales.map((loc) => (
           <Link
             key={loc}
-            to={`/${loc}`}
+            to={`${loc}`}
             style={{
               margin: '0 .25rem',
               padding: '.3rem .6rem',

@@ -21,7 +21,7 @@ import Home from './components/Home';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate replace to="/zh-CN" />
+    element: <Navigate replace to="zh-CN" />
   },
   {
     path: "/:lang",
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <Navigate replace to="/zh-CN" />
+    element: <Navigate replace to="zh-CN" />
   }
 ]);
 

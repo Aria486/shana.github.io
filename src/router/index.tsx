@@ -17,7 +17,7 @@ export default function LangWrapper() {
 
 
   if (!params.lang || !supported.includes(params.lang)) {
-    return <Navigate replace to="/zh-CN" />;
+    return <Navigate replace to="zh-CN" />;
   }
   return <Outlet />;
 }

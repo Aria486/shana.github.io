@@ -10,8 +10,6 @@ if (!container) throw new Error('No root element found');
 
 createRoot(container).render(
   <React.StrictMode>
-    <Router>
-      <App />
-    </Router>
+    <App />
   </React.StrictMode>
 );

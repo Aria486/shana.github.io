@@ -7,7 +7,7 @@ export default defineConfig({
     alias: { "@": "/src" },
   },
   server: { port: 5173 },
-  base: "/shana.github.io/", // 你的仓库名
+  base: "/", // 你的仓库名
   build: {
     outDir: "dist",
   },

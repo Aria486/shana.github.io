@@ -1,37 +1,14 @@
-import React from "react";
-import { BlogLayout, Theme, ThemeSwitch } from "components";
-import { GlobalDataProvider } from "context";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { NoteList, NoteDetail, Summer } from "components";
-import { ROOT_PATH } from "utils/constants";
-import "./App.css";
-
-const RouteLayout = (content: React.ReactNode) => (
-  <BlogLayout header={<ThemeSwitch />} content={content} footer="© 2024" />
-);
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: RouteLayout(<NoteList />)
-  },
-  {
-    path: ROOT_PATH,
-    element: RouteLayout(<NoteList />)
-  },
-  {
-    path: `${ROOT_PATH}/note/*`,
-    element: RouteLayout(<NoteDetail />)
-  }
-]);
+import './i18n';
+import { useTranslation } from 'react-i18next';
 
 function App() {
+  const { t } = useTranslation();
+
   return (
-    <GlobalDataProvider>
-      <Theme>
-        <RouterProvider router={router} />
-      </Theme>
-    </GlobalDataProvider>
+    <div className="App">
+      <h1>{t('common.welcome')}</h1>
+      <button>{t('common.login')}</button>
+    </div>
   );
 }
 

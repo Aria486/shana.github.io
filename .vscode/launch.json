@@ -1,0 +1,29 @@
+{
+  // 使用 IntelliSense 了解相关属性。
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "启动 Vite 开发服务器",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "source ~/.nvm/nvm.sh && nvm use 24 && npm run dev",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "调试 Chrome 浏览器",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/src"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "启动开发环境 (Vite + Chrome)",
+      "configurations": ["启动 Vite 开发服务器", "调试 Chrome 浏览器"],
+      "stopAll": true
+    }
+  ]
+}

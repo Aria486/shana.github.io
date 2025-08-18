@@ -1,15 +1,15 @@
-import './i18n';
-import { useTranslation } from 'react-i18next';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import LangWrapper from './router';
+import Home from './components/Home';
 
-function App() {
-  const { t } = useTranslation();
-
+export default function App() {
   return (
-    <div className="App">
-      <h1>{t('common.welcome')}</h1>
-      <button>{t('common.login')}</button>
-    </div>
+    <Routes>
+      <Route path="/" element={<Navigate replace to="/zh-CN" />} />
+      <Route path="/:lang" element={<LangWrapper />}>
+        <Route index element={<Home />} />
+      </Route>
+      <Route path="*" element={<Navigate replace to="/zh-CN" />} />
+    </Routes>
   );
 }
-
-export default App;

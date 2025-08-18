@@ -1,0 +1,4 @@
+{
+  "title": "Multilingual Scaffold",
+  "greeting": "Hello, {{name}}!"
+}

@@ -1,15 +1,13 @@
 {
-  "editor.formatOnSave": true,
-  "eslint.nodePath": "./node_modules/eslint",
-  "eslint.packageManager": "npm",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.fixAll.stylelint": "explicit"
+    "source.fixAll.eslint": "explicit"
   },
-  "[markdown]": {
-    "editor.formatOnSave": false
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.formatOnSave": true,
+  "typescript.preferences.includePackageJsonAutoImports": "on"
 }

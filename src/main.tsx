@@ -10,7 +10,7 @@ if (!container) throw new Error('No root element found');
 
 createRoot(container).render(
   <React.StrictMode>
-    <Router basename="/">
+    <Router basename="/shana.github.io">
       <App />
     </Router>
   </React.StrictMode>

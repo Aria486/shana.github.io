@@ -1,4 +1,4 @@
-name: Actions CI - Next.js version 14 static site export, GitHub Actions Build and Deploy
+name: Actions CI - static site export, GitHub Actions Build and Deploy
 on:
   push:
     branches: [vite-react]

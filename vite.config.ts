@@ -1,12 +1,13 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
+import { plugin as markdown, Mode, PluginOptions } from "vite-plugin-markdown";
 
 export default defineConfig({
   plugins: [
     react(),
+    markdown(),
     svgr({
-      // svgr options: https://react-svgr.com/docs/options/
       svgrOptions: {
         exportType: "default",
         ref: true,
@@ -24,4 +25,5 @@ export default defineConfig({
   build: {
     outDir: "dist",
   },
+  assetsInclude: ["**/*.md"],
 });

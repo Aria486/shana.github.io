@@ -9,3 +9,11 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
   glob(pattern: string, options?: { eager?: boolean }): Record<string, any>;
 }
+
+// src/types/markdown.d.ts
+declare module "*.md" {
+  const attributes: Record<string, any>;
+  const html: string;
+  const raw: string;
+  export { attributes, html, raw };
+}

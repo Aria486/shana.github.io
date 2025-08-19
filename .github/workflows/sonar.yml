@@ -17,30 +17,32 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0              # 获取完整历史，SonarQube 需要
 
-      - name: Set up Node.js 20.x
+      - name: Set up Node.js 24.x
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
           cache: npm           # 缓存 npm 包，提升速度
 
       - name: Install dependencies
         run: npm ci            # 或者你用的包管理器：yarn install / pnpm install
 
       - name: Install SonarScanner CLI
-        run: npm install -g sonarqube-scanner@5.1.0  # 最新稳定版可自行升级
+        run: npm install -g sonarqube-scanner@latest  # 使用最新版本
 
       - name: Run SonarQube Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}   # 如 https://sonarqube.example.com
           # 如果你想在 PR 上写评论，请开启下面两行：
-          # SONAR_PULL_REQUEST_KEY: ${{ github.event.pull_request.number }}
-          # SONAR_PULL_REQUEST_BRANCH: ${{ github.head_ref }}
+          SONAR_PULL_REQUEST_KEY: ${{ github.event.pull_request.number }}
+          SONAR_PULL_REQUEST_BRANCH: ${{ github.head_ref }}
         run: |
           sonar-scanner \
             -Dproject.settings=sonar-project.properties \
             -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-            -Dsonar.sources=. \
-            -Dsonar.language=js
-
+            -Dsonar.sources=src \
+            -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/*.test.js,**/*.test.ts,**/*.test.tsx \
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info

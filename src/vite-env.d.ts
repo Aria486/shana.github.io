@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-
+/// <reference types="vite-plugin-svgr/client" />
 interface ImportMetaEnv {
   readonly VITE_APP_TITLE: string;
   // 在这里添加更多环境变量类型...

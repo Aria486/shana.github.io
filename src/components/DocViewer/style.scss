@@ -1,0 +1,14 @@
+@use '@/assets/styles/globals.scss' as *;
+
+.#{$prefix}-pdf-viewer {
+
+  &-document {
+    canvas {
+      margin: auto;
+    }
+  }
+
+  &-pagination {
+    margin: 10px auto;
+  }
+}

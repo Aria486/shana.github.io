@@ -14,7 +14,7 @@ export interface INoteList extends ICommonComponent {
 }
 
 export const NoteList: React.FC<INoteList> = (props) => {
-  const { reactNode, className } = props;
+  const { className } = props;
   const prefixCls = useClsAddPrefix("note-list");
   const { globalData } = useGlobalData();
   const nav = useNavigate();

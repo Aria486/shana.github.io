@@ -1,12 +1,12 @@
 import React, { useState, useEffect, CSSProperties } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import Markdown from "markdown-to-jsx";
 import { theme } from "antd";
 import classnames from "classnames";
 import { useClsAddPrefix } from "@/hooks";
-import { Loading, PdfViewer, CodeBlock } from "@/components";
+import { Code, Loading, PdfViewer } from "@/components";
 import { ICommonComponent } from "@/interface";
 import { useGlobalData } from "@/context";
+import { ROOT_PATH } from "@/utils/constants";
 import "./style.scss";
 
 interface IPost extends ICommonComponent {
@@ -20,18 +20,17 @@ export const Post: React.FC<IPost> = (props) => {
   const { token } = useToken();
   const prefixCls = useClsAddPrefix("post");
   const [postContent, setPostcontent] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { globalData } = useGlobalData();
   const { themeType } = globalData;
   const isDark = themeType === "dark";
 
   useEffect(() => {
-    // 保持你原来的动态导入逻辑
-    void import(`../../../public/note/${notePath}`).then((res) =>
-      fetch(res.default)
-        .then((response) => response.text())
-        .then((response) => setPostcontent(response))
-        .catch((err) => console.log(err))
-    );
+    // 动态导入 markdown 文件
+    import(/* @vite-ignore */ `/${ROOT_PATH}/src/note/${notePath}?raw`).then((module) => {
+      setPostcontent(module.default);
+    });
   }, [notePath]);
 
   return (
@@ -44,26 +43,74 @@ export const Post: React.FC<IPost> = (props) => {
         } as CSSProperties
       }
     >
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-      // components={{
-      //   // 替换 overrides 为 components，但保持你的 Code 组件逻辑
-      //   CodeBlock: ({ node, inline, className, children, ...props }) => {
-      //     if (!inline) {
-      //       return (
-      //         <Code isDark={isDark} {...props}>
-      //           {String(children)}
-      //         </Code>
-      //       );
-      //     }
-      //     return <code {...props}>{children}</code>;
-      //   },
-      // Loading: () => <Loading />,
-      //   PdfViewer: (props) => <PdfViewer {...props} />
-      // }}
-      >
-        {postContent}
-      </ReactMarkdown>
-    </div >
+      {isLoading && <Loading />}
+
+      {error && (
+        <div className="error-message">
+          加载失败: {error}
+        </div>
+      )}
+
+      {!isLoading && !error && postContent && (
+        <Markdown
+          options={{
+            overrides: {
+              // 处理标准 markdown 代码块 ```language
+              code: {
+                component: ({ className, children, ...props }) => {
+                  console.log('Code component props:', props, 'children:', className, children, props);
+                  // 检查是否是代码块（有 className）还是行内代码
+                  if (className && className.startsWith('lang-')) {
+                    const language = className.replace('lang-', '');
+                    return (
+                      <Code language={language} isDark={isDark} {...props}>
+                        {children}
+                      </Code>
+                    );
+                  }
+                  // 行内代码保持默认样式
+                  return <code className={className} {...props}>{children}</code>;
+                }
+              },
+              // 处理 pre 元素（代码块的容器）
+              pre: {
+                component: ({ children, ...props }) => {
+                  // 如果 children 是我们的 Code 组件，直接返回
+                  if (React.isValidElement(children) && children.type === Code) {
+                    return children;
+                  }
+                  return <pre {...props}>{children}</pre>;
+                }
+              },
+              // 处理自定义的 Code 组件
+              Code: {
+                component: ({ language, children, ...props }) => {
+                  // 确保 children 是字符串
+                  const codeContent = React.isValidElement(children)
+                    ? children.props.children
+                    : Array.isArray(children)
+                      ? children.join('')
+                      : String(children || '');
+
+                  return (
+                    <Code language={language} isDark={isDark} {...props}>
+                      {codeContent}
+                    </Code>
+                  );
+                }
+              },
+              Loading: {
+                component: Loading
+              },
+              PdfViewer: {
+                component: PdfViewer
+              }
+            }
+          }}
+        >
+          {postContent}
+        </Markdown>
+      )}
+    </div>
   );
 };

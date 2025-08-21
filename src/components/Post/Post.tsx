@@ -6,7 +6,7 @@ import { useClsAddPrefix } from "@/hooks";
 import { Code, Loading, PdfViewer } from "@/components";
 import { ICommonComponent } from "@/interface";
 import { useGlobalData } from "@/context";
-import { ROOT_PATH } from "@/utils/constants";
+import { ROOT_PATH, mdModules } from "@/utils/constants";
 import "./style.scss";
 
 interface IPost extends ICommonComponent {
@@ -25,12 +25,20 @@ export const Post: React.FC<IPost> = (props) => {
   const { globalData } = useGlobalData();
   const { themeType } = globalData;
   const isDark = themeType === "dark";
+  async function loadMarkdown() {
+    const path = `/src/note/${notePath}`;
+    const loader = mdModules[path];
+    if (!loader) throw new Error('文件不存在');
+    const content = await loader();
+    setPostcontent(content);
+  }
 
   useEffect(() => {
     // 动态导入 markdown 文件
-    import(/* @vite-ignore */ `/${ROOT_PATH}/src/note/${notePath}?raw`).then((module) => {
-      setPostcontent(module.default);
-    });
+    // import(/* @vite-ignore */ `/${ROOT_PATH}/src/note/${notePath}?raw`).then((module) => {
+    //   setPostcontent(module.default);
+    // });
+    loadMarkdown();
   }, [notePath]);
 
   return (

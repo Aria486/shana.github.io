@@ -16,6 +16,5 @@ export const NoteDetail: React.FC<INoteDetail> = (props) => {
   const prefixCls = useClsAddPrefix("note-detail");
   const urlParams = useParams();
   const { globalData, update } = useGlobalData();
-  console.log("NoteDetail", globalData, urlParams);
   return <div>{urlParams["*"] && <Post notePath={urlParams["*"]} />}</div>;
 };

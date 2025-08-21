@@ -34,10 +34,6 @@ export const Post: React.FC<IPost> = (props) => {
   }
 
   useEffect(() => {
-    // 动态导入 markdown 文件
-    // import(/* @vite-ignore */ `/${ROOT_PATH}/src/note/${notePath}?raw`).then((module) => {
-    //   setPostcontent(module.default);
-    // });
     loadMarkdown();
   }, [notePath]);
 

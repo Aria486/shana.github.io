@@ -23,7 +23,6 @@ export const NoteList: React.FC<INoteList> = (props) => {
     const pathArr = path.split("/");
     return pathArr.at(-1)?.substring(0, 4);
   };
-  console.log("NoteList render", allPaths[menu]);
   return (
     <List
       className={classnames(prefixCls, className)}

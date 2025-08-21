@@ -4,7 +4,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { Card, Pagination } from "antd";
 import { useClsAddPrefix } from "@/hooks";
 import { ICommonComponent } from "@/interface";
-import { ROOT_PATH } from "@/utils/constants";
+import { ROOT_PATH, mdModules } from "@/utils/constants";
 import "./style.scss";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 import "react-pdf/dist/Page/TextLayer.css";

@@ -15,18 +15,6 @@ interface IPost extends ICommonComponent {
 
 const { useToken } = theme;
 
-// 包装 Code 组件以适配 markdown-to-jsx 的 props 结构
-const CodeBlock: React.FC<{ children: string; className?: string }> = ({ children, className, ...props }) => {
-  // 从 className 中提取语言，格式通常是 "language-javascript"
-  const language = className?.replace('language-', '') || 'javascript';
-
-  return (
-    <Code language={language} {...props}>
-      {children}
-    </Code>
-  );
-};
-
 export const Post: React.FC<IPost> = (props) => {
   const { notePath, className } = props;
   const { token } = useToken();
@@ -37,12 +25,14 @@ export const Post: React.FC<IPost> = (props) => {
   const { globalData } = useGlobalData();
   const { themeType } = globalData;
   const isDark = themeType === "dark";
+
   useEffect(() => {
     // 动态导入 markdown 文件
     import(/* @vite-ignore */ `/${ROOT_PATH}/src/note/${notePath}?raw`).then((module) => {
       setPostcontent(module.default);
     });
   }, [notePath]);
+
   return (
     <div
       className={classnames(prefixCls, className)}
@@ -65,13 +55,13 @@ export const Post: React.FC<IPost> = (props) => {
         <Markdown
           options={{
             overrides: {
-              // 处理代码块 ```language
+              // 处理标准 markdown 代码块 ```language
               code: {
                 component: ({ className, children, ...props }) => {
-                  console.log('Code component called:', { className, children, props }); // 调试信息
+                  console.log('Code component props:', props, 'children:', className, children, props);
                   // 检查是否是代码块（有 className）还是行内代码
-                  if (className && className.startsWith('language-')) {
-                    const language = className.replace('language-', '');
+                  if (className && className.startsWith('lang-')) {
+                    const language = className.replace('lang-', '');
                     return (
                       <Code language={language} isDark={isDark} {...props}>
                         {children}
@@ -85,12 +75,28 @@ export const Post: React.FC<IPost> = (props) => {
               // 处理 pre 元素（代码块的容器）
               pre: {
                 component: ({ children, ...props }) => {
-                  console.log('Pre component called:', { children }); // 调试信息
                   // 如果 children 是我们的 Code 组件，直接返回
                   if (React.isValidElement(children) && children.type === Code) {
                     return children;
                   }
                   return <pre {...props}>{children}</pre>;
+                }
+              },
+              // 处理自定义的 Code 组件
+              Code: {
+                component: ({ language, children, ...props }) => {
+                  // 确保 children 是字符串
+                  const codeContent = React.isValidElement(children)
+                    ? children.props.children
+                    : Array.isArray(children)
+                      ? children.join('')
+                      : String(children || '');
+
+                  return (
+                    <Code language={language} isDark={isDark} {...props}>
+                      {codeContent}
+                    </Code>
+                  );
                 }
               },
               Loading: {

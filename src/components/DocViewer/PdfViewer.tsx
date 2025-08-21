@@ -4,7 +4,7 @@ import { Document, Page, pdfjs } from "react-pdf";
 import { Card, Pagination } from "antd";
 import { useClsAddPrefix } from "@/hooks";
 import { ICommonComponent } from "@/interface";
-import { ROOT_PATH, mdModules } from "@/utils/constants";
+import { ROOT_PATH, pdfModules } from "@/utils/constants";
 import "./style.scss";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.mjs`;
 import "react-pdf/dist/Page/TextLayer.css";
@@ -26,12 +26,21 @@ export const PdfViewer: React.FC<IPdfViewer> = (props) => {
     setNumPages(numPages);
   };
 
-  useEffect(() => {
-    import(/* @vite-ignore */ `/${ROOT_PATH}/src/assets/docs/pdf/${name}`).then((module) => {
-      setPdfUrl(module.default);
-    });
-  }, [name]);
+  async function loadMarkdown() {
+    const path = `/src/assets/docs/pdf/${name}`;
+    const loader = pdfModules[path];
+    if (!loader) throw new Error('文件不存在');
+    const content = await loader();
+    setPdfUrl(content);
+  }
 
+  useEffect(() => {
+    // import(/* @vite-ignore */ `/${ROOT_PATH}/src/assets/docs/pdf/${name}`).then((module) => {
+    //   setPdfUrl(module.default);
+    // });
+    loadMarkdown();
+  }, [name]);
+  console.log(pdfModules);
   return (
     <Card
       title={name}

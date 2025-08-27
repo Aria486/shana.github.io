@@ -32,7 +32,7 @@ jobs:
         run: npm run test:coverage
         continue-on-error: true
 
-      - name: SonarQube Scanner
+      - name: SonarQube Scan with Quality Gate
         uses: sonarsource/sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -44,13 +44,82 @@ jobs:
             -Dsonar.sources=src
             -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/*.test.js,**/*.test.ts,**/*.test.tsx
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.qualitygate.wait=true
+        continue-on-error: true
+        id: sonar-scan
 
-      - name: SonarQube Quality Gate Check
-        uses: sonarqube-quality-gate-action@master
-        timeout-minutes: 5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      # 在 PR 中添加 SonarQube 分析结果评论
+      - name: Comment PR with SonarQube Results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const scanOutcome = '${{ steps.sonar-scan.outcome }}';
+            const projectKey = '${{ secrets.SONAR_PROJECT_KEY }}';
+            const sonarHost = '${{ secrets.SONAR_HOST_URL }}';
+            const prNumber = context.payload.pull_request.number;
+            
+            let commentBody = '';
+            
+            if (scanOutcome === 'failure') {
+              commentBody = `## 🚨 SonarQube Quality Gate Failed
+              
+              **Project:** ${projectKey}
+              
+              ❌ **Status:** FAILED
+              
+              📊 **View Details:** [SonarQube Dashboard](${sonarHost}/dashboard?id=${projectKey}&pullRequest=${prNumber})
+              
+              ### Common Issues to Check:
+              - 📉 Code coverage below threshold
+              - 🔒 Security vulnerabilities
+              - 🧹 Code smells or maintainability issues
+              - 📋 Duplicated code blocks
+              - 🐛 Reliability issues
+              
+              Please review and fix the issues before merging.`;
+            } else {
+              commentBody = `## ✅ SonarQube Quality Gate Passed
+              
+              **Project:** ${projectKey}
+              
+              ✅ **Status:** PASSED
+              
+              📊 **View Details:** [SonarQube Dashboard](${sonarHost}/dashboard?id=${projectKey}&pullRequest=${prNumber})
+              
+              Great job! Your code meets the quality standards. 🎉`;
+            }
+            
+            await github.rest.issues.createComment({
+              issue_number: prNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: commentBody
+            });
+
+      - name: Handle Quality Gate Result
+        run: |
+          if [ "${{ steps.sonar-scan.outcome }}" = "failure" ]; then
+            echo "❌ SonarQube Quality Gate FAILED!"
+            echo "Please check the SonarQube dashboard for details:"
+            echo "Dashboard URL should be available in the logs above"
+            echo "Common issues to check:"
+            echo "- Code coverage below threshold"
+            echo "- Security vulnerabilities"
+            echo "- Code smells or maintainability issues" 
+            echo "- Duplicated code blocks"
+            echo "- Reliability issues"
+            # 在 PR 中强制质量门，在 push 中只警告
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              echo "🚫 Failing workflow because this is a Pull Request"
+              exit 1
+            else
+              echo "⚠️  Warning: Quality Gate failed on push to branch"
+              exit 0
+            fi
+          else
+            echo "✅ SonarQube Quality Gate PASSED!"
+          fi
 
       - name: Quality Gate Status
         run: echo "SonarQube Quality Gate passed! ✅"

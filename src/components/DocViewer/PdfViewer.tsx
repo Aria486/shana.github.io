@@ -26,7 +26,7 @@ export const PdfViewer: React.FC<IPdfViewer> = (props) => {
     setNumPages(numPages);
   };
 
-  async function loadMarkdown() {
+  async function loadPDF() {
     const path = `/src/assets/docs/pdf/${name}`;
     const loader = pdfModules[path];
     if (!loader) throw new Error('文件不存在');
@@ -35,12 +35,9 @@ export const PdfViewer: React.FC<IPdfViewer> = (props) => {
   }
 
   useEffect(() => {
-    // import(/* @vite-ignore */ `/${ROOT_PATH}/src/assets/docs/pdf/${name}`).then((module) => {
-    //   setPdfUrl(module.default);
-    // });
-    loadMarkdown();
+    loadPDF();
   }, [name]);
-  console.log(pdfModules);
+
   return (
     <Card
       title={name}

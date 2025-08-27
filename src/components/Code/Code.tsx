@@ -82,7 +82,6 @@ export const Code: React.FC<CodeProps> = ({ children, language, isDark = false }
         const highlighted = SyntaxHighlighter.highlight(codeText, grammar, prismLanguage);
         setHighlightedCode(highlighted);
       } catch (error) {
-        console.error('Syntax highlighting error:', error);
         setHighlightedCode(codeText);
       }
     } else {

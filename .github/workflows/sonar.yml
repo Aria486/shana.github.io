@@ -2,7 +2,7 @@ name: SonarQube Static Analysis & Gate Enforcement
 
 on:
   push:
-    branches: [vite-react]          # 或你想触发的分支
+    branches: [vite-react]
   pull_request:
     branches: [vite-react]
 
@@ -10,72 +10,51 @@ jobs:
   sonar_scan:
     runs-on: ubuntu-latest
     permissions:
-      contents: read                 # 读取代码
-      pull-requests: write           # 若要在 PR 上写评论（可选）
-      id-token: write                # 用于获取 GitHub OIDC token（若你使用 OAuth）
+      contents: read
+      pull-requests: write
+      id-token: write
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0              # 获取完整历史，SonarQube 需要
+          fetch-depth: 0
 
       - name: Set up Node.js 24.x
         uses: actions/setup-node@v4
         with:
           node-version: "24"
-          cache: npm           # 缓存 npm 包，提升速度
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Install SonarScanner CLI
-        run: npm install -g sonarqube-scanner@latest
+      # 运行测试生成覆盖率报告（如果有测试）
+      - name: Run tests with coverage
+        run: npm run test:coverage
+        continue-on-error: true
 
-      - name: Run SonarQube Scan (PR mode)
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}   # 如 https://sonarqube.example.com
-          SONAR_PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-          # Pull‑request metadata (required for PR decoration)
-          SONAR_PULL_REQUEST_KEY: ${{ github.event.pull_request.number }}
-          SONAR_PULL_REQUEST_BRANCH: ${{ github.head_ref }}
-        run: |
-          sonar-scanner \
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-            -Dsonar.sources=src \
-            -Dsonar.exclusions="**/node_modules/**,**/dist/**,**/build/**,**/*.test.js,**/*.test.ts,**/*.test.tsx" \
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
-            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }} \
-            -Dsonar.pullrequest.branch=${{ github.head_ref }}
-
-      # ----------------------------------------------------
-      # 下面这一步就是 “如果质量门槛失败就阻止 merge”
-      # ----------------------------------------------------
-      - name: Check SonarQube Quality Gate Status
+      - name: SonarQube Scan
+        uses: sonarqube-scan-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-          PR_KEY: ${{ github.event.pull_request.number }}
-          PROJECT_KEY: ${{ secrets.SONAR_PROJECT_KEY }}
-        run: |
-          # 1. 调用 SonarQube REST API 查询 PR 的 Quality Gate 状态
-          RESPONSE=$(curl -sS \
-            -u "$SONAR_TOKEN:" \
-            "${SONAR_HOST_URL}/api/qualitygates/project_status?projectKey=${PROJECT_KEY}&pullRequest=${PR_KEY}")
+        with:
+          args: >
+            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
+            -Dsonar.sources=src
+            -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/*.test.js,**/*.test.ts,**/*.test.tsx
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.pullrequest.key=${{ github.event.pull_request.number }}
+            -Dsonar.pullrequest.branch=${{ github.head_ref }}
+            -Dsonar.pullrequest.base=${{ github.base_ref }}
 
-          # 2. 从 JSON 中提取 status（OK / FAILED / NONE）
-          STATUS=$(echo "$RESPONSE" | jq -r '.projectStatus.status')
+      - name: SonarQube Quality Gate Check
+        uses: sonarqube-quality-gate-action@master
+        timeout-minutes: 5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
-          echo "SonarQube Quality Gate Status for PR#${PR_KEY}: ${STATUS}"
-
-          # 3. 如果不是 OK，则让 CI 失败
-          if [[ "$STATUS" != "OK" ]]; then
-            echo "::error::Quality Gate failed (${STATUS}). Failing the workflow."
-            exit 1
-          fi
-
-      - name: Success! (Optional)
-        run: echo "All checks passed – PR can be merged."
-
+      - name: Quality Gate Status
+        run: echo "SonarQube Quality Gate passed! ✅"

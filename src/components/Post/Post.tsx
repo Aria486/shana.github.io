@@ -25,19 +25,18 @@ export const Post: React.FC<IPost> = (props) => {
   const { globalData } = useGlobalData();
   const { themeType } = globalData;
   const isDark = themeType === "dark";
+
   async function loadMarkdown() {
+    setIsLoading(true);
     const path = `/src/note/${notePath}`;
     const loader = mdModules[path];
     if (!loader) throw new Error('文件不存在');
     const content = await loader();
     setPostcontent(content);
+    setIsLoading(false);
   }
 
   useEffect(() => {
-    // 动态导入 markdown 文件
-    // import(/* @vite-ignore */ `/${ROOT_PATH}/src/note/${notePath}?raw`).then((module) => {
-    //   setPostcontent(module.default);
-    // });
     loadMarkdown();
   }, [notePath]);
 

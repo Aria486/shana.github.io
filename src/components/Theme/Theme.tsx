@@ -1,8 +1,5 @@
 import React from "react";
 import { ConfigProvider, theme } from "antd";
-import { MoonOutlined, SunOutlined } from "@ant-design/icons";
-
-import { ThemeSwitch, BlogLayout, NoteList } from "@/components";
 import { useGlobalData } from "@/context";
 
 export type IThemeType = "dark" | "light";

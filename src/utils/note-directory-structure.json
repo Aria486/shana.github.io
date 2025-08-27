@@ -54,7 +54,7 @@
           {
             "name": "linux 安装mysql，设置主从.md",
             "type": "file",
-            "lastModified": "2025-08-18T07:52:31.385Z"
+            "lastModified": "2025-08-21T06:05:14.528Z"
           }
         ]
       },
@@ -65,7 +65,7 @@
           {
             "name": "mac 上面用Apache2 访问perl cgi.md",
             "type": "file",
-            "lastModified": "2025-08-18T07:52:31.386Z"
+            "lastModified": "2025-08-21T06:05:14.538Z"
           }
         ]
       },
@@ -108,6 +108,42 @@
     "name": "study_note",
     "type": "directory",
     "children": [
+      {
+        "name": "LGTM",
+        "type": "directory",
+        "children": [
+          {
+            "name": "Look Good to Me 1~3章.md",
+            "type": "file",
+            "lastModified": "2025-08-21T06:25:06.014Z"
+          },
+          {
+            "name": "Look Good to Me 第4章.md",
+            "type": "file",
+            "lastModified": "2025-08-21T06:25:42.457Z"
+          },
+          {
+            "name": "Look Good to Me 第5章.md",
+            "type": "file",
+            "lastModified": "2025-08-21T06:26:15.518Z"
+          },
+          {
+            "name": "Look Good to Me 第6章.md",
+            "type": "file",
+            "lastModified": "2025-08-21T06:27:08.732Z"
+          },
+          {
+            "name": "Look Good to Me 第7章.md",
+            "type": "file",
+            "lastModified": "2025-08-21T06:27:43.905Z"
+          },
+          {
+            "name": "Look Good to Me 第8章.md",
+            "type": "file",
+            "lastModified": "2025-08-21T06:28:33.149Z"
+          }
+        ]
+      },
       {
         "name": "cissp",
         "type": "directory",

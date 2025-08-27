@@ -37,7 +37,6 @@ jobs:
       - name: SonarQube Scan & Quality Gate
         uses: SonarSource/sonarcloud-github-action@master
         with:
-          organization: ${{ secrets.SONAR_ORG }}
           token: ${{ secrets.SONAR_TOKEN }}
           projectKey: ${{ secrets.SONAR_PROJECT_KEY }}
           projectName: ${{ secrets.SONAR_PROJECT_NAME }}

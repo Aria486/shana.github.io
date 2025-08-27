@@ -18,3 +18,13 @@ export const cubicBezier = (
     u * u * u * p0 + 3 * u * u * t * p1 + 3 * u * t * t * p2 + t * t * t * p3
   );
 };
+
+export const quadraticBezier = (
+  t: number,
+  p0: number,
+  p1: number,
+  p2: number
+): number => {
+  const u = 1 - t;
+  return u * u * p0 + 2 * u * t * p1 + t * t * p2;
+};

@@ -28,3 +28,11 @@ export const quadraticBezier = (
   const u = 1 - t;
   return u * u * p0 + 2 * u * t * p1 + t * t * p2;
 };
+
+export const linearInterpolation = (
+  t: number,
+  p0: number,
+  p1: number
+): number => {
+  return p0 + t * (p1 - p0);
+};

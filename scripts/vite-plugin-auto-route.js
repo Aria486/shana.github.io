@@ -22,7 +22,7 @@ function autoRoutePlugin(options = {}) {
 
       if (isProduction && generateOnBuild) {
         console.log('🔄 Generating route structure for production build...');
-        generateRouteStructure();
+        // generateRouteStructure();
       }
     },
 

@@ -6,7 +6,7 @@ import { NoteList, NoteDetail } from "@/components";
 import { ROOT_PATH } from "@/utils/constants";
 import "./App.css";
 
-const RouteLayout = (content: React.ReactNode) => (
+const RouteLayout = (content: React.ReactElement) => (
   <AppLayout>{content}</AppLayout>
 );
 

@@ -17,9 +17,9 @@ export const AppLayout: React.FC<IAppLayout> = ({ children }) => {
     setSortType(newSortType);
   };
 
-  // 将排序状态传递给子组件
+  // 将排序状态和搜索关键词传递给子组件
   const childrenWithProps = React.Children.map(children, child =>
-    React.isValidElement(child) ? React.cloneElement(child, { sortType } as any) : child
+    React.isValidElement(child) ? React.cloneElement(child, { sortType, globalSearchKeyword } as any) : child
   );
 
   return (

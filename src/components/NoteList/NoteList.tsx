@@ -30,7 +30,6 @@ export const NoteList: React.FC<INoteList> = (props) => {
     sortType = "time"
   } = props;
 
-  console.log(sortType);
   const prefixCls = useClsAddPrefix("note-list");
   const { globalData } = useGlobalData();
   const nav = useNavigate();

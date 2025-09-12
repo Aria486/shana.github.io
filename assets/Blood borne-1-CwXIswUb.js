@@ -7,4 +7,5 @@ const e=`## blog coming soon
       setIsCopied(false);
     }, 1000);
   };
-</Code>`;export{e as default};
+</Code>
+`;export{e as default};

@@ -5,6 +5,13 @@
   align-items: center;
   padding: 0 10%;
 
+  &-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
   &-menu {
     flex: 1;
   }
@@ -18,5 +25,11 @@
     &-title {
       margin: 10px 6px;
     }
+  }
+
+  &-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
 }

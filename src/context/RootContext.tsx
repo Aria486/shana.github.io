@@ -43,7 +43,7 @@ interface DataContextProps {
 }
 
 // 创建 Context
-const DataContext = createContext<DataContextProps | undefined>(undefined);
+export const DataContext = createContext<DataContextProps | undefined>(undefined);
 
 // Context Provider 组件
 export const GlobalDataProvider: React.FC<{ children: ReactNode }> = ({

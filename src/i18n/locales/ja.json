@@ -1,4 +1,37 @@
 {
   "title": "多言語スキャフォールド",
-  "greeting": "こんにちは、{{name}}！"
+  "greeting": "こんにちは、{{name}}！",
+  "menu": {
+    "program": "プログラミング",
+    "tool": "ツール",
+    "study_note": "学習ノート",
+    "history": "歴史",
+    "game": "ゲーム",
+    "novel": "小説",
+    "religion": "宗教"
+  },
+  "sort": {
+    "name": "名前順",
+    "time": "時間順",
+    "timeDesc": "時間逆順"
+  },
+  "pagination": {
+    "prev": "前へ",
+    "next": "次へ",
+    "total": "合計 {{total}} 件、{{start}}-{{end}} 件を表示",
+    "searchResult": "\"{{keyword}}\" の検索結果：合計 {{total}} 件、{{start}}-{{end}} 件を表示",
+    "itemsPerPage": "件/ページ",
+    "jumpTo": "移動",
+    "page": "ページ",
+    "placeholder": "ページ番号"
+  },
+  "list": {
+    "emptyText": "まだコンテンツがありません",
+    "searchEmptyText": "\"{{keyword}}\" を含むノートが見つかりません"
+  },
+  "search": {
+    "placeholder": "グローバル検索...",
+    "buttonTitle": "検索",
+    "clearTitle": "クリア"
+  }
 }

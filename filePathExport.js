@@ -1,4 +1,4 @@
-// generate-directory-structure.js
+// 已废弃 自动生成文件路由已转至 vite-plugin-auto-route.js
 const fs = require("fs");
 const path = require("path");
 

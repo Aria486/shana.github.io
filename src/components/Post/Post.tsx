@@ -65,7 +65,6 @@ export const Post: React.FC<IPost> = (props) => {
               // 处理标准 markdown 代码块 ```language
               code: {
                 component: ({ className, children, ...props }) => {
-                  console.log('Code component props:', props, 'children:', className, children, props);
                   // 检查是否是代码块（有 className）还是行内代码
                   if (className && className.startsWith('lang-')) {
                     const language = className.replace('lang-', '');
@@ -94,7 +93,7 @@ export const Post: React.FC<IPost> = (props) => {
                 component: ({ language, children, ...props }) => {
                   // 确保 children 是字符串
                   const codeContent = React.isValidElement(children)
-                    ? children.props.children
+                    ? (children.props as any).children
                     : Array.isArray(children)
                       ? children.join('')
                       : String(children || '');

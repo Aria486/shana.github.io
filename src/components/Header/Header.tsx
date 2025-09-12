@@ -1,8 +1,9 @@
 import React from "react";
 import classnames from "classnames";
-import { Button, Menu, MenuProps, Typography } from "antd";
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Button, Menu, MenuProps, Typography, Select } from "antd";
+import { ArrowLeftOutlined, GlobalOutlined } from "@ant-design/icons";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useClsAddPrefix } from "@/hooks";
 import { ICommonComponent } from "@/interface";
 import { useGlobalData } from "@/context";
@@ -13,45 +14,77 @@ import "./style.scss";
 const { Title } = Typography;
 export interface IHeader extends ICommonComponent {
   reactNode?: React.ReactNode;
+  showSort?: boolean;
+  sortType?: string;
+  onSortChange?: (sortType: string) => void;
 }
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-const items: MenuItem[] = [
-  {
-    label: "编程",
-    key: "program"
-  },
-  {
-    label: "学习笔记",
-    key: "study_note"
-  },
-  {
-    label: "历史",
-    key: "history"
-  },
-  {
-    label: "游戏",
-    key: "game"
-  },
-  {
-    label: "小说",
-    key: "novel"
-  },
-  {
-    label: "宗教",
-    key: "religion"
-  }
-];
-
 export const Header: React.FC<IHeader> = (props) => {
-  const { reactNode, className } = props;
+  const { reactNode, className, showSort = false, sortType = "time", onSortChange } = props;
   const prefixCls = useClsAddPrefix("header");
   const { globalData, update } = useGlobalData();
   const { menu } = globalData;
   const { pathname } = useLocation();
   const nav = useNavigate();
-  const isHome = ROOT_PATH === pathname.replace(/\//g, "");
+  const urlParams = useParams();
+  const lang = urlParams.lang;
+  const { t, i18n } = useTranslation();
+  const isHome = `${ROOT_PATH}${lang}` === pathname.replace(/\//g, "");
+
+  const items: MenuItem[] = [
+    {
+      label: t("menu.program"),
+      key: "program"
+    },
+    {
+      label: t("menu.tool"),
+      key: "tool"
+    },
+    {
+      label: t("menu.study_note"),
+      key: "study_note"
+    },
+    {
+      label: t("menu.history"),
+      key: "history"
+    },
+    {
+      label: t("menu.game"),
+      key: "game"
+    },
+    {
+      label: t("menu.novel"),
+      key: "novel"
+    },
+    {
+      label: t("menu.religion"),
+      key: "religion"
+    }
+  ];
+
+  const languageOptions = [
+    { label: "中文", value: "zh-CN" },
+    { label: "English", value: "en" },
+    { label: "日本語", value: "ja" }
+  ];
+
+  const sortOptions = [
+    { label: t("sort.name"), value: "name" },
+    { label: t("sort.time"), value: "time" },
+    { label: t("sort.timeDesc"), value: "timeDesc" },
+  ];
+
+  const handleLanguageChange = (newLang: string) => {
+    // 构建新的路径，替换当前语言参数
+    const currentPath = pathname.replace(`/${ROOT_PATH}/${lang}`, '');
+    const newPath = `/${ROOT_PATH}/${newLang}${currentPath}`;
+
+    // 切换语言并导航到新路径
+    i18n.changeLanguage(newLang);
+    nav(newPath);
+  };
 
   const getDetailTitle = (path: string) => {
     return decodeURI(path).split("/").at(-1);
@@ -63,28 +96,50 @@ export const Header: React.FC<IHeader> = (props) => {
 
   return (
     <div className={classnames(prefixCls, className)}>
-      {isHome ? (
-        <Menu
-          className={`${prefixCls}-menu`}
-          onClick={onClick}
-          selectedKeys={[menu]}
-          mode="horizontal"
-          items={items}
-        />
-      ) : (
-        <div className={`${prefixCls}-return`}>
-          <Button
-            type="text"
-            icon={<ArrowLeftOutlined />}
-            shape="circle"
-            onClick={() => nav(-1)}
+      <div className={`${prefixCls}-content`}>
+        {isHome ? (
+          <Menu
+            className={`${prefixCls}-menu`}
+            onClick={onClick}
+            selectedKeys={[menu]}
+            mode="horizontal"
+            items={items}
           />
-          <Title className={`${prefixCls}-return-title`} level={4}>
-            {getDetailTitle(pathname)}
-          </Title>
+        ) : (
+          <div className={`${prefixCls}-return`}>
+            <Button
+              type="text"
+              icon={<ArrowLeftOutlined />}
+              shape="circle"
+              onClick={() => nav(-1)}
+            />
+            <Title className={`${prefixCls}-return-title`} level={4}>
+              {getDetailTitle(pathname)}
+            </Title>
+          </div>
+        )}
+
+        <div className={`${prefixCls}-actions`}>
+          {reactNode}
+          {showSort && onSortChange && (
+            <Select
+              value={sortType}
+              onChange={onSortChange}
+              options={sortOptions}
+              style={{ width: 120, marginRight: 8 }}
+              size="small"
+            />
+          )}
+          <Select
+            value={lang}
+            onChange={handleLanguageChange}
+            options={languageOptions}
+            suffixIcon={<GlobalOutlined />}
+            style={{ width: 90 }}
+            size="small"
+          />
         </div>
-      )}
-      {reactNode}
+      </div>
     </div>
   );
 };

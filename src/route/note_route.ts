@@ -11,7 +11,8 @@ interface FileSystemNode {
 
 interface FileEntry {
   name: string;
-  lastModified: string;
+  lastModified: string; // Formatted date for display
+  lastModifiedISO: string; // Original ISO date for sorting
   path: string; // Full path of the file
   bgColor?: string;
 }
@@ -51,6 +52,7 @@ const groupByFirstLevelDirectory = (data: FileSystemNode[]): DirectoryEntry => {
             {
               name: node.name,
               lastModified: formattedDate,
+              lastModifiedISO: node.lastModified || "",
               path: fullPath,
               bgColor: getRandomRgbColor(),
             },
@@ -60,6 +62,7 @@ const groupByFirstLevelDirectory = (data: FileSystemNode[]): DirectoryEntry => {
             result[parentDir].push({
               name: node.name,
               lastModified: formattedDate,
+              lastModifiedISO: node.lastModified || "",
               path: fullPath,
               bgColor: getRandomRgbColor(),
             });

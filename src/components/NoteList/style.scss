@@ -2,12 +2,56 @@
 
 .#{$prefix}-note-list {
   padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  min-height: 500px; // 确保有足够的高度
+
+  &-header {
+    margin-bottom: 20px;
+  }
+
+  &-content {
+    flex: 1;
+    margin-bottom: 16px;
+  }
 
   &-item {
     cursor: pointer;
+    transition: all 0.2s ease;
 
     &:hover {
       opacity: 0.75;
+      transform: translateX(4px);
+    }
+  }
+
+  // 响应式设计
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    
+    &-item {
+      &:hover {
+        transform: none; // 移动端不使用位移效果
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 16px;
+  }
+}
+
+// 深色主题支持
+[data-theme="dark"] {
+  .#{$prefix}-sort-bar {
+    &-sort-select {
+      border-color: #434343;
+      background: #1f1f1f;
+      color: #fff;
+
+      &:hover {
+        border-color: #1890ff;
+      }
     }
   }
 }

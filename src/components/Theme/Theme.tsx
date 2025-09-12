@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ConfigProvider, theme } from "antd";
 import { useGlobalData } from "@/context";
 
@@ -11,6 +11,10 @@ export const Theme = ({
 }>) => {
   const { globalData } = useGlobalData();
   const { themeType } = globalData;
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', themeType);
+  }, [themeType]);
   return (
     <ConfigProvider
       theme={{

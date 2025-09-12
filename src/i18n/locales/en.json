@@ -1,4 +1,37 @@
 {
   "title": "Multilingual Scaffold",
-  "greeting": "Hello, {{name}}!"
+  "greeting": "Hello, {{name}}!",
+  "menu": {
+    "program": "Programming",
+    "tool": "Tools",
+    "study_note": "Study Notes",
+    "history": "History",
+    "game": "Games",
+    "novel": "Novels",
+    "religion": "Religion"
+  },
+  "sort": {
+    "name": "Sort by Name",
+    "time": "Sort by Time",
+    "timeDesc": "Sort by Time (Desc)"
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next",
+    "total": "Total {{total}} items, showing {{start}}-{{end}}",
+    "searchResult": "Search \"{{keyword}}\" results: Total {{total}} items, showing {{start}}-{{end}}",
+    "itemsPerPage": "items/page",
+    "jumpTo": "Go to",
+    "page": "page",
+    "placeholder": "Page"
+  },
+  "list": {
+    "emptyText": "No content yet",
+    "searchEmptyText": "No notes found containing \"{{keyword}}\""
+  },
+  "search": {
+    "placeholder": "Global search...",
+    "buttonTitle": "Search",
+    "clearTitle": "Clear"
+  }
 }

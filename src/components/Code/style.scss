@@ -1,0 +1,304 @@
+@use "@/assets/styles/globals.scss" as *;
+
+.#{$prefix}-code-block {
+  position: relative;
+  border-radius: $code-border-radius;
+  overflow: hidden;
+  margin-bottom: $code-margin-bottom;
+  transition: all 0.2s ease;
+
+  &.light {
+    box-shadow: $light-code-shadow;
+    border: 1px solid $light-code-border;
+    background: $light-code-bg;
+  }
+
+  &.dark {
+    box-shadow: $dark-code-shadow;
+    border: 1px solid $dark-code-border;
+    background: $dark-code-bg;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $code-header-padding;
+    font-size: $code-header-font-size;
+    font-weight: 500;
+
+    .light & {
+      background: $light-code-header-bg;
+      border-bottom: 1px solid $light-code-header-border;
+      color: $light-code-header-text;
+    }
+
+    .dark & {
+      background: $dark-code-header-bg;
+      border-bottom: 1px solid $dark-code-header-border;
+      color: $dark-code-header-text;
+    }
+
+    .language-label {
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .copy-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: $code-button-padding;
+      border-radius: $code-button-border-radius;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: $code-header-font-size;
+      transition: all 0.2s ease;
+
+      .light & {
+        color: $light-code-header-text;
+
+        &:hover {
+          background-color: $light-code-button-hover;
+        }
+
+        &.copied {
+          background-color: $light-code-button-copied;
+        }
+      }
+
+      .dark & {
+        color: $dark-code-header-text;
+
+        &:hover {
+          background-color: $dark-code-button-hover;
+        }
+
+        &.copied {
+          background-color: $dark-code-button-copied;
+        }
+      }
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  pre {
+    margin: 0;
+    padding: $code-padding;
+    font-size: $code-font-size;
+    line-height: $code-line-height;
+    font-family: $code-font-family;
+    background: transparent;
+    overflow: auto;
+
+    .light & {
+      color: $light-code-text;
+    }
+
+    .dark & {
+      color: $dark-code-text;
+    }
+
+    // 滚动条样式
+    &::-webkit-scrollbar {
+      height: $code-scrollbar-size;
+    }
+
+    &::-webkit-scrollbar-track {
+      border-radius: $code-scrollbar-border-radius;
+
+      .light & {
+        background: $light-code-scrollbar-track;
+      }
+
+      .dark & {
+        background: $dark-code-scrollbar-track;
+      }
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: $code-scrollbar-border-radius;
+
+      .light & {
+        background: $light-code-scrollbar-thumb;
+
+        &:hover {
+          background: $light-code-scrollbar-thumb-hover;
+        }
+      }
+
+      .dark & {
+        background: $dark-code-scrollbar-thumb;
+
+        &:hover {
+          background: $dark-code-scrollbar-thumb-hover;
+        }
+      }
+    }
+  }
+
+  // 语法高亮样式 - 浅色主题
+  &.light {
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+      color: $light-token-comment;
+      font-style: italic;
+    }
+
+    .token.keyword,
+    .token.tag,
+    .token.attr-name {
+      color: $light-token-keyword;
+      font-weight: bold;
+    }
+
+    .token.string,
+    .token.attr-value {
+      color: $light-token-string;
+    }
+
+    .token.number {
+      color: $light-token-number;
+    }
+
+    .token.operator,
+    .token.entity,
+    .token.url {
+      color: $light-token-operator;
+    }
+
+    .token.punctuation {
+      color: $light-token-punctuation;
+    }
+
+    .token.function {
+      color: $light-token-function;
+      font-weight: bold;
+    }
+
+    .token.class-name {
+      color: $light-token-class-name;
+      font-weight: bold;
+    }
+
+    .token.property {
+      color: $light-token-property;
+    }
+
+    .token.boolean,
+    .token.constant {
+      color: $light-token-boolean;
+      font-weight: bold;
+    }
+
+    .token.variable {
+      color: $light-token-variable;
+    }
+
+    .token.selector {
+      color: $light-token-selector;
+      font-weight: bold;
+    }
+
+    .token.important,
+    .token.atrule {
+      color: $light-token-important;
+      font-weight: bold;
+    }
+
+    .token.regex {
+      color: $light-token-regex;
+    }
+
+    .token.builtin {
+      color: $light-token-builtin;
+    }
+  }
+
+  // 语法高亮样式 - 深色主题
+  &.dark {
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+      color: $dark-token-comment;
+      font-style: italic;
+    }
+
+    .token.keyword,
+    .token.tag,
+    .token.attr-name {
+      color: $dark-token-keyword;
+      font-weight: bold;
+    }
+
+    .token.string,
+    .token.attr-value {
+      color: $dark-token-string;
+    }
+
+    .token.number {
+      color: $dark-token-number;
+    }
+
+    .token.operator,
+    .token.entity,
+    .token.url {
+      color: $dark-token-operator;
+    }
+
+    .token.punctuation {
+      color: $dark-token-punctuation;
+    }
+
+    .token.function {
+      color: $dark-token-function;
+      font-weight: bold;
+    }
+
+    .token.class-name {
+      color: $dark-token-class-name;
+      font-weight: bold;
+    }
+
+    .token.property {
+      color: $dark-token-property;
+    }
+
+    .token.boolean,
+    .token.constant {
+      color: $dark-token-boolean;
+      font-weight: bold;
+    }
+
+    .token.variable {
+      color: $dark-token-variable;
+    }
+
+    .token.selector {
+      color: $dark-token-selector;
+      font-weight: bold;
+    }
+
+    .token.important,
+    .token.atrule {
+      color: $dark-token-important;
+      font-weight: bold;
+    }
+
+    .token.regex {
+      color: $dark-token-regex;
+    }
+
+    .token.builtin {
+      color: $dark-token-builtin;
+    }
+  }
+}

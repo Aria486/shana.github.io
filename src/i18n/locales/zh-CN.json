@@ -1,4 +1,37 @@
 {
   "title": "多语言脚手架",
-  "greeting": "你好，{{name}}！"
+  "greeting": "你好，{{name}}！",
+  "menu": {
+    "program": "编程",
+    "tool": "工具",
+    "study_note": "学习笔记",
+    "history": "历史",
+    "game": "游戏",
+    "novel": "小说",
+    "religion": "宗教"
+  },
+  "sort": {
+    "name": "按名称排序",
+    "time": "按时间排序",
+    "timeDesc": "按时间倒序"
+  },
+  "pagination": {
+    "prev": "上一页",
+    "next": "下一页",
+    "total": "共 {{total}} 条记录，显示第 {{start}}-{{end}} 条",
+    "searchResult": "搜索 \"{{keyword}}\" 结果：共 {{total}} 条记录，显示第 {{start}}-{{end}} 条",
+    "itemsPerPage": "条/页",
+    "jumpTo": "跳至",
+    "page": "页",
+    "placeholder": "页码"
+  },
+  "list": {
+    "emptyText": "还没有内容",
+    "searchEmptyText": "未找到包含 \"{{keyword}}\" 的笔记"
+  },
+  "search": {
+    "placeholder": "全局搜索...",
+    "buttonTitle": "搜索",
+    "clearTitle": "清除"
+  }
 }

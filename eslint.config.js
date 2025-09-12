@@ -48,4 +48,13 @@ module.exports = [
       'semi-style': ['error', 'last'],
     },
   },
+  // 为测试文件添加 Jest 环境配置
+  {
+    files: ['**/*.test.{ts,tsx}', '**/__tests__/**/*.{ts,tsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
+      },
+    },
+  },
 ];

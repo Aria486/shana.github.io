@@ -1,5 +1,97 @@
 $prefix: "shana-blog";
 
+// 导入断点变量
+@forward './_breakpoints.scss' as breakpoints-*;;
+
+// ==================== 基础颜色变量 ====================
+
+// 主要颜色
+$color-primary: #1890ff;
+$color-primary-hover: #40a9ff;
+$color-primary-active: #096dd9;
+
+// 中性颜色 - 浅色主题
+$color-white: #fff;
+$color-bg: #fff;
+$color-bg-secondary: #f5f5f5;
+$color-bg-disabled: #f0f0f0;
+$color-border: #d9d9d9;
+$color-border-disabled: #f0f0f0;
+$color-text: #333;
+$color-text-secondary: #666;
+$color-text-tertiary: #999;
+$color-text-disabled: #bfbfbf;
+$color-text-placeholder: #bfbfbf;
+
+// 中性颜色 - 深色主题
+$color-dark-bg: #1f1f1f;
+$color-dark-bg-secondary: #262626;
+$color-dark-border: #434343;
+$color-dark-text: #fff;
+$color-dark-text-secondary: #8c8c8c;
+$color-dark-text-placeholder: #595959;
+
+// 特殊颜色
+$color-bg-hover: #e6f7ff;
+$color-bg-hover-light: rgba(0, 0, 0, 0.04);
+$color-primary-dark: #003a8c;
+
+// 季节组件特殊颜色
+$color-season-light: #6ED3E8;
+$color-season-dark: #82DCEF;
+
+// ==================== CSS 自定义属性 ====================
+
+:root {
+  // 主要颜色
+  --primary-color: #{$color-primary};
+  --primary-hover-color: #{$color-primary-hover};
+  --primary-active-color: #{$color-primary-active};
+  
+  // 背景颜色
+  --bg-color: #{$color-bg};
+  --bg-secondary: #{$color-bg-secondary};
+  --bg-disabled: #{$color-bg-disabled};
+  --bg-hover: #{$color-bg-hover};
+  
+  // 边框颜色
+  --border-color: #{$color-border};
+  --border-disabled: #{$color-border-disabled};
+  
+  // 文字颜色
+  --text-color: #{$color-text};
+  --text-secondary: #{$color-text-secondary};
+  --text-tertiary: #{$color-text-tertiary};
+  --text-disabled: #{$color-text-disabled};
+  --text-placeholder: #{$color-text-placeholder};
+}
+
+[data-theme="dark"] {
+  // 主要颜色
+  --primary-color: #{$color-primary};
+  --primary-hover-color: #{$color-primary-hover};
+  --primary-active-color: #{$color-primary-active};
+  
+  // 背景颜色
+  --bg-color: #{$color-dark-bg};
+  --bg-secondary: #{$color-dark-bg-secondary};
+  --bg-disabled: #{$color-dark-bg-secondary};
+  --bg-hover: #{$color-bg-hover-light};
+  
+  // 边框颜色
+  --border-color: #{$color-dark-border};
+  --border-disabled: #{$color-dark-border};
+  
+  // 文字颜色
+  --text-color: #{$color-dark-text};
+  --text-secondary: #{$color-dark-text-secondary};
+  --text-tertiary: #{$color-dark-text-secondary};
+  --text-disabled: #{$color-dark-text-placeholder};
+  --text-placeholder: #{$color-dark-text-placeholder};
+}
+
+// ==================== Code 组件相关变量 ====================
+
 // Code 组件相关变量
 $code-border-radius: 12px;
 $code-margin-bottom: 24px;

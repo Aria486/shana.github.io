@@ -26,7 +26,7 @@
   }
 
   // 响应式设计
-  @media (max-width: 768px) {
+  @include breakpoints-mobile {
     padding: 0 20px;
     
     &-item {
@@ -36,7 +36,7 @@
     }
   }
 
-  @media (max-width: 480px) {
+  @include breakpoints-mobile-small {
     padding: 0 16px;
   }
 }
@@ -45,12 +45,12 @@
 [data-theme="dark"] {
   .#{$prefix}-sort-bar {
     &-sort-select {
-      border-color: #434343;
-      background: #1f1f1f;
-      color: #fff;
+      border-color: var(--border-color);
+      background: var(--bg-color);
+      color: var(--text-color);
 
       &:hover {
-        border-color: #1890ff;
+        border-color: var(--primary-color);
       }
     }
   }

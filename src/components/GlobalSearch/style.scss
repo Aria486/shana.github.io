@@ -117,7 +117,7 @@
   }
 
   // 响应式设计
-  @media (max-width: 768px) {
+  @include breakpoints-mobile {
     &-input-wrapper {
       width: 200px;
     }
@@ -127,7 +127,7 @@
     }
   }
 
-  @media (max-width: 480px) {
+  @include breakpoints-mobile-small {
     &-input-wrapper {
       width: 160px;
     }
@@ -138,40 +138,40 @@
 [data-theme="dark"] {
   .#{$prefix}-global-search {
     &-icon-btn {
-      color: #fff;
+      color: var(--text-color);
 
       &:hover {
-        background: rgba(255, 255, 255, 0.1);
-        color: #1890ff;
+        background: var(--bg-hover);
+        color: var(--primary-color);
       }
     }
 
     &-input {
-      border-color: #434343;
-      background: #1f1f1f;
-      color: #fff;
+      border-color: var(--border-color);
+      background: var(--bg-color);
+      color: var(--text-color);
 
       &:hover {
-        border-color: #1890ff;
+        border-color: var(--primary-color);
       }
 
       &::placeholder {
-        color: #595959;
+        color: var(--text-placeholder);
       }
     }
 
     &-clear {
-      background: #262626;
-      color: #8c8c8c;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
 
       &:hover {
-        background: #003a8c;
-        color: #1890ff;
+        background: $color-primary-dark;
+        color: var(--primary-color);
       }
     }
 
     &-search-icon {
-      color: #595959;
+      color: var(--text-placeholder);
     }
   }
 }

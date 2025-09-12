@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BlogLayout, ThemeSwitch, GlobalSearch } from "@/components";
+import { BlogLayout, GlobalSearch, Footer } from "@/components";
 
 export interface IAppLayout {
   children: React.ReactNode;
@@ -27,11 +27,10 @@ export const AppLayout: React.FC<IAppLayout> = ({ children }) => {
       header={
         <>
           <GlobalSearch onSearch={handleGlobalSearch} />
-          <ThemeSwitch />
         </>
       }
       content={childrenWithProps}
-      footer="© 2024"
+      footer={<Footer />}
       sortType={sortType}
       onSortChange={handleSortChange}
     />

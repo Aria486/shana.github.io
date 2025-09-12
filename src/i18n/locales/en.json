@@ -33,5 +33,10 @@
     "placeholder": "Global search...",
     "buttonTitle": "Search",
     "clearTitle": "Clear"
+  },
+  "footer": {
+    "copyright": "All rights reserved",
+    "description": "Recording every bit of learning",
+    "contact": "Contact us"
   }
 }

@@ -1,0 +1,44 @@
+// 响应式断点变量
+// 用于统一管理媒体查询的断点值
+
+// 移动设备断点
+$breakpoint-mobile: 768px;
+$breakpoint-mobile-small: 480px;
+
+// 平板设备断点
+$breakpoint-tablet: 1024px;
+
+// 桌面设备断点
+$breakpoint-desktop: 1200px;
+$breakpoint-desktop-large: 1440px;
+
+// 媒体查询混入
+@mixin mobile {
+  @media (max-width: $breakpoint-mobile) {
+    @content;
+  }
+}
+
+@mixin mobile-small {
+  @media (max-width: $breakpoint-mobile-small) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (max-width: $breakpoint-desktop) {
+    @content;
+  }
+}
+
+@mixin desktop-large {
+  @media (max-width: $breakpoint-desktop-large) {
+    @content;
+  }
+}

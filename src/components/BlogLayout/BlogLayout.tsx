@@ -26,14 +26,14 @@ export const BlogLayout: React.FC<IBlogLayout> = (props) => {
   const { pathname } = useLocation();
   const urlParams = useParams();
   const lang = urlParams.lang;
-  
+
   // 判断是否在首页（显示笔记列表的页面）
   const isHome = `${ROOT_PATH}${lang}` === pathname.replace(/\//g, "");
   return (
     <Layout className={classnames(prefixCls, className)}>
       <div className={classnames(`${prefixCls}-header`)}>
-        <Header 
-          reactNode={header} 
+        <Header
+          reactNode={header}
           showSort={isHome}
           sortType={sortType}
           onSortChange={onSortChange}
@@ -48,7 +48,7 @@ export const BlogLayout: React.FC<IBlogLayout> = (props) => {
           </Content>
         )}
       </Layout>
-      {footer && <Footer>{footer}</Footer>}
+      {footer && <Footer className={`${prefixCls}-footer`}>{footer}</Footer>}
     </Layout>
   );
 };

@@ -33,5 +33,10 @@
     "placeholder": "グローバル検索...",
     "buttonTitle": "検索",
     "clearTitle": "クリア"
+  },
+  "footer": {
+    "copyright": "すべての権利を保有",
+    "description": "学びのあらゆる瞬間を記録",
+    "contact": "お問い合わせ"
   }
 }

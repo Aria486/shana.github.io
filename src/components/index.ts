@@ -14,3 +14,4 @@ export * from "./LangWrapper";
 export * from "./Pagination";
 export * from "./GlobalSearch";
 export * from "./AppLayout";
+export * from "./Footer";

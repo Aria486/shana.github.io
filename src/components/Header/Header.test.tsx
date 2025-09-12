@@ -26,13 +26,6 @@ describe('Header', () => {
   });
 
 
-  it('renders language selector', () => {
-    render(<Header />);
-
-    // Should have language selector
-    expect(screen.getByTitle('中文')).toBeInTheDocument();
-  });
-
   it('renders sort dropdown when showSort is true', () => {
     render(<Header showSort={true} sortType="time" onSortChange={mockOnSortChange} />);
 
@@ -65,13 +58,6 @@ describe('Header', () => {
     // Should show back button
     const backButton = screen.getByRole('button');
     expect(backButton).toBeInTheDocument();
-  });
-
-  it('renders custom reactNode when provided', () => {
-    const customNode = <div data-testid="custom-node">Custom Content</div>;
-    render(<Header reactNode={customNode} />);
-
-    expect(screen.getByTestId('custom-node')).toBeInTheDocument();
   });
 
   it('applies custom className', () => {

@@ -19,9 +19,9 @@ jest.mock("@/components", () => ({
       <div data-testid="blog-layout-content">
         {content || children}
       </div>
-      <select 
-        data-testid="sort-select" 
-        value={sortType} 
+      <select
+        data-testid="sort-select"
+        value={sortType}
         onChange={(e) => onSortChange(e.target.value)}
       >
         <option value="time">Time</option>
@@ -50,7 +50,6 @@ describe("AppLayout", () => {
 
     expect(screen.getByTestId("blog-layout-header")).toBeInTheDocument();
     expect(screen.getByTestId("blog-layout-content")).toBeInTheDocument();
-    expect(screen.getByTestId("theme-switch")).toBeInTheDocument();
   });
 
 

@@ -1,7 +1,7 @@
 import React from "react";
 import classnames from "classnames";
 import { Button, Menu, MenuProps, Typography, Select } from "antd";
-import { ArrowLeftOutlined, GlobalOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useClsAddPrefix } from "@/hooks";
@@ -30,7 +30,7 @@ export const Header: React.FC<IHeader> = (props) => {
   const nav = useNavigate();
   const urlParams = useParams();
   const lang = urlParams.lang;
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const isHome = `${ROOT_PATH}${lang}` === pathname.replace(/\//g, "");
 
   const items: MenuItem[] = [
@@ -64,11 +64,6 @@ export const Header: React.FC<IHeader> = (props) => {
     }
   ];
 
-  const languageOptions = [
-    { label: "中文", value: "zh-CN" },
-    { label: "English", value: "en" },
-    { label: "日本語", value: "ja" }
-  ];
 
   const sortOptions = [
     { label: t("sort.name"), value: "name" },
@@ -76,15 +71,6 @@ export const Header: React.FC<IHeader> = (props) => {
     { label: t("sort.timeDesc"), value: "timeDesc" },
   ];
 
-  const handleLanguageChange = (newLang: string) => {
-    // 构建新的路径，替换当前语言参数
-    const currentPath = pathname.replace(`/${ROOT_PATH}/${lang}`, '');
-    const newPath = `/${ROOT_PATH}/${newLang}${currentPath}`;
-
-    // 切换语言并导航到新路径
-    i18n.changeLanguage(newLang);
-    nav(newPath);
-  };
 
   const getDetailTitle = (path: string) => {
     return decodeURI(path).split("/").at(-1);
@@ -120,7 +106,7 @@ export const Header: React.FC<IHeader> = (props) => {
         )}
 
         <div className={`${prefixCls}-actions`}>
-          {reactNode}
+          {showSort && reactNode}
           {showSort && onSortChange && (
             <Select
               value={sortType}
@@ -130,14 +116,6 @@ export const Header: React.FC<IHeader> = (props) => {
               size="small"
             />
           )}
-          <Select
-            value={lang}
-            onChange={handleLanguageChange}
-            options={languageOptions}
-            suffixIcon={<GlobalOutlined />}
-            style={{ width: 90 }}
-            size="small"
-          />
         </div>
       </div>
     </div>

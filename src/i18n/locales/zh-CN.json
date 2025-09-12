@@ -33,5 +33,10 @@
     "placeholder": "全局搜索...",
     "buttonTitle": "搜索",
     "clearTitle": "清除"
+  },
+  "footer": {
+    "copyright": "版权所有",
+    "description": "记录学习的点点滴滴",
+    "contact": "联系我们"
   }
 }

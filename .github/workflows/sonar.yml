@@ -27,7 +27,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 运行测试生成覆盖率报告（如果有测试）
       - name: Run tests with coverage
         run: npm run test:coverage
         continue-on-error: true
@@ -48,8 +47,55 @@ jobs:
         continue-on-error: true
         id: sonar-scan
 
-      # 在 PR 中添加 SonarQube 分析结果评论
-      - name: Comment PR with SonarQube Results  
+      # 获取详细的 SonarQube 分析结果
+      - name: Get SonarQube Analysis Details
+        if: github.event_name == 'pull_request' && always()
+        id: sonar-details
+        run: |
+          echo "Getting SonarQube analysis details..."
+          
+          # 获取项目的质量门状态
+          QUALITY_GATE_URL="${{ secrets.SONAR_HOST_URL }}/api/qualitygates/project_status?projectKey=${{ secrets.SONAR_PROJECT_KEY }}"
+          
+          # 如果是 PR，添加 PR 参数
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            QUALITY_GATE_URL="${QUALITY_GATE_URL}&pullRequest=${{ github.event.pull_request.number }}"
+          fi
+          
+          echo "Quality Gate API URL: $QUALITY_GATE_URL"
+          
+          # 获取质量门状态
+          QUALITY_GATE_RESPONSE=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" "$QUALITY_GATE_URL")
+          echo "quality_gate_response<<EOF" >> $GITHUB_OUTPUT
+          echo "$QUALITY_GATE_RESPONSE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          # 获取问题详情
+          ISSUES_URL="${{ secrets.SONAR_HOST_URL }}/api/issues/search?componentKeys=${{ secrets.SONAR_PROJECT_KEY }}&resolved=false&ps=50"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            ISSUES_URL="${ISSUES_URL}&pullRequest=${{ github.event.pull_request.number }}"
+          fi
+          
+          echo "Issues API URL: $ISSUES_URL"
+          ISSUES_RESPONSE=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" "$ISSUES_URL")
+          echo "issues_response<<EOF" >> $GITHUB_OUTPUT
+          echo "$ISSUES_RESPONSE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          # 获取度量信息
+          MEASURES_URL="${{ secrets.SONAR_HOST_URL }}/api/measures/component?component=${{ secrets.SONAR_PROJECT_KEY }}&metricKeys=coverage,duplicated_lines_density,vulnerabilities,bugs,code_smells,security_hotspots,sqale_index,reliability_rating,security_rating,maintainability_rating"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            MEASURES_URL="${MEASURES_URL}&pullRequest=${{ github.event.pull_request.number }}"
+          fi
+          
+          echo "Measures API URL: $MEASURES_URL"
+          MEASURES_RESPONSE=$(curl -s -u "${{ secrets.SONAR_TOKEN }}:" "$MEASURES_URL")
+          echo "measures_response<<EOF" >> $GITHUB_OUTPUT
+          echo "$MEASURES_RESPONSE" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      # 在 PR 中添加详细的 SonarQube 分析结果评论
+      - name: Comment PR with Detailed SonarQube Results  
         if: github.event_name == 'pull_request' && always()
         uses: actions/github-script@v7
         with:
@@ -60,50 +106,185 @@ jobs:
             const sonarHost = '${{ secrets.SONAR_HOST_URL }}';
             const prNumber = context.payload.pull_request.number;
             
-            console.log(`Scan outcome: ${scanOutcome}`);
-            console.log(`PR Number: ${prNumber}`);
+            // 解析 SonarQube API 响应
+            let qualityGateData, issuesData, measuresData;
+            
+            try {
+              qualityGateData = JSON.parse(`${{ steps.sonar-details.outputs.quality_gate_response }}`);
+              issuesData = JSON.parse(`${{ steps.sonar-details.outputs.issues_response }}`);
+              measuresData = JSON.parse(`${{ steps.sonar-details.outputs.measures_response }}`);
+            } catch (error) {
+              console.error('Failed to parse SonarQube API responses:', error);
+            }
+            
+            console.log('Quality Gate Data:', qualityGateData);
+            console.log('Issues Data:', issuesData);
+            console.log('Measures Data:', measuresData);
             
             let commentBody = '';
+            const dashboardUrl = `${sonarHost}/dashboard?id=${projectKey}&pullRequest=${prNumber}`;
             
-            if (scanOutcome === 'failure') {
+            // 构建质量门状态信息
+            const qualityGateStatus = qualityGateData?.projectStatus?.status || 'UNKNOWN';
+            const isQualityGatePassed = qualityGateStatus === 'OK';
+            
+            if (!isQualityGatePassed) {
               commentBody = `## 🚨 SonarQube Quality Gate Failed
               
               **Project:** ${projectKey}
+              **Status:** ❌ ${qualityGateStatus}
               
-              ❌ **Status:** FAILED
+              📊 **[View Full Report](${dashboardUrl})**
               
-              📊 **View Details:** [SonarQube Dashboard](${sonarHost}/dashboard?id=${projectKey}&pullRequest=${prNumber})
+              ### 📋 Quality Gate Conditions
+              `;
               
-              ### Common Issues to Check:
-              - 📉 Code coverage below threshold
-              - 🔒 Security vulnerabilities
-              - 🧹 Code smells or maintainability issues
-              - 📋 Duplicated code blocks
-              - 🐛 Reliability issues
+              // 显示质量门条件详情
+              if (qualityGateData?.projectStatus?.conditions) {
+                for (const condition of qualityGateData.projectStatus.conditions) {
+                  const status = condition.status === 'OK' ? '✅' : '❌';
+                  const metricName = condition.metricKey;
+                  const actualValue = condition.actualValue || 'N/A';
+                  const threshold = condition.errorThreshold || condition.warningThreshold || 'N/A';
+                  
+                  commentBody += `${status} **${metricName}**: ${actualValue} (threshold: ${threshold})\n`;
+                }
+              }
               
-              Please review and fix the issues before merging.`;
+              // 显示度量信息
+              if (measuresData?.component?.measures) {
+                commentBody += `\n### 📊 Code Metrics\n`;
+                
+                const metrics = {};
+                for (const measure of measuresData.component.measures) {
+                  metrics[measure.metric] = measure.value;
+                }
+                
+                if (metrics.coverage) {
+                  commentBody += `📈 **Coverage**: ${metrics.coverage}%\n`;
+                }
+                if (metrics.duplicated_lines_density) {
+                  commentBody += `📋 **Duplicated Lines**: ${metrics.duplicated_lines_density}%\n`;
+                }
+                if (metrics.vulnerabilities) {
+                  commentBody += `🔒 **Vulnerabilities**: ${metrics.vulnerabilities}\n`;
+                }
+                if (metrics.bugs) {
+                  commentBody += `🐛 **Bugs**: ${metrics.bugs}\n`;
+                }
+                if (metrics.code_smells) {
+                  commentBody += `🧹 **Code Smells**: ${metrics.code_smells}\n`;
+                }
+                if (metrics.security_hotspots) {
+                  commentBody += `🔥 **Security Hotspots**: ${metrics.security_hotspots}\n`;
+                }
+              }
+              
+              // 显示前10个最重要的问题
+              if (issuesData?.issues && issuesData.issues.length > 0) {
+                commentBody += `\n### 🚨 Top Issues to Fix\n`;
+                
+                const topIssues = issuesData.issues
+                  .filter(issue => issue.severity === 'BLOCKER' || issue.severity === 'CRITICAL' || issue.severity === 'MAJOR')
+                  .slice(0, 10);
+                
+                for (const issue of topIssues) {
+                  const severity = issue.severity.toLowerCase();
+                  const severityIcon = {
+                    'blocker': '🚫',
+                    'critical': '🔴', 
+                    'major': '🟠',
+                    'minor': '🟡',
+                    'info': '🔵'
+                  }[severity] || '❓';
+                  
+                  const component = issue.component.replace(`${projectKey}:`, '');
+                  const line = issue.line ? `:${issue.line}` : '';
+                  
+                  commentBody += `${severityIcon} **${severity.toUpperCase()}**: ${issue.message}\n`;
+                  commentBody += `   📁 \`${component}${line}\` | Rule: \`${issue.rule}\`\n\n`;
+                }
+                
+                if (issuesData.issues.length > 10) {
+                  commentBody += `\n*... and ${issuesData.issues.length - 10} more issues*\n`;
+                }
+              }
+              
+              commentBody += `\n---\n⚠️ **Please fix these issues before merging.**`;
+              
             } else {
+              // Quality Gate 通过
               commentBody = `## ✅ SonarQube Quality Gate Passed
               
               **Project:** ${projectKey}
+              **Status:** ✅ PASSED
               
-              ✅ **Status:** PASSED
+              📊 **[View Full Report](${dashboardUrl})**
+              ${apiWarning}
+              `;
               
-              📊 **View Details:** [SonarQube Dashboard](${sonarHost}/dashboard?id=${projectKey}&pullRequest=${prNumber})
+              // 显示度量信息
+              if (measuresData?.component?.measures) {
+                commentBody += `\n### 📊 Code Metrics\n`;
+                
+                const metrics = {};
+                for (const measure of measuresData.component.measures) {
+                  metrics[measure.metric] = measure.value;
+                }
+                
+                if (metrics.coverage) {
+                  commentBody += `📈 **Coverage**: ${metrics.coverage}%\n`;
+                }
+                if (metrics.duplicated_lines_density) {
+                  commentBody += `📋 **Duplicated Lines**: ${metrics.duplicated_lines_density}%\n`;
+                }
+                if (metrics.vulnerabilities !== undefined) {
+                  commentBody += `🔒 **Vulnerabilities**: ${metrics.vulnerabilities}\n`;
+                }
+                if (metrics.bugs !== undefined) {
+                  commentBody += `🐛 **Bugs**: ${metrics.bugs}\n`;
+                }
+                if (metrics.code_smells !== undefined) {
+                  commentBody += `🧹 **Code Smells**: ${metrics.code_smells}\n`;
+                }
+              }
               
-              Great job! Your code meets the quality standards. 🎉`;
+              commentBody += `\n🎉 **Great job! Your code meets all quality standards.**`;
             }
             
             try {
-              await github.rest.issues.createComment({
+              // 查找现有评论
+              const comments = await github.rest.issues.listComments({
                 issue_number: prNumber,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: commentBody
               });
-              console.log('Comment posted successfully');
+              
+              const existingComment = comments.data.find(comment => 
+                comment.body.includes('SonarQube Quality Gate')
+              );
+              
+              if (existingComment) {
+                // 更新现有评论
+                await github.rest.issues.updateComment({
+                  comment_id: existingComment.id,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: commentBody
+                });
+                console.log('Updated existing comment');
+              } else {
+                // 创建新评论
+                await github.rest.issues.createComment({
+                  issue_number: prNumber,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: commentBody
+                });
+                console.log('Created new comment');
+              }
             } catch (error) {
-              console.error('Failed to post comment:', error);
+              console.error('Failed to post/update comment:', error);
             }
 
       - name: Handle Quality Gate Result
@@ -116,14 +297,7 @@ jobs:
           if [ "${{ steps.sonar-scan.outcome }}" = "failure" ]; then
             echo "❌ SonarQube Quality Gate FAILED!"
             echo "Please check the SonarQube dashboard for details."
-            echo "Common issues to check:"
-            echo "- 📉 Code coverage below threshold"
-            echo "- 🔒 Security vulnerabilities"  
-            echo "- 🧹 Code smells or maintainability issues"
-            echo "- 📋 Duplicated code blocks"
-            echo "- 🐛 Reliability issues"
             echo ""
-            # 在 PR 中强制质量门，在 push 中只警告
             if [ "${{ github.event_name }}" = "pull_request" ]; then
               echo "🚫 Failing workflow because this is a Pull Request"
               echo "Quality Gate must pass before merging!"
@@ -140,3 +314,7 @@ jobs:
 
       - name: Quality Gate Status
         run: echo "SonarQube Quality Gate passed! ✅"
+
+
+
+

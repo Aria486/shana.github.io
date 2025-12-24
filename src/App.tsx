@@ -1,7 +1,7 @@
 import React from "react";
 import { Theme, LangWrapper, AppLayout } from "@/components";
 import { GlobalDataProvider } from "@/context";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import { createHashRouter, RouterProvider, Navigate } from "react-router-dom";
 import { NoteList, NoteDetail } from "@/components";
 import { ROOT_PATH } from "@/utils/constants";
 import "./App.css";
@@ -10,7 +10,7 @@ const RouteLayout = (content: React.ReactElement) => (
   <AppLayout>{content}</AppLayout>
 );
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: <Navigate replace to={`/${ROOT_PATH}/zh-CN`} />

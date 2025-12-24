@@ -13,10 +13,10 @@ const RouteLayout = (content: React.ReactElement) => (
 const router = createHashRouter([
   {
     path: "/",
-    element: <Navigate replace to={`/${ROOT_PATH}/zh-CN`} />
+    element: <Navigate replace to={`${ROOT_PATH}/zh-CN`} />
   },
   {
-    path: `/${ROOT_PATH}/:lang`,
+    path: `${ROOT_PATH}/:lang`,
     element: <LangWrapper />,
     children: [
       {
@@ -31,7 +31,7 @@ const router = createHashRouter([
   },
   {
     path: "*",
-    element: <Navigate replace to={`/${ROOT_PATH}/zh-CN`} />
+    element: <Navigate replace to={`${ROOT_PATH}/zh-CN`} />
   }
 ]);
 

@@ -28,7 +28,7 @@ export default defineConfig({
     alias: { "@": "/src" },
   },
   server: { port: 5173 },
-  base: "/",
+  base: "/shana.github.io/",
   build: {
     outDir: "dist",
   },

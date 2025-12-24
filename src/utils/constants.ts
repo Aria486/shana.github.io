@@ -15,4 +15,5 @@ export const NOTE_MENU = [
   "religion",
 ];
 
-export const ROOT_PATH = "shana.github.io";
+// export const ROOT_PATH = "/shana.github.io";
+export const ROOT_PATH = "";

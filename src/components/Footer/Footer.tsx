@@ -33,8 +33,8 @@ export const Footer: React.FC<IFooter> = (props) => {
 
   const handleLanguageChange = (newLang: string) => {
     // 构建新的路径，替换当前语言参数
-    const currentPath = pathname.replace(`/${ROOT_PATH}/${lang}`, '');
-    const newPath = `/${ROOT_PATH}/${newLang}${currentPath}`;
+    const currentPath = pathname.replace(`${ROOT_PATH}/${lang}`, '');
+    const newPath = `${ROOT_PATH}/${newLang}${currentPath}`;
 
     // 切换语言并导航到新路径
     i18n.changeLanguage(newLang);

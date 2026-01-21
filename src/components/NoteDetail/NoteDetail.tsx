@@ -20,5 +20,5 @@ export const NoteDetail: React.FC<INoteDetail> = (props) => {
   // 获取语言参数
   const lang = urlParams.lang;
 
-  return <div>{urlParams["*"] && <Post notePath={urlParams["*"]} />}</div>;
+  return <div style={{ height: "100%" }}>{urlParams["*"] && <Post notePath={urlParams["*"]} />}</div>;
 };

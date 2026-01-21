@@ -28,8 +28,9 @@
   },
   "homepage": "https://github.com/Aria486/shana.github.io#readme",
   "dependencies": {
+    "@giscus/react": "^3.1.0",
     "@uiw/react-copy-to-clipboard": "^4.22.3",
-    "antd": "^5.27.0",
+    "antd": "^6.2.1",
     "classnames": "^2.5.1",
     "highlight.js": "^11.11.1",
     "i18next": "^25.3.6",

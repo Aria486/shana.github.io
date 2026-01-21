@@ -1,7 +1,9 @@
 @use '@/assets/styles/globals.scss' as *;
 
 .#{$prefix}-post {
-  padding: 0 6% 20px 6%;
+  padding: 0 10% 20px 10%;
+  height: 100%;
+  overflow-y: auto;
 
   &__loading-container {
     display: flex;

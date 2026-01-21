@@ -7,7 +7,7 @@ export interface IAppLayout {
 
 export const AppLayout: React.FC<IAppLayout> = ({ children }) => {
   const [globalSearchKeyword, setGlobalSearchKeyword] = useState("");
-  const [sortType, setSortType] = useState("time");
+  const [sortType, setSortType] = useState("timeDesc");
 
   const handleGlobalSearch = (keyword: string) => {
     setGlobalSearchKeyword(keyword);

@@ -4,19 +4,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin: 24px 0;
+  gap: 12px;
+  margin: 12px 0;
   font-size: 14px;
 
   &-total {
     color: var(--text-secondary, #666);
-    font-size: 13px;
+    font-size: 12px;
   }
 
   &-pager {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
   }
 
   &-prev,
@@ -25,16 +25,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 32px;
-    height: 32px;
-    padding: 0 8px;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 6px;
     border: 1px solid var(--border-color, #d9d9d9);
-    border-radius: 6px;
+    border-radius: 4px;
     background: var(--bg-color, #fff);
     color: var(--text-color, #333);
     cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1;
 
     &:hover:not(.#{$prefix}-pagination-disabled) {
@@ -76,8 +76,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 32px;
-    height: 32px;
+    min-width: 28px;
+    height: 28px;
     color: var(--text-secondary, #666);
     font-size: 12px;
     letter-spacing: 2px;
@@ -89,12 +89,12 @@
   }
 
   &-size-changer {
-    padding: 4px 8px;
+    padding: 3px 6px;
     border: 1px solid var(--border-color, #d9d9d9);
     border-radius: 4px;
     background: var(--bg-color, #fff);
     color: var(--text-color, #333);
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
     transition: border-color 0.2s ease;
 
@@ -112,18 +112,18 @@
   &-quick-jumper {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     color: var(--text-color, #333);
-    font-size: 13px;
+    font-size: 12px;
 
     input {
-      width: 50px;
-      padding: 4px 8px;
+      width: 45px;
+      padding: 3px 6px;
       border: 1px solid var(--border-color, #d9d9d9);
       border-radius: 4px;
       background: var(--bg-color, #fff);
       color: var(--text-color, #333);
-      font-size: 13px;
+      font-size: 12px;
       text-align: center;
       transition: border-color 0.2s ease;
 
@@ -166,13 +166,15 @@
   // 响应式设计
   @include breakpoints-mobile {
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
+    margin: 8px 0;
 
     &-total {
       order: 3;
       width: 100%;
       text-align: center;
-      margin-top: 8px;
+      margin-top: 4px;
+      font-size: 11px;
     }
 
     &-pager {
@@ -182,9 +184,10 @@
     &-prev,
     &-next,
     &-item {
-      min-width: 28px;
-      height: 28px;
-      font-size: 12px;
+      min-width: 24px;
+      height: 24px;
+      font-size: 11px;
+      padding: 0 4px;
     }
 
     &-options,

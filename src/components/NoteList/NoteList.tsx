@@ -23,7 +23,7 @@ export interface INoteList extends ICommonComponent {
 export const NoteList: React.FC<INoteList> = (props) => {
   const {
     className,
-    pageSize: defaultPageSize = 5,
+    pageSize: defaultPageSize = 10,
     showSizeChanger = true,
     showQuickJumper = false,
     globalSearchKeyword = "",
@@ -108,59 +108,63 @@ export const NoteList: React.FC<INoteList> = (props) => {
 
   return (
     <div className={classnames(prefixCls, className)}>
-      {/* 列表内容 */}
-      <List
-        className={`${prefixCls}-content`}
-        dataSource={paginatedData}
-        renderItem={(item) => (
-          <List.Item
-            className={`${prefixCls}-item`}
-            onClick={() => nav(`note/${item.path}`)}
-          >
-            <List.Item.Meta
-              avatar={
-                <Avatar size={40} style={{ background: item?.bgColor }}>
-                  {getTag(item.path)}
-                </Avatar>
-              }
-              title={item.title}
-              description={item.lastModified}
-            />
-          </List.Item>
-        )}
-        locale={{
-          emptyText: globalSearchKeyword ?
-            t("list.searchEmptyText", { keyword: globalSearchKeyword }) :
-            t("list.emptyText")
-        }}
-      />
+      {/* 列表内容 - 可滚动区域 */}
+      <div className={`${prefixCls}-scroll-container`}>
+        <List
+          className={`${prefixCls}-content`}
+          dataSource={paginatedData}
+          renderItem={(item) => (
+            <List.Item
+              className={`${prefixCls}-item`}
+              onClick={() => nav(`note/${item.path}`)}
+            >
+              <List.Item.Meta
+                avatar={
+                  <Avatar size={40} style={{ background: item?.bgColor }}>
+                    {getTag(item.path)}
+                  </Avatar>
+                }
+                title={item.title}
+                description={item.lastModified}
+              />
+            </List.Item>
+          )}
+          locale={{
+            emptyText: globalSearchKeyword ?
+              t("list.searchEmptyText", { keyword: globalSearchKeyword }) :
+              t("list.emptyText")
+          }}
+        />
+      </div>
 
-      {/* 分页器 */}
+      {/* 分页器 - 固定在底部 */}
       {filteredAndSortedData.length > pageSize && (
-        <Pagination
-          current={currentPage}
-          total={filteredAndSortedData.length}
-          pageSize={pageSize}
-          onChange={handlePageChange}
-          showSizeChanger={showSizeChanger}
-          showQuickJumper={showQuickJumper}
-          showTotal={(total, range) => {
-            if (globalSearchKeyword) {
-              return t("pagination.searchResult", {
-                keyword: globalSearchKeyword,
+        <div className={`${prefixCls}-pagination-fixed`}>
+          <Pagination
+            current={currentPage}
+            total={filteredAndSortedData.length}
+            pageSize={pageSize}
+            onChange={handlePageChange}
+            showSizeChanger={showSizeChanger}
+            showQuickJumper={showQuickJumper}
+            showTotal={(total, range) => {
+              if (globalSearchKeyword) {
+                return t("pagination.searchResult", {
+                  keyword: globalSearchKeyword,
+                  total,
+                  start: range[0],
+                  end: range[1]
+                });
+              }
+              return t("pagination.total", {
                 total,
                 start: range[0],
                 end: range[1]
               });
-            }
-            return t("pagination.total", {
-              total,
-              start: range[0],
-              end: range[1]
-            });
-          }}
-          pageSizeOptions={["5", "10", "20", "50"]}
-        />
+            }}
+            pageSizeOptions={["5", "10", "20", "50"]}
+          />
+        </div>
       )}
     </div>
   );

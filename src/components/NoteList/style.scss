@@ -1,18 +1,37 @@
 @use '@/assets/styles/globals.scss' as *;
 
 .#{$prefix}-note-list {
-  padding: 0 40px;
   display: flex;
   flex-direction: column;
-  min-height: 500px; // 确保有足够的高度
+  height: 100%;
+  position: relative;
 
   &-header {
     margin-bottom: 20px;
   }
 
-  &-content {
+  &-scroll-container {
     flex: 1;
-    margin-bottom: 16px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 20px;
+    min-height: 200px;
+    padding: 0 10%;
+  }
+
+  &-content {
+    padding: 0 40px;
+  }
+
+  &-pagination-fixed {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-color, #fff);
+    padding: 8px 0;
+    z-index: 10;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
   }
 
   &-item {
@@ -27,22 +46,56 @@
 
   // 响应式设计
   @include breakpoints-mobile {
-    padding: 0 20px;
+    max-height: calc(100vh - 180px);
+    min-height: 300px;
     
+    &-content {
+      padding: 0 20px;
+    }
+
+    &-scroll-container {
+      min-height: 150px;
+    }
+
     &-item {
       &:hover {
-        transform: none; // 移动端不使用位移效果
+        transform: none;
       }
+    }
+
+    &-pagination-fixed {
+      padding: 6px 0;
     }
   }
 
   @include breakpoints-mobile-small {
-    padding: 0 16px;
+    max-height: calc(100vh - 160px);
+    min-height: 250px;
+
+    &-content {
+      padding: 0 16px;
+    }
+
+    &-scroll-container {
+      min-height: 120px;
+    }
+
+    &-pagination-fixed {
+      padding: 4px 0;
+    }
   }
 }
 
 // 深色主题支持
 [data-theme="dark"] {
+  .#{$prefix}-note-list {
+    &-pagination-fixed {
+      background: var(--bg-color);
+      border-top-color: var(--border-color);
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+    }
+  }
+
   .#{$prefix}-sort-bar {
     &-sort-select {
       border-color: var(--border-color);

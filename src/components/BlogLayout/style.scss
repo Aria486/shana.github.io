@@ -16,16 +16,11 @@
   }
 
   &-content {
-    overflow: auto;
     flex: 1;
-    padding: 0 10%;
-
-    &-inner {
-      padding: 20px 0;
-    }
   }
 
   &-footer {
     padding: 0;
+    flex-shrink: 0;
   }
 } 

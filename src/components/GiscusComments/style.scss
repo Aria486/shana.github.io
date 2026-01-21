@@ -1,0 +1,36 @@
+@use '@/assets/styles/globals.scss' as *;
+
+.giscus-comments {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border-color);
+
+  @include breakpoints-mobile {
+    margin-top: 32px;
+    padding-top: 24px;
+  }
+
+  &-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    color: var(--text-secondary-color);
+    font-size: 14px;
+
+    @include breakpoints-mobile {
+      min-height: 150px;
+      font-size: 12px;
+    }
+  }
+
+  // Giscus 容器样式调整
+  :global(.giscus) {
+    width: 100%;
+  }
+
+  // 深色主题下的样式微调
+  &[data-theme="dark"] {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+}

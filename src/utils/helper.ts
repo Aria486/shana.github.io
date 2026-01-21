@@ -11,7 +11,7 @@ export const cubicBezier = (
   p0: number,
   p1: number,
   p2: number,
-  p3: number
+  p3: number,
 ): number => {
   const u = 1 - t;
   return (
@@ -23,7 +23,7 @@ export const quadraticBezier = (
   t: number,
   p0: number,
   p1: number,
-  p2: number
+  p2: number,
 ): number => {
   const u = 1 - t;
   return u * u * p0 + 2 * u * t * p1 + t * t * p2;
@@ -32,11 +32,24 @@ export const quadraticBezier = (
 export const linearInterpolation = (
   t: number,
   p0: number,
-  p1: number
+  p1: number,
 ): number => {
   return p0 + t * (p1 - p0);
 };
 
 export const clamp = (value: number, min: number, max: number): number => {
   return Math.min(Math.max(value, min), max);
+};
+
+/**
+ * 去除文件后缀名
+ * @param filename 文件名
+ * @returns 去除后缀的文件名
+ */
+export const removeFileExtension = (filename: string): string => {
+  const lastDotIndex = filename.lastIndexOf(".");
+  if (lastDotIndex === -1 || lastDotIndex === 0) {
+    return filename;
+  }
+  return filename.substring(0, lastDotIndex);
 };

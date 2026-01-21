@@ -8,6 +8,7 @@ import { useClsAddPrefix } from "@/hooks";
 import { ICommonComponent } from "@/interface";
 import { useGlobalData } from "@/context";
 import { ROOT_PATH } from "@/utils/constants";
+import { removeFileExtension } from "@/utils/helper";
 
 import "./style.scss";
 
@@ -73,7 +74,8 @@ export const Header: React.FC<IHeader> = (props) => {
 
 
   const getDetailTitle = (path: string) => {
-    return decodeURI(path).split("/").at(-1);
+    const fileName = decodeURI(path).split("/").at(-1) || '';
+    return removeFileExtension(fileName);
   };
 
   const onClick: MenuProps["onClick"] = (e) => {

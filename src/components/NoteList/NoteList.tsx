@@ -8,6 +8,7 @@ import { ICommonComponent } from "@/interface";
 import { useGlobalData } from "@/context";
 import { allPaths } from "@/route";
 import { Pagination } from "@/components";
+import { removeFileExtension } from "@/utils/helper";
 
 import "./style.scss";
 
@@ -49,7 +50,7 @@ export const NoteList: React.FC<INoteList> = (props) => {
   const rawData = useMemo(() => {
     return allPaths[menu]?.map((item) => ({
       ...item,
-      title: item.name
+      title: removeFileExtension(item.name)
     })) || [];
   }, [menu]);
 

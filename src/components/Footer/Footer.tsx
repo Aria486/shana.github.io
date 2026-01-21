@@ -69,15 +69,6 @@ export const Footer: React.FC<IFooter> = (props) => {
               />
             </div>
           )}
-
-          <div className={`${prefixCls}-links`}>
-            <a
-              href="mailto:nanoha614@gamil.com"
-              className={`${prefixCls}-link`}
-            >
-              {t("footer.contact")}
-            </a>
-          </div>
         </div>
       </div>
     </footer>

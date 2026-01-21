@@ -173,6 +173,17 @@
         ]
       },
       {
+        "name": "Security",
+        "type": "directory",
+        "children": [
+          {
+            "name": "session cookie.md",
+            "type": "file",
+            "lastModified": "2026-01-21T04:46:57.367Z"
+          }
+        ]
+      },
+      {
         "name": "cissp",
         "type": "directory",
         "children": [
@@ -185,6 +196,17 @@
             "name": "cissp-课程2.md",
             "type": "file",
             "lastModified": "2025-08-18T07:52:31.394Z"
+          }
+        ]
+      },
+      {
+        "name": "machine_learning",
+        "type": "directory",
+        "children": [
+          {
+            "name": "Numpy 数据基础.md",
+            "type": "file",
+            "lastModified": "2025-12-25T00:53:56.745Z"
           }
         ]
       },

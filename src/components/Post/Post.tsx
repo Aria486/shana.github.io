@@ -21,7 +21,6 @@ export const Post: React.FC<IPost> = (props) => {
   const prefixCls = useClsAddPrefix("post");
   const [postContent, setPostcontent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const { globalData } = useGlobalData();
   const { themeType } = globalData;
   const isDark = themeType === "dark";
@@ -50,15 +49,13 @@ export const Post: React.FC<IPost> = (props) => {
         } as CSSProperties
       }
     >
-      {isLoading && <Loading />}
-
-      {error && (
-        <div className="error-message">
-          加载失败: {error}
+      {isLoading && (
+        <div className={`${prefixCls}__loading-container`}>
+          <Loading />
         </div>
       )}
 
-      {!isLoading && !error && postContent && (
+      {!isLoading && postContent && (
         <Markdown
           options={{
             overrides: {

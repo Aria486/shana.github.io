@@ -1,7 +1,15 @@
 @use '@/assets/styles/globals.scss' as *;
 
 .#{$prefix}-post {
-  padding: 0 6%;
+  padding: 0 6% 20px 6%;
+
+  &__loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    width: 100%;
+  }
 
   table {
     border-collapse: collapse;

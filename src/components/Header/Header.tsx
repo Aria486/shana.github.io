@@ -80,6 +80,18 @@ export const Header: React.FC<IHeader> = (props) => {
     update("menu", e.key);
   };
 
+  const handleBack = () => {
+    // 检查来源是否是站内
+    const referrer = document.referrer;
+    const isSameSite = referrer && referrer.includes(window.location.hostname);
+
+    if (isSameSite) {
+      nav(-1);  // 来自站内,返回上一页
+    } else {
+      nav(`/${lang}`);  // 来自站外或直接访问,回到首页
+    }
+  };
+
   return (
     <div className={classnames(prefixCls, className)}>
       <div className={`${prefixCls}-content`}>
@@ -97,7 +109,7 @@ export const Header: React.FC<IHeader> = (props) => {
               type="text"
               icon={<ArrowLeftOutlined />}
               shape="circle"
-              onClick={() => nav(-1)}
+              onClick={handleBack}
             />
             <Title className={`${prefixCls}-return-title`} level={4}>
               {getDetailTitle(pathname)}

@@ -26,6 +26,7 @@
     "placeholder": "ページ番号"
   },
   "list": {
+    "all": "すべて",
     "emptyText": "まだコンテンツがありません",
     "searchEmptyText": "\"{{keyword}}\" を含むノートが見つかりません"
   },
@@ -38,5 +39,27 @@
     "copyright": "すべての権利を保有",
     "description": "学びのあらゆる瞬間を記録",
     "contact": "お問い合わせ"
+  },
+  "weatherSettings": {
+    "title": "背景設定",
+    "backgroundMode": "背景モード",
+    "backgroundModeDesc": "テーマカラー背景または天気アニメーション背景を選択",
+    "theme": "テーマ",
+    "weather": "天気",
+    "themeMode": "テーマモード",
+    "lightTheme": "ライト",
+    "darkTheme": "ダーク",
+    "weatherType": "天気タイプ",
+    "weatherTypeDesc": "表示する天気効果を選択（現在は手動選択、後で実際の天気と同期します）",
+    "tip": "💡 デバイスのパフォーマンスに基づいてアニメーション品質が自動調整されます",
+    "themeTip": "💡 システム時刻に基づいてテーマの明るさが自動調整されます",
+    "weather": {
+      "clear": "晴れ",
+      "clouds": "曇り",
+      "rain": "雨",
+      "thunderstorm": "雷雨",
+      "snow": "雪",
+      "mist": "霧"
+    }
   }
 }

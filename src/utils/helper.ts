@@ -1,3 +1,5 @@
+import { DirectoryNode } from "@/interface";
+
 export const getRandomRgbColor = () => {
   const r = Math.floor(Math.random() * 256);
   const g = Math.floor(Math.random() * 256);
@@ -52,4 +54,31 @@ export const removeFileExtension = (filename: string): string => {
     return filename;
   }
   return filename.substring(0, lastDotIndex);
+};
+
+/**
+ * 从笔记目录结构中提取子分类
+ * @param categoryName 大分类名称
+ * @param directoryData 目录结构数据
+ * @returns 子分类名称数组（按字母序排序）
+ */
+export const extractSubcategories = (
+  categoryName: string,
+  directoryData: DirectoryNode[],
+): string[] => {
+  // 查找对应的大分类
+  const category = directoryData.find((item) => item.name === categoryName);
+
+  // 如果找不到分类或没有子目录，返回空数组
+  if (!category || !category.children) {
+    return [];
+  }
+
+  // 提取所有子目录的名称
+  const subcategories = category.children
+    .filter((child) => child.type === "directory")
+    .map((child) => child.name);
+
+  // 按字母序排序
+  return subcategories.sort((a, b) => a.localeCompare(b, "zh-CN"));
 };

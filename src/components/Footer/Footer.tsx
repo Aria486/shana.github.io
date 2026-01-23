@@ -51,12 +51,6 @@ export const Footer: React.FC<IFooter> = (props) => {
         </div>
 
         <div className={`${prefixCls}-actions`}>
-          {showThemeSwitch && (
-            <div className={`${prefixCls}-theme-switch`}>
-              <ThemeSwitch />
-            </div>
-          )}
-
           {showLanguageSwitch && (
             <div className={`${prefixCls}-language-switch`}>
               <Select

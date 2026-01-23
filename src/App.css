@@ -11,3 +11,12 @@ body{
   height: 100%;
   width: 100%;
 }
+
+/* 天气背景模式 */
+body.weather-background-mode {
+  background: transparent;
+}
+
+body.weather-background-mode #root {
+  background: transparent;
+}

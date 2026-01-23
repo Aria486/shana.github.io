@@ -1,0 +1,43 @@
+@use '@/assets/styles/globals.scss' as *;
+
+.react-ruler {
+  $prefix-cls: 'react-ruler';
+  height: 1000px;
+  width: 100%;
+  position: relative;
+
+  $demo-cls: '#{$prefix-cls}-demo';
+
+  .#{$demo-cls} {
+    background: red;
+  }
+
+  &-horizontal {
+    position: absolute !important;
+    height: 30px !important;
+    left: 30px !important;
+    width: calc(100% - 30px);
+  }
+
+  &-vertical {
+    position: absolute !important;
+    width: 30px !important;
+    top: 30px !important;
+    height: calc(100% - 30px);
+  }
+
+  &-viewer {
+    position: absolute !important;
+    top: 30px;
+    left: 30px;
+    width: calc(100% - 30px);
+    height: calc(100% - 30px);
+  }
+  
+  &-viewport {
+    position: relative !important;
+    border: 2px solid #ccc;
+    width: 400px;
+    height: 600px;
+  }
+}

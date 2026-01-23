@@ -14,7 +14,9 @@ type Action =
 // 初始状态
 const initialData: GlobalData = {
   themeType: "light",
-  menu: "program"
+  menu: "program",
+  useWeatherBackground: false, // 默认使用主题色背景
+  weatherCondition: "Clear" // 默认晴天
 };
 
 // reducer 函数

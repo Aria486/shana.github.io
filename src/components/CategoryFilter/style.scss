@@ -1,0 +1,74 @@
+@use '@/assets/styles/globals.scss' as *;
+
+.#{$prefix}-category-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 8px;
+  padding: 8px 10%;
+  margin-bottom: 16px;
+  background: var(--bg-color, #fff);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+
+  .ant-tag-checkable {
+    cursor: pointer;
+    user-select: none;
+    margin: 0;
+    padding: 4px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &-checked {
+      background-color: var(--primary-color, #1890ff) !important;
+      color: #fff !important;
+      border-color: var(--primary-color, #1890ff) !important;
+    }
+  }
+
+  body.weather-background-mode & {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+
+    .ant-tag-checkable {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 0.9);
+
+      &-checked {
+        background-color: rgba(24, 144, 255, 0.8) !important;
+        color: #fff !important;
+      }
+    }
+  }
+
+  // 响应式设计
+  @include breakpoints-mobile {
+    padding: 8px 10%;
+    margin-bottom: 12px;
+    gap: 6px 6px;
+
+    .ant-tag-checkable {
+      padding: 3px 10px;
+      font-size: 13px;
+    }
+  }
+}
+
+// 深色主题支持
+[data-theme="dark"] {
+  .#{$prefix}-category-filter {
+    background: var(--bg-color);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+
+    .ant-tag-checkable {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--border-color);
+      color: var(--text-color);
+    }
+  }
+}

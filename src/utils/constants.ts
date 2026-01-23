@@ -1,10 +1,12 @@
 export const mdModules = import.meta.glob("/src/note/**/*.md", {
-  as: "raw",
-});
+  query: "?raw",
+  import: "default",
+}) as Record<string, () => Promise<string>>;
 
 export const pdfModules = import.meta.glob("/src/assets/**/*.pdf", {
-  as: "url",
-});
+  query: "?url",
+  import: "default",
+}) as Record<string, () => Promise<string>>;
 
 export const NOTE_MENU = [
   "program",

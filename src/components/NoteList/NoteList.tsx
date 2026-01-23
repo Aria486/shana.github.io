@@ -4,13 +4,16 @@ import { Avatar, List } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useClsAddPrefix } from "@/hooks";
-import { ICommonComponent } from "@/interface";
+import { ICommonComponent, DirectoryNode } from "@/interface";
 import { useGlobalData } from "@/context";
 import { allPaths } from "@/route";
-import { Pagination } from "@/components";
-import { removeFileExtension } from "@/utils/helper";
+import { Pagination, CategoryFilter } from "@/components";
+import { removeFileExtension, extractSubcategories } from "@/utils/helper";
+import directoryStructureData from "@/utils/note-directory-structure.json";
 
 import "./style.scss";
+
+const directoryStructure = directoryStructureData as DirectoryNode[];
 
 export interface INoteList extends ICommonComponent {
   reactNode?: React.ReactNode;
@@ -41,6 +44,9 @@ export const NoteList: React.FC<INoteList> = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(defaultPageSize);
 
+  // 子分类过滤状态
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
+
   const getTag = (path: string) => {
     const pathArr = path.split("/");
     return pathArr.at(-1)?.substring(0, 4);
@@ -52,6 +58,11 @@ export const NoteList: React.FC<INoteList> = (props) => {
       ...item,
       title: removeFileExtension(item.name)
     })) || [];
+  }, [menu]);
+
+  // 提取当前大分类的子分类列表
+  const subcategories = useMemo(() => {
+    return extractSubcategories(menu, directoryStructure);
   }, [menu]);
 
   // 过滤和排序数据
@@ -67,9 +78,18 @@ export const NoteList: React.FC<INoteList> = (props) => {
       );
     }
 
+    // 子分类过滤
+    if (selectedSubcategory) {
+      result = result.filter((item) => {
+        const pathParts = item.path.split("/");
+        // 笔记路径格式: category/subcategory/filename.md 或 category/filename.md
+        // pathParts[0] 是大分类, pathParts[1] 是子分类（如果存在）
+        return pathParts[1] && pathParts[1] === selectedSubcategory;
+      });
+    }
+
     // 排序
     result.sort((a, b) => {
-      console.log('Sorting:', sortType, new Date(a.lastModifiedISO).getTime());
       switch (sortType) {
         case "name":
           return a.title.localeCompare(b.title, 'zh-CN');
@@ -84,7 +104,7 @@ export const NoteList: React.FC<INoteList> = (props) => {
 
 
     return result;
-  }, [rawData, globalSearchKeyword, sortType]);
+  }, [rawData, globalSearchKeyword, selectedSubcategory, sortType]);
 
   // 计算分页数据
   const paginatedData = useMemo(() => {
@@ -101,14 +121,32 @@ export const NoteList: React.FC<INoteList> = (props) => {
     }
   };
 
+  // 处理子分类变化
+  const handleCategoryChange = (category: string | null) => {
+    setSelectedSubcategory(category);
+    setCurrentPage(1);
+  };
 
-  // 重置状态当菜单改变时或全局搜索关键词改变时或排序类型改变时
+  // 重置状态当菜单改变时或全局搜索关键词改变时
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [menu, globalSearchKeyword, sortType]);
+    setSelectedSubcategory(null);
+  }, [menu, globalSearchKeyword]);
+
+  // 排序类型改变时只重置分页，不重置子分类过滤
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [sortType]);
 
   return (
     <div className={classnames(prefixCls, className)}>
+      {/* 子分类过滤标签栏 */}
+      <CategoryFilter
+        categories={subcategories}
+        selectedCategory={selectedSubcategory}
+        onChange={handleCategoryChange}
+      />
+
       {/* 列表内容 - 可滚动区域 */}
       <div className={`${prefixCls}-scroll-container`}>
         <List

@@ -75,6 +75,17 @@
     font-size: 14px;
     outline: none;
     transition: all 0.2s ease;
+    
+    body.weather-background-mode & {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      border-color: rgba(255, 255, 255, 0.3);
+      color: rgba(255, 255, 255, 0.9);
+      
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+    }
 
     &:hover {
       border-color: var(--primary-color, #1890ff);
@@ -113,6 +124,16 @@
 
     &:active {
       transform: scale(0.9);
+    }
+    
+    body.weather-background-mode & {
+      background: rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.8);
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+        color: rgba(255, 255, 255, 1);
+      }
     }
   }
 

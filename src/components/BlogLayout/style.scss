@@ -4,6 +4,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
+  transition: background-color 0.3s ease;
 
   &-header {
     text-align: right;
@@ -22,5 +23,69 @@
   &-footer {
     padding: 0;
     flex-shrink: 0;
+  }
+  
+  // 天气背景模式：背景透明
+  &--weather-mode {
+    background: transparent !important;
+    
+    .#{$prefix}-layout-header {
+      background: transparent;
+    }
+    
+    .#{$prefix}-layout-content {
+      background: transparent !important;
+      
+      &-inner {
+        background: transparent;
+      }
+    }
+    
+    .#{$prefix}-layout-footer {
+      background: transparent;
+    }
+    
+    .ant-layout {
+      background: transparent !important;
+    }
+    
+    .ant-layout-sider {
+      background: transparent !important;
+    }
+  }
+}
+
+// 天气背景模式下全局样式微调
+body.weather-background-mode {
+  // 下拉菜单毛玻璃效果
+  .ant-select-dropdown,
+  .ant-dropdown-menu {
+    backdrop-filter: blur(10px);
+  }
+  
+  // 模态框毛玻璃效果
+  .ant-modal-content {
+    backdrop-filter: blur(20px);
+  }
+  
+  // 按钮毛玻璃效果
+  .ant-btn:not(.ant-btn-text) {
+    backdrop-filter: blur(8px);
+  }
+  
+  // 输入框毛玻璃效果
+  .ant-input,
+  .ant-select-selector {
+    backdrop-filter: blur(8px);
+  }
+  
+  // 卡片毛玻璃效果
+  .ant-card {
+    backdrop-filter: blur(10px);
+  }
+  
+  // 分段控制器毛玻璃效果
+  .ant-segmented {
+    backdrop-filter: blur(8px);
   }
 } 

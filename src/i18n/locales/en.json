@@ -26,6 +26,7 @@
     "placeholder": "Page"
   },
   "list": {
+    "all": "All",
     "emptyText": "No content yet",
     "searchEmptyText": "No notes found containing \"{{keyword}}\""
   },
@@ -38,5 +39,27 @@
     "copyright": "All rights reserved",
     "description": "Recording every bit of learning",
     "contact": "Contact us"
+  },
+  "weatherSettings": {
+    "title": "Background Settings",
+    "backgroundMode": "Background Mode",
+    "backgroundModeDesc": "Choose between theme color background or weather animation background",
+    "theme": "Theme",
+    "weather": "Weather",
+    "themeMode": "Theme Mode",
+    "lightTheme": "Light",
+    "darkTheme": "Dark",
+    "weatherType": "Weather Type",
+    "weatherTypeDesc": "Select the weather effect to display (manual selection for now, will sync with actual weather later)",
+    "tip": "💡 Animation quality will be automatically adjusted based on your device performance",
+    "themeTip": "💡 Theme brightness will automatically adjust based on system time",
+    "weather": {
+      "clear": "Clear",
+      "clouds": "Cloudy",
+      "rain": "Rainy",
+      "thunderstorm": "Thunderstorm",
+      "snow": "Snowy",
+      "mist": "Foggy"
+    }
   }
 }

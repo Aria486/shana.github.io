@@ -26,6 +26,7 @@
     "placeholder": "页码"
   },
   "list": {
+    "all": "全部",
     "emptyText": "还没有内容",
     "searchEmptyText": "未找到包含 \"{{keyword}}\" 的笔记"
   },
@@ -38,5 +39,27 @@
     "copyright": "版权所有",
     "description": "想到啥写啥",
     "contact": "联系我们"
+  },
+  "weatherSettings": {
+    "title": "背景设置",
+    "backgroundMode": "背景模式",
+    "backgroundModeDesc": "选择使用主题色背景还是天气动画背景",
+    "theme": "主题色",
+    "weather": "天气",
+    "themeMode": "主题模式",
+    "lightTheme": "浅色",
+    "darkTheme": "深色",
+    "weatherType": "天气类型",
+    "weatherTypeDesc": "选择背景显示的天气效果（暂时手动选择，后续将自动同步实际天气）",
+    "tip": "💡 天气背景会根据您的设备性能自动调整动画质量",
+    "themeTip": "💡 主题色会根据系统时间自动调整明暗度",
+    "weather": {
+      "clear": "晴天",
+      "clouds": "多云",
+      "rain": "雨天",
+      "thunderstorm": "雷暴",
+      "snow": "雪天",
+      "mist": "雾天"
+    }
   }
 }

@@ -1,0 +1,46 @@
+@use '@/assets/styles/globals.scss' as *;
+
+.ruler-guide {
+  $prefix-cls: 'ruler-guide';
+  display: flex;
+
+  &-horizontal {
+    border-top: 1px var(--guide-type) black;
+    padding-bottom: 4px;
+  }
+
+  &-vertical {
+    border-left: 1px var(--guide-type) black;
+    padding-right: 4px;
+  }
+
+  &-aux {
+    display: flex;
+    position: relative;
+
+    & > :not(:last-child) {
+      margin-right: 6px;
+    }
+
+    &-close {
+      display: none;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    &-horizontal {
+      top: 10px;
+      left: 10px;
+    }
+  
+    &-vertical {
+      left: 20px;
+      top: 30px;
+    }
+  }
+
+  &:hover &-aux-close {
+    display: block;
+    cursor: pointer;
+  }
+}

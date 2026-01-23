@@ -29,5 +29,17 @@
     background-color: var(--post-table-th-bg-color);
     font-size: 20px;
     font-weight: 700;
+    
+    body.weather-background-mode & {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+  }
+  
+  body.weather-background-mode & {
+    table td,
+    table th {
+      border-color: rgba(255, 255, 255, 0.2);
+      background-color: rgba(255, 255, 255, 0.05);
+    }
   }
 }

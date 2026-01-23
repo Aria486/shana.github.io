@@ -4,10 +4,11 @@ import { theme } from "antd";
 import classnames from "classnames";
 import { useParams } from "react-router-dom";
 import { useClsAddPrefix } from "@/hooks";
-import { Code, Loading, PdfViewer, GiscusComments } from "@/components";
+import { Code, Loading, GiscusComments } from "@/components";
 import { ICommonComponent } from "@/interface";
 import { useGlobalData } from "@/context";
-import { ROOT_PATH, mdModules } from "@/utils/constants";
+import { mdModules } from "@/utils/constants";
+import { markdownComponents } from "@/utils/markdownConfig";
 import "./style.scss";
 
 interface IPost extends ICommonComponent {
@@ -119,18 +120,13 @@ export const Post: React.FC<IPost> = (props) => {
                     );
                   }
                 },
-                Loading: {
-                  component: Loading
-                },
-                PdfViewer: {
-                  component: PdfViewer
-                }
+                // 解构自定义组件映射
+                ...markdownComponents
               }
             }}
           >
             {postContent}
           </Markdown>
-
           <GiscusComments
             articlePath={notePath}
             theme={isDark ? 'dark' : 'light'}

@@ -36,9 +36,38 @@ function autoRoutePlugin(options = {}) {
         const noteDir = path.resolve('./src/note');
         server.watcher.add(noteDir);
 
+        // 监听文件和文件夹的所有变化
+        server.watcher.on('add', (filePath) => {
+          if (filePath.includes(noteDir)) {
+            console.log(`📄 File added: ${path.relative(noteDir, filePath)}`);
+            generateRouteStructure();
+          }
+        });
+
+        server.watcher.on('addDir', (dirPath) => {
+          if (dirPath.includes(noteDir)) {
+            console.log(`📁 Directory added: ${path.relative(noteDir, dirPath)}`);
+            generateRouteStructure();
+          }
+        });
+
+        server.watcher.on('unlink', (filePath) => {
+          if (filePath.includes(noteDir)) {
+            console.log(`🗑️  File removed: ${path.relative(noteDir, filePath)}`);
+            generateRouteStructure();
+          }
+        });
+
+        server.watcher.on('unlinkDir', (dirPath) => {
+          if (dirPath.includes(noteDir)) {
+            console.log(`🗂️  Directory removed: ${path.relative(noteDir, dirPath)}`);
+            generateRouteStructure();
+          }
+        });
+
         server.watcher.on('change', (filePath) => {
           if (filePath.includes(noteDir)) {
-            console.log(`📄 File changed: ${path.relative(noteDir, filePath)}`);
+            console.log(`✏️  File changed: ${path.relative(noteDir, filePath)}`);
             generateRouteStructure();
           }
         });

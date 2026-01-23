@@ -11,12 +11,24 @@
     box-shadow: $light-code-shadow;
     border: 1px solid $light-code-border;
     background: $light-code-bg;
+    
+    body.weather-background-mode & {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
   }
 
   &.dark {
     box-shadow: $dark-code-shadow;
     border: 1px solid $dark-code-border;
     background: $dark-code-bg;
+    
+    body.weather-background-mode & {
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
   }
 
   .code-header {

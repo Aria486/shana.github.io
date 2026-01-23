@@ -11,4 +11,16 @@
   &-pagination {
     margin: 10px auto;
   }
+  
+  body.weather-background-mode & {
+    .ant-card {
+      background: rgba(255, 255, 255, 0.1) !important;
+      backdrop-filter: blur(10px);
+      border-color: rgba(255, 255, 255, 0.2) !important;
+      
+      .ant-card-body {
+        background: transparent !important;
+      }
+    }
+  }
 }

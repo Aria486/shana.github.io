@@ -32,6 +32,12 @@
     padding: 8px 0;
     z-index: 10;
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+    
+    body.weather-background-mode & {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    }
   }
 
   &-item {
@@ -41,6 +47,27 @@
     &:hover {
       opacity: 0.75;
       transform: translateX(4px);
+    }
+    
+    body.weather-background-mode & {
+      .ant-list-item {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.1) !important;
+        }
+      }
+      
+      .ant-list-item-meta-title,
+      .ant-list-item-meta-description {
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+      
+      .ant-avatar {
+        background: rgba(255, 255, 255, 0.15) !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
     }
   }
 

@@ -5,8 +5,8 @@ export interface RulerGuideProps extends HTMLAttributes<HTMLDivElement> {
   id?: string;
   top?: number;
   left?: number;
-  height?: number;
-  width?: number;
+  height?: number | string;
+  width?: number | string;
   right?: number;
   guideColor?: string;
   guideType?: "dashed" | "solid";

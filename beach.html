@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>沙滩海洋昼夜</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        font-family: "Courier New", monospace;
+      }
+      .scene-wrap {
+        position: relative;
+        width: min(900px, 100vw);
+        height: min(560px, 56vw);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 30px 100px #000a;
+      }
+      svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .ui {
+        position: absolute;
+        bottom: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        width: 80%;
+      }
+      input[type="range"] {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+      }
+      .btns {
+        display: flex;
+        gap: 10px;
+      }
+      button {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
+        color: white;
+        font-size: 13px;
+        padding: 4px 18px;
+        cursor: pointer;
+        letter-spacing: 1px;
+      }
+      button:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+      .timebadge {
+        position: absolute;
+        top: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(8px);
+        border-radius: 30px;
+        padding: 6px 22px;
+        color: white;
+        font-size: 22px;
+        letter-spacing: 3px;
+        font-weight: 700;
+        text-shadow: 0 1px 8px #0008;
+        white-space: nowrap;
+        pointer-events: none;
+      }
+      .timebadge span {
+        font-size: 12px;
+        margin-left: 10px;
+        opacity: 0.7;
+        font-weight: 400;
+        letter-spacing: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scene-wrap">
+      <svg id="scene" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop id="sky0" offset="0%" />
+            <stop id="sky1" offset="55%" />
+            <stop id="sky2" offset="100%" />
+          </linearGradient>
+          <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop id="oc0" offset="0%" />
+            <stop id="oc1" offset="50%" />
+            <stop id="oc2" offset="100%" />
+          </linearGradient>
+          <radialGradient id="bodyGlow" cx="50%" cy="50%" r="50%">
+            <stop id="glow0" offset="0%" stop-opacity="1" />
+            <stop id="glow1" offset="40%" stop-opacity="0.9" />
+            <stop id="glow2" offset="100%" stop-opacity="0" />
+          </radialGradient>
+          <linearGradient id="reflGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop id="refl0" offset="0%" stop-opacity="0.55" />
+            <stop id="refl1" offset="100%" stop-opacity="0" />
+          </linearGradient>
+          <linearGradient id="sandGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop id="sand0" offset="0%" />
+            <stop id="sand1" offset="100%" />
+          </linearGradient>
+        </defs>
+
+        <rect x="0" y="0" width="100" height="100" fill="url(#skyGrad)" />
+        <g id="starsGroup"></g>
+        <ellipse id="horizonGlow" cx="50" cy="58" rx="40" ry="8" opacity="0" />
+        <circle
+          id="bodyGlowCircle"
+          cx="50"
+          cy="30"
+          r="12"
+          fill="url(#bodyGlow)"
+          opacity="0.5"
+        />
+        <circle id="bodyCircle" cx="50" cy="30" r="5.2" />
+        <g id="craters" display="none">
+          <circle id="c1" r="0.7" fill="rgba(150,170,210,0.4)" />
+          <circle id="c2" r="0.5" fill="rgba(150,170,210,0.3)" />
+          <circle id="c3" r="0.4" fill="rgba(150,170,210,0.25)" />
+        </g>
+        <rect x="0" y="57" width="100" height="43" fill="url(#oceanGrad)" />
+        <ellipse
+          id="reflection"
+          cx="50"
+          cy="70"
+          rx="4"
+          ry="14"
+          fill="url(#reflGrad)"
+          opacity="0.5"
+        />
+        <g id="wavesGroup"></g>
+        <path
+          d="M0,82 Q25,78 50,80 Q75,82 100,79 L100,100 L0,100 Z"
+          fill="url(#sandGrad)"
+        />
+        <g id="sandTexture"></g>
+
+        <g id="palmL">
+          <path
+            id="trunkL"
+            d="M14,100 Q13,92 15,84 Q16,78 14.5,72"
+            stroke="#6b4219"
+            stroke-width="1.2"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M14.5,72 Q10.5,69.6 10,68"
+            stroke="#2d6a1a"
+            stroke-width="1.0"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M14.5,72 Q12,68 10.5,62"
+            stroke="#2d6a1a"
+            stroke-width="1.0"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M14.5,72 Q16.5,68 16.5,62"
+            stroke="#2d6a1a"
+            stroke-width="1.0"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M14.5,72 Q19,68.5 22.5,65"
+            stroke="#2d6a1a"
+            stroke-width="1.0"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M14.5,72 Q19.5,70 19.5,68"
+            stroke="#2d6a1a"
+            stroke-width="1.0"
+            fill="none"
+            stroke-linecap="round"
+          />
+        </g>
+        <g id="palmR">
+          <path
+            id="trunkR"
+            d="M88,100 Q87,91 86,83 Q85,77 87,71"
+            stroke="#6b4219"
+            stroke-width="1.2"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M87,71 Q91,68.5 96,66"
+            stroke="#2d6a1a"
+            stroke-width="1.0"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M87,71 Q90,67 92,61"
+            stroke="#2d6a1a"
+            stroke-width="1.0"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M87,71 Q86,67 86,61"
+            stroke="#2d6a1a"
+            stroke-width="1.0"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M87,71 Q82,68 80,63"
+            stroke="#2d6a1a"
+            stroke-width="1.0"
+            fill="none"
+            stroke-linecap="round"
+          />
+          <path
+            d="M87,71 Q83,70 83,68"
+            stroke="#2d6a1a"
+            stroke-width="1.0"
+            fill="none"
+            stroke-linecap="round"
+          />
+        </g>
+
+        <line
+          x1="50"
+          y1="87"
+          x2="50"
+          y2="94"
+          stroke="#8B4513"
+          stroke-width="0.4"
+        />
+        <path
+          id="umbrella"
+          d="M44,87 Q50,83 56,87 Z"
+          fill="#e84040"
+          opacity="0.9"
+        />
+        <ellipse id="shell1" cx="38" cy="90" rx="1.2" ry="0.7" fill="#f0c080" />
+        <ellipse id="shell2" cx="65" cy="88" rx="0.9" ry="0.5" fill="#e8b8a0" />
+        <g id="sailboat">
+          <path d="M62,67 L62,60 L70,67 Z" fill="white" opacity="0.85" />
+          <rect x="61" y="67" width="10" height="1.2" rx="0.6" fill="#8B6040" />
+        </g>
+        <g id="fireflies">
+          <circle id="ff0" cx="30" cy="84" r="0.5" fill="#ffe090" opacity="0" />
+          <circle id="ff1" cx="72" cy="82" r="0.5" fill="#ffe090" opacity="0" />
+          <circle id="ff2" cx="55" cy="86" r="0.5" fill="#ffe090" opacity="0" />
+        </g>
+      </svg>
+
+      <div class="timebadge" id="timeBadge">
+        08:00 <span id="timeLabel">☀️ 白天</span>
+      </div>
+      <div class="ui">
+        <input
+          type="range"
+          id="slider"
+          min="0"
+          max="1439"
+          value="480"
+          oninput="onSlider(this.value)"
+        />
+        <div class="btns">
+          <button id="playBtn" onclick="togglePlay()">⏸ 暂停</button>
+          <button onclick="resetScene()">↺ 重置</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const TOTAL = 1440;
+      let minutes = 480,
+        playing = true,
+        tick = 0,
+        lastT = null;
+      let wavePhase = 0;
+
+      // Stars — 每颗随机一个很慢的闪烁周期，幅度很小
+      const starsGroup = document.getElementById("starsGroup");
+      const starData = Array.from({ length: 80 }, () => ({
+        x: Math.random() * 100,
+        y: Math.random() * 52,
+        r: Math.random() * 1.2 + 0.3,
+        baseOp: Math.random() * 0.5 + 0.3, // 基础透明度更低
+        phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.3 + 0.05, // 很慢的闪烁速度
+        amp: Math.random() * 0.12 + 0.03, // 极小的闪烁幅度
+      }));
+      starData.forEach((s, i) => {
+        const c = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "circle",
+        );
+        c.setAttribute("cx", s.x);
+        c.setAttribute("cy", s.y);
+        c.setAttribute("r", s.r);
+        c.setAttribute("fill", "white");
+        c.id = "star" + i;
+        starsGroup.appendChild(c);
+      });
+
+      // Sand texture
+      const sandTex = document.getElementById("sandTexture");
+      for (let i = 0; i < 18; i++) {
+        const e = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "ellipse",
+        );
+        e.setAttribute("cx", 5 + i * 5.5 + Math.sin(i * 2.3) * 2);
+        e.setAttribute("cy", 86 + Math.cos(i * 1.7) * 3);
+        e.setAttribute("rx", 0.6 + Math.sin(i) * 0.3);
+        e.setAttribute("ry", 0.2);
+        e.setAttribute("fill", "rgba(255,255,255,0.07)");
+        sandTex.appendChild(e);
+      }
+
+      // Waves
+      const wavesGroup = document.getElementById("wavesGroup");
+      const waveEls = [],
+        wavefoamEls = [];
+      for (let i = 0; i < 5; i++) {
+        const p = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "path",
+        );
+        wavesGroup.appendChild(p);
+        waveEls.push(p);
+      }
+      for (let i = 0; i < 3; i++) {
+        const p = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "path",
+        );
+        p.setAttribute("stroke", "rgba(255,255,255,0.18)");
+        p.setAttribute("stroke-width", "0.3");
+        p.setAttribute("fill", "none");
+        wavesGroup.appendChild(p);
+        wavefoamEls.push(p);
+      }
+
+      function lerp(a, b, t) {
+        return a + (b - a) * t;
+      }
+      function clamp(v, a, b) {
+        return Math.max(a, Math.min(b, v));
+      }
+
+      function getSkyColors(m) {
+        if (m < 360) return ["#020818", "#05122a", "#0a1628"];
+        if (m < 420) return ["#1a0a2e", "#3d1a5c", "#7b3a8c"];
+        if (m < 480) return ["#ff6b35", "#ff9a56", "#ffd08a"];
+        if (m < 720) return ["#1a9fd4", "#3bbfef", "#87d8f5"];
+        if (m < 960) return ["#0e7ab8", "#2fa8e0", "#6dcaf0"];
+        if (m < 1020) return ["#ff7043", "#ffa726", "#ffcc80"];
+        if (m < 1080) return ["#e64a19", "#bf360c", "#7b1fa2"];
+        if (m < 1140) return ["#1a0a2e", "#2c1654", "#3d1a5c"];
+        return ["#020818", "#05122a", "#0a1628"];
+      }
+      function getOceanColors(m) {
+        if (m < 360 || m >= 1140) return ["#020c1a", "#041629", "#061e36"];
+        if (m < 480) return ["#1a3a5c", "#1f4d78", "#2a6094"];
+        if (m < 720) return ["#0d6e9e", "#1a8bbf", "#2aa8d8"];
+        if (m < 1020) return ["#0a5c8a", "#1278a8", "#1a95c8"];
+        if (m < 1140) return ["#1a2a4a", "#1e3356", "#223d6a"];
+        return ["#020c1a", "#041629", "#061e36"];
+      }
+      function getSunMoonPos(m) {
+        if (m >= 480 && m < 1140) {
+          const t = (m - 480) / (1140 - 480);
+          const a = Math.PI - t * Math.PI;
+          return {
+            x: 50 + Math.cos(a) * 42,
+            y: 85 - Math.sin(a) * 70,
+            sun: true,
+          };
+        }
+        let t = m < 360 ? (m + 300) / 660 : (m - 1140) / 660;
+        t = clamp(t, 0, 1);
+        const a = Math.PI - t * Math.PI;
+        return {
+          x: 50 + Math.cos(a) * 38,
+          y: 80 - Math.sin(a) * 60,
+          sun: false,
+        };
+      }
+      function getStarOpacity(m) {
+        if (m < 300) return 1;
+        if (m < 480) return lerp(1, 0, (m - 300) / 180);
+        if (m >= 1080) return lerp(0, 1, (m - 1080) / 180);
+        return 0;
+      }
+      function getSandColor(m) {
+        if (m < 480 || m > 1100) return ["#2a1a0a", "#1a0e06"];
+        if (m < 600 || m > 960) return ["#c8864a", "#a06030"];
+        return ["#e8b06a", "#c8884a"];
+      }
+      function formatTime(m) {
+        return (
+          String(Math.floor(m / 60) % 24).padStart(2, "0") +
+          ":" +
+          String(m % 60).padStart(2, "0")
+        );
+      }
+      function getLabel(m) {
+        if (m < 360 || m >= 1140) return "🌙 夜晚";
+        if (m < 420) return "🌄 黎明";
+        if (m < 480) return "🌅 日出";
+        if (m < 1020) return "☀️ 白天";
+        if (m < 1080) return "🌇 日落";
+        return "🌆 黄昏";
+      }
+
+      function updateScene() {
+        const m = Math.floor(minutes);
+        const sky = getSkyColors(m);
+        const oc = getOceanColors(m);
+        const pos = getSunMoonPos(m);
+        const starOp = getStarOpacity(m);
+        const sand = getSandColor(m);
+        const isNight = m < 480 || m >= 1140;
+        const t = performance.now() / 1000;
+
+        document.getElementById("sky0").setAttribute("stop-color", sky[0]);
+        document.getElementById("sky1").setAttribute("stop-color", sky[1]);
+        document.getElementById("sky2").setAttribute("stop-color", sky[2]);
+        document.getElementById("oc0").setAttribute("stop-color", oc[0]);
+        document.getElementById("oc1").setAttribute("stop-color", oc[1]);
+        document.getElementById("oc2").setAttribute("stop-color", oc[2]);
+        document.getElementById("sand0").setAttribute("stop-color", sand[0]);
+        document.getElementById("sand1").setAttribute("stop-color", sand[1]);
+
+        const body = document.getElementById("bodyCircle");
+        const glowC = document.getElementById("bodyGlowCircle");
+        body.setAttribute("cx", pos.x);
+        body.setAttribute("cy", pos.y);
+        glowC.setAttribute("cx", pos.x);
+        glowC.setAttribute("cy", pos.y);
+        body.setAttribute("r", pos.sun ? 5.2 : 4.2);
+        glowC.setAttribute("r", pos.sun ? 12 : 10);
+        body.setAttribute(
+          "fill",
+          pos.sun ? (m < 600 || m > 1020 ? "#ffb040" : "#fff5cc") : "#dce8ff",
+        );
+        document
+          .getElementById("glow0")
+          .setAttribute("stop-color", pos.sun ? "#fff8e7" : "#e8f0ff");
+        document
+          .getElementById("glow1")
+          .setAttribute("stop-color", pos.sun ? "#ffe066" : "#c8d8ff");
+
+        const craters = document.getElementById("craters");
+        craters.setAttribute("display", pos.sun ? "none" : "");
+        document.getElementById("c1").setAttribute("cx", pos.x - 1.2);
+        document.getElementById("c1").setAttribute("cy", pos.y - 1);
+        document.getElementById("c2").setAttribute("cx", pos.x + 1.5);
+        document.getElementById("c2").setAttribute("cy", pos.y + 1.2);
+        document.getElementById("c3").setAttribute("cx", pos.x + 0.5);
+        document.getElementById("c3").setAttribute("cy", pos.y - 2);
+
+        document
+          .getElementById("refl0")
+          .setAttribute("stop-color", pos.sun ? "#fff8c0" : "#b0c8ff");
+        document
+          .getElementById("refl1")
+          .setAttribute("stop-color", pos.sun ? "#ffe066" : "#6888cc");
+        document.getElementById("reflection").setAttribute("cx", pos.x);
+
+        const hg = document.getElementById("horizonGlow");
+        let hOp = 0;
+        if (m >= 420 && m < 480) {
+          hg.setAttribute("fill", "#ff9a40");
+          hOp = ((m - 420) / 60) * 0.35;
+        } else if (m >= 480 && m < 540) {
+          hg.setAttribute("fill", "#ff9a40");
+          hOp = ((540 - m) / 60) * 0.35;
+        } else if (m >= 960 && m < 1060) {
+          hg.setAttribute("fill", "#ff6020");
+          hOp = 0.3;
+        } else if (m >= 1060 && m < 1100) {
+          hg.setAttribute("fill", "#ff6020");
+          hOp = ((1100 - m) / 40) * 0.3;
+        }
+        hg.setAttribute("opacity", hOp);
+
+        // 星星：用真实时间做极慢闪烁，幅度很小
+        starData.forEach((s, i) => {
+          const twinkle = s.amp * Math.sin(t * s.speed + s.phase); // 幅度极小
+          const op = clamp((s.baseOp + twinkle) * starOp, 0, 1);
+          const el = document.getElementById("star" + i);
+          el.setAttribute("opacity", op);
+        });
+
+        // Waves
+        for (let i = 0; i < 5; i++) {
+          const yBase = 59 + i * 3.5,
+            amp = 0.5 + i * 0.15,
+            speed = 1 - i * 0.12;
+          const phase = wavePhase * speed + i * 1.1;
+          let d = `M0,${yBase}`;
+          for (let j = 0; j <= 20; j++)
+            d += ` L${j * 5},${yBase + Math.sin(j * 0.8 + phase) * amp}`;
+          d += ` L100,${yBase + 20} L0,${yBase + 20} Z`;
+          waveEls[i].setAttribute("d", d);
+          waveEls[i].setAttribute("fill", oc[Math.min(i, 2)]);
+          waveEls[i].setAttribute("opacity", 0.4 + i * 0.1);
+        }
+        for (let i = 0; i < 3; i++) {
+          const yBase = 59.5 + i * 3.5,
+            speed = 1 - i * 0.12,
+            phase = wavePhase * speed + i * 1.1;
+          let d = "";
+          for (let j = 0; j <= 20; j++)
+            d +=
+              (j === 0 ? `M` : `L`) +
+              `${j * 5},${yBase + Math.sin(j * 0.8 + phase) * (0.5 + i * 0.15)}`;
+          wavefoamEls[i].setAttribute("d", d);
+        }
+
+        const trunkColor = isNight ? "#2a1a08" : "#6b4219";
+        const frondColor = isNight ? "#1a3a10" : "#2d6a1a";
+        document
+          .querySelectorAll("#trunkL,#trunkR")
+          .forEach((e) => e.setAttribute("stroke", trunkColor));
+        document
+          .querySelectorAll("#palmL path:not(#trunkL),#palmR path:not(#trunkR)")
+          .forEach((e) => e.setAttribute("stroke", frondColor));
+        document
+          .getElementById("palmL")
+          .setAttribute("opacity", isNight ? 0.5 : 1);
+        document
+          .getElementById("palmR")
+          .setAttribute("opacity", isNight ? 0.5 : 1);
+
+        document
+          .getElementById("umbrella")
+          .setAttribute("fill", isNight ? "#553a22" : "#e84040");
+        document
+          .getElementById("shell1")
+          .setAttribute("fill", isNight ? "#4a3020" : "#f0c080");
+        document
+          .getElementById("shell2")
+          .setAttribute("fill", isNight ? "#4a3020" : "#e8b8a0");
+
+        let boatOp = 1;
+        if (m < 360 || m > 1200) boatOp = 0;
+        else if (m < 480) boatOp = (m - 360) / 120;
+        document.getElementById("sailboat").setAttribute("opacity", boatOp);
+
+        // 萤火虫也改慢
+        for (let i = 0; i < 3; i++) {
+          const twinkle = 0.5 + 0.5 * Math.sin(t * 0.4 + i * 2);
+          document
+            .getElementById("ff" + i)
+            .setAttribute("opacity", starOp > 0.3 ? 0.4 * starOp * twinkle : 0);
+          document
+            .getElementById("ff" + i)
+            .setAttribute("r", 0.5 + 0.2 * twinkle);
+        }
+
+        document.getElementById("slider").style.accentColor = pos.sun
+          ? "#ffd060"
+          : "#b0c8ff";
+        document.getElementById("timeBadge").childNodes[0].textContent =
+          formatTime(m) + " ";
+        document.getElementById("timeLabel").textContent = getLabel(m);
+      }
+
+      function loop(ts) {
+        if (!lastT) lastT = ts;
+        const dt = (ts - lastT) / 1000;
+        lastT = ts;
+        tick++;
+        wavePhase += dt * 0.8;
+        if (playing) {
+          minutes = (minutes + dt * 8) % TOTAL;
+          document.getElementById("slider").value = Math.floor(minutes);
+        }
+        updateScene();
+        requestAnimationFrame(loop);
+      }
+
+      function onSlider(v) {
+        minutes = Number(v);
+        playing = false;
+        document.getElementById("playBtn").textContent = "▶ 播放";
+      }
+      function togglePlay() {
+        playing = !playing;
+        if (playing) lastT = null;
+        document.getElementById("playBtn").textContent = playing
+          ? "⏸ 暂停"
+          : "▶ 播放";
+      }
+      function resetScene() {
+        minutes = 480;
+        playing = true;
+        lastT = null;
+        document.getElementById("slider").value = 480;
+        document.getElementById("playBtn").textContent = "⏸ 暂停";
+      }
+
+      requestAnimationFrame(loop);
+    </script>
+  </body>
+</html>

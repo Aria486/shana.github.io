@@ -3,7 +3,16 @@ import type { ReactRulerProps } from "./types";
 import "./style.scss";
 
 export const ReactRuler: React.FC<ReactRulerProps> = (props) => {
-  const { direction, start = 0, end = 1000, scale = 100, startLen = 30, height = 24 } = props;
+  const {
+    direction,
+    start = 0,
+    end = 1000,
+    scale = 100,
+    startLen = 30,
+    height = 24,
+    strokeStyle = "rgb(161, 174, 179)",
+    font = "10px Arial"
+  } = props;
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const drawRuler = (
@@ -12,7 +21,9 @@ export const ReactRuler: React.FC<ReactRulerProps> = (props) => {
     scale = 100,
     width: number,
     height = 24,
-    startLen = 60
+    startLen = 60,
+    strokeStyle = "rgb(161, 174, 179)",
+    font = "10px Arial"
   ) => {
     const padding = 2;
     const ctx: CanvasRenderingContext2D = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -28,8 +39,8 @@ export const ReactRuler: React.FC<ReactRulerProps> = (props) => {
       ctx.clearRect(0, 0, width, height);
       ctx.beginPath();
       // 绘制起点
-      ctx.strokeStyle = "rgb(161, 174, 179)";
-      ctx.font = "10px Arial";
+      ctx.strokeStyle = strokeStyle;
+      ctx.font = font;
       ctx.lineWidth = 0.5;
       ctx.moveTo(startLen, 0);
       ctx.lineTo(startLen, height);
@@ -57,8 +68,8 @@ export const ReactRuler: React.FC<ReactRulerProps> = (props) => {
       ctx.clearRect(0, 0, height, width + startLen);
       ctx.beginPath();
       // 绘制起点
-      ctx.strokeStyle = "rgb(161, 174, 179)";
-      ctx.font = "10px Arial";
+      ctx.strokeStyle = strokeStyle;
+      ctx.font = font;
       ctx.lineWidth = 0.5;
       ctx.moveTo(0, startLen);
       ctx.lineTo(height, startLen);
@@ -88,9 +99,9 @@ export const ReactRuler: React.FC<ReactRulerProps> = (props) => {
 
   useEffect(() => {
     if (!canvasRef.current) return;
-    drawRuler(direction, canvasRef.current, scale, end - start, height, startLen);
+    drawRuler(direction, canvasRef.current, scale, end - start, height, startLen, strokeStyle, font);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scale, direction, start, end, height, startLen]);
+  }, [scale, direction, start, end, height, startLen, strokeStyle, font]);
 
   return <canvas ref={canvasRef} height="40" width="1020" />;
 };

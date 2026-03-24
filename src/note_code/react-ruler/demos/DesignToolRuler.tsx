@@ -227,6 +227,7 @@ function DesignToolRuler() {
             scale={scale}
             height={30}
             startLen={0}
+            strokeStyle="rgb(8, 121, 0)"
           />
         </div>
 
@@ -253,6 +254,7 @@ function DesignToolRuler() {
             scale={scale}
             height={30}
             startLen={0}
+            strokeStyle="rgba(7, 248, 180, 0.89)"
           />
         </div>
 

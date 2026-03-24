@@ -100,6 +100,7 @@ function RulerGuideDemo() {
             scale={scale}
             height={30}
             startLen={0}
+            strokeStyle="rgb(161, 174, 0)"
           />
         </div>
 
@@ -124,6 +125,7 @@ function RulerGuideDemo() {
             scale={scale}
             height={30}
             startLen={0}
+            strokeStyle="rgb(161, 174, 0)"
           />
         </div>
 

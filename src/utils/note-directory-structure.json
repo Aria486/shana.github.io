@@ -99,6 +99,22 @@
         ]
       },
       {
+        "name": "python",
+        "type": "directory",
+        "children": [
+          {
+            "name": "pyproject.md",
+            "type": "file",
+            "lastModified": "2026-03-24T05:49:05.069Z"
+          },
+          {
+            "name": "python的模块管理.md",
+            "type": "file",
+            "lastModified": "2026-03-24T05:52:21.372Z"
+          }
+        ]
+      },
+      {
         "name": "react",
         "type": "directory",
         "children": [
@@ -178,6 +194,11 @@
         "type": "directory",
         "children": [
           {
+            "name": "从零构建大语言模型",
+            "type": "directory",
+            "children": []
+          },
+          {
             "name": "从零构建大语言模型-第一章.md",
             "type": "file",
             "lastModified": "2025-08-29T01:52:19.014Z"
@@ -239,6 +260,11 @@
     "name": "tool",
     "type": "directory",
     "children": [
+      {
+        "name": "direnv的使用.md",
+        "type": "file",
+        "lastModified": "2026-03-24T06:05:58.508Z"
+      },
       {
         "name": "sonarqube",
         "type": "directory",

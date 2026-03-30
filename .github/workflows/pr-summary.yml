@@ -43,7 +43,7 @@ jobs:
               diff = execSync(
                 'git diff origin/${{ github.base_ref }}...HEAD -- . ":(exclude)*.lock" ":(exclude)package-lock.json"',
                 { maxBuffer: 1024 * 1024 }
-              ).toString().slice(0, 6000);
+              ).toString();
             } catch (e) {
               core.warning('获取 diff 失败：' + e.message);
               return;

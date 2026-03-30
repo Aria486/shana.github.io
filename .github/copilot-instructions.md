@@ -232,6 +232,12 @@ npm run lint:fix        # 自动修复
 
 # [SECTION: PR] Pull Request 规范
 
+## 语言要求
+
+- 所有 Pull Request 内容必须使用简体中文
+- 禁止使用英文撰写任何审查意见、建议或说明
+- 包括 inline comment、summary comment 在内的所有内容均须为中文
+
 ## PR 标题
 
 - 简明扼要，能独立说明该 PR 做了什么

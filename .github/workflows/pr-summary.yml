@@ -37,28 +37,38 @@ jobs:
               core.info('未找到 copilot-instructions.md，使用默认行为');
             }
 
-            // 调用 GitHub Models 的封装函数
+            // 调用 GitHub Models 的封装函数，失败时自动重试一次
             async function callModel(messages, maxTokens) {
-              const response = await fetch('https://models.github.ai/inference/chat/completions', {
-                method: 'POST',
-                headers: {
-                  'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  model: 'openai/gpt-4.1',
-                  max_tokens: maxTokens,
-                  messages,
-                })
-              });
+              for (let attempt = 1; attempt <= 2; attempt++) {
+                const response = await fetch('https://models.github.ai/inference/chat/completions', {
+                  method: 'POST',
+                  headers: {
+                    'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    model: 'openai/gpt-4.1',
+                    max_tokens: maxTokens,
+                    messages,
+                  })
+                });
 
-              if (!response.ok) {
-                const err = await response.text();
-                throw new Error(`API 调用失败：${response.status} ${err}`);
+                if (response.status === 429) {
+                  const waitTime = attempt === 1 ? 10000 : 20000;
+                  core.info(`触发频率限制，等待 ${waitTime / 1000} 秒后重试...`);
+                  await new Promise(resolve => setTimeout(resolve, waitTime));
+                  continue;
+                }
+
+                if (!response.ok) {
+                  const err = await response.text();
+                  throw new Error(`API 调用失败：${response.status} ${err}`);
+                }
+
+                const data = await response.json();
+                return data.choices?.[0]?.message?.content || '';
               }
-
-              const data = await response.json();
-              return data.choices?.[0]?.message?.content || '';
+              throw new Error('重试后仍触发频率限制');
             }
 
             // 获取改动文件列表
@@ -94,8 +104,8 @@ jobs:
               .split(/(?=diff --git )/)
               .filter(Boolean);
 
-            // 将文件 diff 分批，每批不超过 4000 字符
-            const CHUNK_SIZE = 4000;
+            // 将文件 diff 分批，每批不超过 6000 字符
+            const CHUNK_SIZE = 6000;
             const chunks = [];
             let currentChunk = '';
 
@@ -111,10 +121,15 @@ jobs:
 
             core.info(`diff 共拆分为 ${chunks.length} 批`);
 
-            // 每批单独总结，max_tokens 500 够用
+            // 每批单独总结，批次之间等待 3 秒避免 429
             const partialSummaries = [];
             for (let i = 0; i < chunks.length; i++) {
               core.info(`正在处理第 ${i + 1}/${chunks.length} 批...`);
+
+              if (i > 0) {
+                await new Promise(resolve => setTimeout(resolve, 3000));
+              }
+
               try {
                 const partial = await callModel([
                   {
@@ -137,7 +152,10 @@ jobs:
               return;
             }
 
-            // 合并所有批次，生成最终摘要，max_tokens 3000
+            // 合并前等待 3 秒
+            await new Promise(resolve => setTimeout(resolve, 3000));
+
+            // 合并所有批次，生成最终摘要
             core.info('正在合并生成最终摘要...');
             const finalSummary = await callModel([
               {

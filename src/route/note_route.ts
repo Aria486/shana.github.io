@@ -77,6 +77,5 @@ const groupByFirstLevelDirectory = (data: FileSystemNode[]): DirectoryEntry => {
 };
 
 export const allPaths = groupByFirstLevelDirectory(
-  // eslint-disable-next-line prettier/prettier
-  noteDirectoryStructure as any
+  noteDirectoryStructure as FileSystemNode[],
 );

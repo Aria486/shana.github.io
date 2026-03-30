@@ -10,6 +10,39 @@
     text-align: right;
     position: relative;
     z-index: 1;
+    display: flex;
+    align-items: center;
+
+    // 汉堡按钮区域：桌面端隐藏，移动端显示
+    &-menu-trigger {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      cursor: pointer;
+      font-size: 18px;
+      flex-shrink: 0;
+      // 重置 <button> 默认样式，颜色跟随 antd 主题 token
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--ant-color-text);
+      line-height: 1;
+      transition: color 0.2s;
+
+      &:hover {
+        color: var(--ant-color-primary);
+      }
+
+      @include breakpoints-mobile {
+        display: flex;
+      }
+    }
+
+    // 让 Header 组件在有汉堡按钮时占据剩余宽度
+    > :last-child {
+      flex: 1;
+    }
   }
 
   &-divider {
@@ -18,13 +51,27 @@
 
   &-content {
     flex: 1;
+    overflow: hidden; // 限制高度链，防止内容把 footer 撑出视口
+
+    // 直接子 Content 组件（antd Layout.Content）
+    &-inner {
+      height: 100%;
+      overflow: hidden;
+    }
   }
 
   &-footer {
     padding: 0;
     flex-shrink: 0;
   }
-  
+
+  // Drawer 内容区域
+  &-drawer-content {
+    padding: 0;
+    height: 100%;
+    overflow-y: auto;
+  }
+
   // 天气背景模式：背景透明
   &--weather-mode {
     background: transparent !important;
@@ -87,5 +134,10 @@ body.weather-background-mode {
   // 分段控制器毛玻璃效果
   .ant-segmented {
     backdrop-filter: blur(8px);
+  }
+
+  // 移动端侧边栏 Drawer 毛玻璃效果
+  .ant-drawer-content {
+    backdrop-filter: blur(20px);
   }
 } 

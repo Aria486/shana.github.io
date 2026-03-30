@@ -36,6 +36,18 @@
     transition: color 0.2s ease;
   }
 
+  // inline 模式：始终展开，填满父容器
+  &--inline {
+    width: 100%;
+
+    .#{$prefix}-global-search-input-wrapper {
+      width: 100%;
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+    }
+  }
+
   // 展开状态
   &-expanded {
     .#{$prefix}-global-search-input-wrapper {
@@ -55,6 +67,11 @@
     transform: translateX(20px);
     pointer-events: none;
     transition: all 0.3s ease;
+
+    // inline 模式下宽度由父级撑满
+    .#{$prefix}-global-search--inline & {
+      width: 100%;
+    }
 
     .#{$prefix}-global-search-search-icon {
       position: absolute;
@@ -137,9 +154,9 @@
     }
   }
 
-  // 响应式设计
+  // 响应式设计（仅 icon 模式限制固定宽度）
   @include breakpoints-mobile {
-    &-input-wrapper {
+    &:not(&--inline) &-input-wrapper {
       width: 200px;
     }
 
@@ -149,7 +166,7 @@
   }
 
   @include breakpoints-mobile-small {
-    &-input-wrapper {
+    &:not(&--inline) &-input-wrapper {
       width: 160px;
     }
   }

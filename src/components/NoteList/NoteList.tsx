@@ -22,6 +22,13 @@ export interface INoteList extends ICommonComponent {
   showQuickJumper?: boolean;
   globalSearchKeyword?: string;
   sortType?: string;
+  /**
+   * 由父组件（AppLayout）控制的子分类，移动端 Drawer 中使用。
+   * 提供此 prop 时 NoteList 不渲染内联 CategoryFilter。
+   */
+  selectedSubcategory?: string | null;
+  /** 子分类变化回调，与 selectedSubcategory 配对使用 */
+  onSubcategoryChange?: (category: string | null) => void;
 }
 
 export const NoteList: React.FC<INoteList> = (props) => {
@@ -31,8 +38,13 @@ export const NoteList: React.FC<INoteList> = (props) => {
     showSizeChanger = true,
     showQuickJumper = false,
     globalSearchKeyword = "",
-    sortType = "time"
+    sortType = "time",
+    selectedSubcategory: externalSelectedSubcategory,
+    onSubcategoryChange,
   } = props;
+
+  // 是否由父组件受控（移动端模式）
+  const isControlled = onSubcategoryChange !== undefined;
 
   const prefixCls = useClsAddPrefix("note-list");
   const { globalData } = useGlobalData();
@@ -44,8 +56,23 @@ export const NoteList: React.FC<INoteList> = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(defaultPageSize);
 
-  // 子分类过滤状态
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
+  // 子分类过滤状态（非受控模式，桌面端使用）
+  const [internalSelectedSubcategory, setInternalSelectedSubcategory] = useState<string | null>(null);
+
+  // 受控模式用外部值，否则用内部值
+  const selectedSubcategory = isControlled
+    ? (externalSelectedSubcategory ?? null)
+    : internalSelectedSubcategory;
+
+  // 切换子分类时重置分页
+  const handleCategoryChange = (category: string | null) => {
+    setCurrentPage(1);
+    if (isControlled) {
+      onSubcategoryChange!(category);
+    } else {
+      setInternalSelectedSubcategory(category);
+    }
+  };
 
   const getTag = (path: string) => {
     const pathArr = path.split("/");
@@ -121,17 +148,14 @@ export const NoteList: React.FC<INoteList> = (props) => {
     }
   };
 
-  // 处理子分类变化
-  const handleCategoryChange = (category: string | null) => {
-    setSelectedSubcategory(category);
-    setCurrentPage(1);
-  };
-
   // 重置状态当菜单改变时或全局搜索关键词改变时
   React.useEffect(() => {
     setCurrentPage(1);
-    setSelectedSubcategory(null);
-  }, [menu, globalSearchKeyword]);
+    // 非受控模式才重置内部子分类；受控模式由父组件（AppLayout）负责重置
+    if (!isControlled) {
+      setInternalSelectedSubcategory(null);
+    }
+  }, [menu, globalSearchKeyword, isControlled]);
 
   // 排序类型改变时只重置分页，不重置子分类过滤
   React.useEffect(() => {
@@ -140,12 +164,14 @@ export const NoteList: React.FC<INoteList> = (props) => {
 
   return (
     <div className={classnames(prefixCls, className)}>
-      {/* 子分类过滤标签栏 */}
-      <CategoryFilter
-        categories={subcategories}
-        selectedCategory={selectedSubcategory}
-        onChange={handleCategoryChange}
-      />
+      {/* 子分类过滤标签栏：非受控模式（桌面端）才内联渲染 */}
+      {!isControlled && (
+        <CategoryFilter
+          categories={subcategories}
+          selectedCategory={selectedSubcategory}
+          onChange={handleCategoryChange}
+        />
+      )}
 
       {/* 列表内容 - 可滚动区域 */}
       <div className={`${prefixCls}-scroll-container`}>

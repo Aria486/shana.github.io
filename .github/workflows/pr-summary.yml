@@ -37,59 +37,125 @@ jobs:
               core.info('未找到 copilot-instructions.md，使用默认行为');
             }
 
-            // 获取 diff
-            let diff = '';
+            // 调用 GitHub Models 的封装函数
+            async function callModel(messages, maxTokens) {
+              const response = await fetch('https://models.github.ai/inference/chat/completions', {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  model: 'openai/gpt-4.1',
+                  max_tokens: maxTokens,
+                  messages,
+                })
+              });
+
+              if (!response.ok) {
+                const err = await response.text();
+                throw new Error(`API 调用失败：${response.status} ${err}`);
+              }
+
+              const data = await response.json();
+              return data.choices?.[0]?.message?.content || '';
+            }
+
+            // 获取改动文件列表
+            let changedFiles = '';
             try {
-              diff = execSync(
-                'git diff origin/${{ github.base_ref }}...HEAD -- . ":(exclude)*.lock" ":(exclude)package-lock.json"',
+              changedFiles = execSync(
+                'git diff origin/${{ github.base_ref }}...HEAD --name-status',
                 { maxBuffer: 1024 * 1024 }
+              ).toString();
+            } catch (e) {
+              core.warning('获取文件列表失败：' + e.message);
+            }
+
+            // 获取完整 diff
+            let fullDiff = '';
+            try {
+              fullDiff = execSync(
+                'git diff origin/${{ github.base_ref }}...HEAD -- . ":(exclude)*.lock" ":(exclude)package-lock.json" ":(exclude)yarn.lock"',
+                { maxBuffer: 10 * 1024 * 1024 }
               ).toString();
             } catch (e) {
               core.warning('获取 diff 失败：' + e.message);
               return;
             }
 
-            if (!diff.trim()) {
+            if (!fullDiff.trim()) {
               core.info('没有检测到代码变更，跳过摘要生成');
               return;
             }
 
-            const response = await fetch('https://models.github.ai/inference/chat/completions', {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`,
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                model: 'openai/gpt-4.1',
-                max_tokens: 1200,
-                messages: [
+            // 按文件拆分 diff，保证每个文件是完整单元
+            const fileDiffs = fullDiff
+              .split(/(?=diff --git )/)
+              .filter(Boolean);
+
+            // 将文件 diff 分批，每批不超过 4000 字符
+            const CHUNK_SIZE = 4000;
+            const chunks = [];
+            let currentChunk = '';
+
+            for (const fileDiff of fileDiffs) {
+              if ((currentChunk + fileDiff).length > CHUNK_SIZE && currentChunk) {
+                chunks.push(currentChunk);
+                currentChunk = fileDiff;
+              } else {
+                currentChunk += fileDiff;
+              }
+            }
+            if (currentChunk) chunks.push(currentChunk);
+
+            core.info(`diff 共拆分为 ${chunks.length} 批`);
+
+            // 每批单独总结，max_tokens 500 够用
+            const partialSummaries = [];
+            for (let i = 0; i < chunks.length; i++) {
+              core.info(`正在处理第 ${i + 1}/${chunks.length} 批...`);
+              try {
+                const partial = await callModel([
                   {
                     role: 'system',
-                    content: `你是一个代码审查助手，请根据 git diff 生成 PR 描述。以下是项目的 PR 规范，请严格遵守：\n\n${instructions}\n\n额外要求：\n- 不要输出模板中 <!-- --> 内的提示文字\n- Breaking Changes 和关联 Issue 如无相关信息，直接填"无"\n- 全程使用简体中文`
+                    content: '你是一个代码审查助手，请用简体中文简要总结以下 git diff 的改动内容，只列出关键改动要点，不需要完整格式，50-100字即可。'
                   },
                   {
                     role: 'user',
-                    content: `PR 标题：${{ github.event.pull_request.title }}\n\nDiff：\n${diff}`
+                    content: `PR 标题：${{ github.event.pull_request.title }}\n\n${chunks[i]}`
                   }
-                ]
-              })
-            });
+                ], 500);
+                partialSummaries.push(partial);
+              } catch (e) {
+                core.warning(`第 ${i + 1} 批处理失败：` + e.message);
+              }
+            }
 
-            if (!response.ok) {
-              core.warning(`GitHub Models 调用失败：${response.status} ${await response.text()}`);
+            if (partialSummaries.length === 0) {
+              core.warning('所有批次均处理失败');
               return;
             }
 
-            const data = await response.json();
-            const summary = data.choices?.[0]?.message?.content;
+            // 合并所有批次，生成最终摘要，max_tokens 3000
+            core.info('正在合并生成最终摘要...');
+            const finalSummary = await callModel([
+              {
+                role: 'system',
+                content: `你是一个代码审查助手，请根据以下项目的 PR 规范生成最终 PR 描述，严格遵守规范中的格式要求：\n\n${instructions}\n\n额外要求：\n- 不要输出模板中 <!-- --> 内的提示文字\n- Breaking Changes 和关联 Issue 如无相关信息，直接填"无"\n- 全程使用简体中文`
+              },
+              {
+                role: 'user',
+                content: `PR 标题：${{ github.event.pull_request.title }}\n\n改动文件列表：\n${changedFiles}\n\n各部分改动摘要：\n${partialSummaries.map((s, i) => `【第${i+1}部分】\n${s}`).join('\n\n')}`
+              }
+            ], 3000);
 
-            if (!summary) {
-              core.warning('返回内容为空');
+            if (!finalSummary) {
+              core.warning('最终摘要生成为空');
               return;
             }
 
-            // 写入 PR 描述，用注释标记区分自动和手动内容
+            // 写入 PR 描述
             const START = '<!-- auto-summary-start -->';
             const END = '<!-- auto-summary-end -->';
 
@@ -100,7 +166,7 @@ jobs:
             });
 
             const existing = pr.data.body || '';
-            const block = `${START}\n${summary}\n${END}`;
+            const block = `${START}\n${finalSummary}\n${END}`;
 
             const newBody = existing.includes(START)
               ? existing.replace(new RegExp(`${START}[\\s\\S]*?${END}`), block)

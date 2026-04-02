@@ -5,31 +5,64 @@
   align-items: center;
   padding: 0 10%;
 
+  @include breakpoints-mobile {
+    padding: 0 12px;
+  }
+
+  // 三列容器
   &-content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     width: 100%;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  // 左区：导航菜单 / 返回键
+  &-left {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    min-width: 0;
+  }
+
+  // 中区：搜索框，占满剩余空间
+  &-search {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
   }
 
   &-menu {
-    flex: 1;
+    min-width: 0;
   }
 
   &-return {
-    flex: 1;
-    text-align: left;
     display: flex;
     align-items: center;
+    min-width: 0;
+    overflow: hidden;
 
     &-title {
       margin: 10px 6px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
+  // 右区：排序 + 操作按钮，固定不压缩
   &-actions {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
+    flex-shrink: 0;
+
+    @include breakpoints-mobile {
+      .ant-select {
+        width: 86px !important;
+      }
+    }
   }
 }

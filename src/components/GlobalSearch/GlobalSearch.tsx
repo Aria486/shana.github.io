@@ -8,6 +8,11 @@ export interface IGlobalSearch {
   className?: string;
   placeholder?: string;
   onSearch: (keyword: string) => void;
+  /**
+   * inline — 始终展开，宽度撑满父容器（用于 Header 中间区）
+   * icon   — 收起为图标，点击后展开（默认）
+   */
+  variant?: "inline" | "icon";
 }
 
 export const GlobalSearch: React.FC<IGlobalSearch> = (props) => {
@@ -15,11 +20,15 @@ export const GlobalSearch: React.FC<IGlobalSearch> = (props) => {
     className,
     placeholder,
     onSearch,
+    variant = "icon",
   } = props;
+
+  const isInline = variant === "inline";
 
   const prefixCls = useClsAddPrefix("global-search");
   const { t } = useTranslation();
-  const [isExpanded, setIsExpanded] = useState(false);
+  // inline 模式默认展开，且不会收起
+  const [isExpanded, setIsExpanded] = useState(isInline);
   const [keyword, setKeyword] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -45,8 +54,8 @@ export const GlobalSearch: React.FC<IGlobalSearch> = (props) => {
   };
 
   const handleBlur = () => {
-    // 如果没有输入内容，则收起搜索框
-    if (!keyword.trim()) {
+    // inline 模式保持展开；icon 模式无输入时收起
+    if (!isInline && !keyword.trim()) {
       setIsExpanded(false);
     }
   };
@@ -79,10 +88,11 @@ export const GlobalSearch: React.FC<IGlobalSearch> = (props) => {
   }, [isExpanded, keyword]);
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className={classnames(prefixCls, {
         [`${prefixCls}-expanded`]: isExpanded,
+        [`${prefixCls}--inline`]: isInline,
       }, className)}
     >
       {!isExpanded ? (

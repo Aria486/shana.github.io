@@ -73,8 +73,8 @@
 
   // 响应式设计
   @include breakpoints-mobile {
-    max-height: calc(100vh - 180px);
-    min-height: 300px;
+    // 不再限制 max-height，由外层 flex 链自然填充剩余空间
+    min-height: 0;
     
     &-content {
       padding: 0 20px;
@@ -96,8 +96,7 @@
   }
 
   @include breakpoints-mobile-small {
-    max-height: calc(100vh - 160px);
-    min-height: 250px;
+    min-height: 0;
 
     &-content {
       padding: 0 16px;

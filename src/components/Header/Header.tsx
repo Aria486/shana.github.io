@@ -4,7 +4,7 @@ import { Button, Menu, MenuProps, Typography, Select } from "antd";
 import { ArrowLeftOutlined, CloudOutlined } from "@ant-design/icons";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useClsAddPrefix } from "@/hooks";
+import { useClsAddPrefix, useIsMobile } from "@/hooks";
 import { ICommonComponent } from "@/interface";
 import { useGlobalData } from "@/context";
 import { ROOT_PATH } from "@/utils/constants";
@@ -35,6 +35,7 @@ export const Header: React.FC<IHeader> = (props) => {
   const { t } = useTranslation();
   const isHome = `${ROOT_PATH}${lang}` === pathname.replace(/\//g, "");
 
+  const isMobile = useIsMobile();
   const [weatherSettingsOpen, setWeatherSettingsOpen] = useState(false);
 
   const items: MenuItem[] = [
@@ -100,36 +101,48 @@ export const Header: React.FC<IHeader> = (props) => {
   return (
     <div className={classnames(prefixCls, className)}>
       <div className={`${prefixCls}-content`}>
-        {isHome ? (
-          <Menu
-            className={`${prefixCls}-menu`}
-            onClick={onClick}
-            selectedKeys={[menu]}
-            mode="horizontal"
-            items={items}
-          />
-        ) : (
-          <div className={`${prefixCls}-return`}>
-            <Button
-              type="text"
-              icon={<ArrowLeftOutlined />}
-              shape="circle"
-              onClick={handleBack}
-            />
-            <Title className={`${prefixCls}-return-title`} level={4}>
-              {getDetailTitle(pathname)}
-            </Title>
+        {/* 左区：首页桌面端导航菜单 / 详情页返回键 */}
+        <div className={`${prefixCls}-left`}>
+          {isHome ? (
+            !isMobile && (
+              <Menu
+                className={`${prefixCls}-menu`}
+                onClick={onClick}
+                selectedKeys={[menu]}
+                mode="horizontal"
+                items={items}
+              />
+            )
+          ) : (
+            <div className={`${prefixCls}-return`}>
+              <Button
+                type="text"
+                icon={<ArrowLeftOutlined />}
+                shape="circle"
+                onClick={handleBack}
+              />
+              <Title className={`${prefixCls}-return-title`} level={4}>
+                {getDetailTitle(pathname)}
+              </Title>
+            </div>
+          )}
+        </div>
+
+        {/* 中区：搜索框，占满剩余空间 */}
+        {reactNode && (
+          <div className={`${prefixCls}-search`}>
+            {reactNode}
           </div>
         )}
 
+        {/* 右区：排序 + 天气按钮 */}
         <div className={`${prefixCls}-actions`}>
-          {showSort && reactNode}
           {showSort && onSortChange && (
             <Select
               value={sortType}
               onChange={onSortChange}
               options={sortOptions}
-              style={{ width: 120, marginRight: 8 }}
+              style={{ width: 120 }}
               size="small"
             />
           )}

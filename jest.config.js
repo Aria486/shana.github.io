@@ -14,7 +14,6 @@ module.exports = {
   testPathIgnorePatterns: [
     '<rootDir>/src/components/Post/',
     '<rootDir>/src/components/NoteList/',
-    '<rootDir>/src/components/BlogLayout/',
   ],
   collectCoverageFrom: [
     'src/**/*.(ts|tsx)',

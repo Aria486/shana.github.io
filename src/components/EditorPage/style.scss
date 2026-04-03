@@ -1,0 +1,85 @@
+.editor-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 16px;
+  box-sizing: border-box;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--ant-color-border);
+    flex-shrink: 0;
+  }
+
+  &__title {
+    margin: 0 !important;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    gap: 16px;
+    margin-top: 12px;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  &__sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow: hidden;
+    border: 1px solid var(--ant-color-border);
+    border-radius: 8px;
+    padding: 8px;
+    background: var(--ant-color-bg-container);
+  }
+
+  &__sidebar-actions {
+    flex-shrink: 0;
+  }
+
+  &__loading {
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  &__main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  &__new-form,
+  &__edit-actions {
+    flex-shrink: 0;
+    padding: 8px 12px;
+    background: var(--ant-color-bg-layout);
+    border-radius: 8px;
+    border: 1px solid var(--ant-color-border);
+  }
+
+  &__editor {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border: 2px dashed var(--ant-color-border);
+    border-radius: 8px;
+  }
+}

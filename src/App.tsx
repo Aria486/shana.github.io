@@ -3,6 +3,7 @@ import { Theme, LangWrapper, AppLayout } from "@/components";
 import { GlobalDataProvider } from "@/context";
 import { createHashRouter, RouterProvider, Navigate } from "react-router-dom";
 import { NoteList, NoteDetail } from "@/components";
+import { EditorPage } from "@/components/EditorPage";
 import { ROOT_PATH } from "@/utils/constants";
 import "./App.css";
 
@@ -14,6 +15,10 @@ const router = createHashRouter([
   {
     path: "/",
     element: <Navigate replace to={`${ROOT_PATH}/zh-CN`} />
+  },
+  {
+    path: `${ROOT_PATH}/:lang/editor`,
+    element: <EditorPage />
   },
   {
     path: `${ROOT_PATH}/:lang`,

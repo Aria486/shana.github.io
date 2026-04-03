@@ -1,0 +1,116 @@
+.note-file-picker {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+
+  &__title {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--ant-color-border);
+    flex-shrink: 0;
+  }
+
+  &__category {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+
+    &-name {
+      flex: 1;
+      min-width: 0;
+    }
+
+    &-add {
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+  }
+
+  // 父容器 hover 时显示 + 按钮
+  :global(.ant-collapse-header):hover &__category-add,
+  :global(.ant-collapse-header):hover &__subdir-add {
+    opacity: 1;
+  }
+
+  &__item {
+    cursor: pointer;
+    padding: 4px 12px !important;
+    border-radius: 4px;
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: var(--ant-color-fill-secondary);
+    }
+
+    &--selected {
+      background: var(--ant-color-primary-bg) !important;
+      color: var(--ant-color-primary);
+    }
+  }
+
+  &__file-icon {
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--ant-color-text-secondary);
+  }
+
+  &__subdir {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: var(--ant-color-fill-secondary);
+    }
+
+    &:hover .note-file-picker__subdir-add {
+      opacity: 1;
+    }
+
+    &-expand {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+      cursor: pointer;
+    }
+
+    &-add {
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    &-arrow {
+      font-size: 10px;
+      color: var(--ant-color-text-tertiary);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+
+      &--open {
+        transform: rotate(90deg);
+      }
+    }
+
+    &-icon {
+      flex-shrink: 0;
+      font-size: 13px;
+      color: var(--ant-color-warning);
+    }
+
+    &-name {
+      flex: 1;
+      min-width: 0;
+      font-size: 13px;
+    }
+  }
+}

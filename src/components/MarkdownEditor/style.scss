@@ -1,0 +1,70 @@
+.markdown-editor {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid var(--ant-color-border);
+  border-radius: 8px;
+  overflow: hidden;
+
+  &__toolbar {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--ant-color-border);
+    background: var(--ant-color-bg-layout);
+    flex-shrink: 0;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  &__input {
+    flex: 1;
+    padding: 16px;
+    border: none;
+    border-right: 1px solid var(--ant-color-border);
+    resize: none;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    outline: none;
+    background: var(--ant-color-bg-container);
+    color: var(--ant-color-text);
+    min-width: 0;
+
+    &::placeholder {
+      color: var(--ant-color-text-placeholder);
+    }
+  }
+
+  &__preview {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    background: var(--ant-color-bg-container);
+    min-width: 0;
+
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
+
+    p {
+      margin-bottom: 0.8em;
+    }
+
+    code {
+      background: var(--ant-color-fill-secondary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+    }
+  }
+}

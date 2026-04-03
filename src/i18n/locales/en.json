@@ -61,5 +61,76 @@
       "snow": "Snowy",
       "mist": "Foggy"
     }
+  },
+  "editor": {
+    "title": "Online Note Editor",
+    "placeholder": "Select a note from the left to edit, or click 'New Note'",
+    "auth": {
+      "title": "Editor Authentication",
+      "description": "Enter your GitHub Fine-grained Personal Access Token to use the editor",
+      "tokenLabel": "Personal Access Token",
+      "tokenPlaceholder": "github_pat_...",
+      "tokenHelpLink": "How to create a Fine-grained PAT?",
+      "submit": "Verify & Sign In",
+      "validating": "Validating...",
+      "unknownError": "Unknown error, please try again",
+      "securityHint": "Token is stored locally in your browser and never sent to any server"
+    },
+    "action": {
+      "newNote": "New Note",
+      "newFolder": "New Folder",
+      "save": "Save",
+      "publish": "Publish",
+      "delete": "Delete",
+      "logout": "Sign Out",
+      "refresh": "Refresh"
+    },
+    "toolbar": {
+      "bold": "Bold",
+      "italic": "Italic",
+      "codeBlock": "Code Block"
+    },
+    "editor": {
+      "placeholder": "Enter Markdown content here...",
+      "previewEmpty": "Preview will appear here"
+    },
+    "picker": {
+      "title": "Note Files",
+      "empty": "No note files found",
+      "createHere": "Create note here"
+    },
+    "newNote": {
+      "filenamePlaceholder": "Filename (without extension)",
+      "subPathPlaceholder": "Subdirectory (optional, e.g. react/hooks)",
+      "location": "Location"
+    },
+    "folder": {
+      "title": "New Folder",
+      "category": "Category",
+      "subPath": "Parent subdirectory",
+      "subPathPlaceholder": "e.g. react (leave empty for root of category)",
+      "name": "Folder name",
+      "namePlaceholder": "Folder name",
+      "confirm": "Create",
+      "nameRequired": "Folder name is required",
+      "nameInvalid": "Folder name cannot contain path separators"
+    },
+    "delete": {
+      "confirmTitle": "Confirm Delete",
+      "confirmContent": "Are you sure you want to delete {{category}}/{{name}}? This cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "notification": {
+      "saveSuccess": "Saved successfully",
+      "publishSuccess": "Published successfully",
+      "deleteSuccess": "Deleted successfully",
+      "folderSuccess": "Folder created successfully",
+      "deployHint": "Changes will be live in approximately 2-5 minutes"
+    },
+    "error": {
+      "loadStructure": "Failed to load directory structure",
+      "invalidFilename": "Invalid filename"
+    }
   }
 }

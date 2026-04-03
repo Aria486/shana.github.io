@@ -61,5 +61,76 @@
       "snow": "雪天",
       "mist": "雾天"
     }
+  },
+  "editor": {
+    "title": "在线笔记编辑器",
+    "placeholder": "从左侧选择笔记进行编辑，或点击「新建笔记」",
+    "auth": {
+      "title": "编辑器认证",
+      "description": "输入 GitHub Fine-grained Personal Access Token 以使用编辑器",
+      "tokenLabel": "Personal Access Token",
+      "tokenPlaceholder": "github_pat_...",
+      "tokenHelpLink": "如何创建 Fine-grained PAT？",
+      "submit": "验证并登录",
+      "validating": "验证中...",
+      "unknownError": "未知错误，请重试",
+      "securityHint": "Token 仅存储在本地浏览器，不会上传到任何服务器"
+    },
+    "action": {
+      "newNote": "新建笔记",
+      "newFolder": "新建文件夹",
+      "save": "保存",
+      "publish": "发布",
+      "delete": "删除",
+      "logout": "退出登录",
+      "refresh": "刷新"
+    },
+    "toolbar": {
+      "bold": "粗体",
+      "italic": "斜体",
+      "codeBlock": "代码块"
+    },
+    "editor": {
+      "placeholder": "在此输入 Markdown 内容...",
+      "previewEmpty": "预览将显示在此处"
+    },
+    "picker": {
+      "title": "笔记文件",
+      "empty": "暂无笔记文件",
+      "createHere": "在此建笔记"
+    },
+    "newNote": {
+      "filenamePlaceholder": "文件名（无需扩展名）",
+      "subPathPlaceholder": "子目录（可选，如 react/hooks）",
+      "location": "当前位置"
+    },
+    "folder": {
+      "title": "新建文件夹",
+      "category": "所属分类",
+      "subPath": "父级子目录",
+      "subPathPlaceholder": "如 react（空表示建在分类根目录下）",
+      "name": "文件夹名称",
+      "namePlaceholder": "文件夹名",
+      "confirm": "创建",
+      "nameRequired": "文件夹名称不能为空",
+      "nameInvalid": "文件夹名称不能含路径分隔符"
+    },
+    "delete": {
+      "confirmTitle": "确认删除",
+      "confirmContent": "确定要删除 {{category}}/{{name}} 吗？此操作不可撤销。",
+      "confirm": "确认删除",
+      "cancel": "取消"
+    },
+    "notification": {
+      "saveSuccess": "保存成功",
+      "publishSuccess": "发布成功",
+      "deleteSuccess": "删除成功",
+      "folderSuccess": "文件夹创建成功",
+      "deployHint": "预计 2–5 分钟后生效"
+    },
+    "error": {
+      "loadStructure": "加载目录结构失败",
+      "invalidFilename": "文件名不合法"
+    }
   }
 }

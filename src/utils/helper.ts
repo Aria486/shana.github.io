@@ -44,6 +44,23 @@ export const clamp = (value: number, min: number, max: number): number => {
 };
 
 /**
+ * 深拷贝一个值，支持基本类型、对象、数组、Date
+ * @param value 要拷贝的值
+ * @returns 深拷贝后的新值
+ */
+export const deepClone = <T>(value: T): T => {
+  if (value === null || typeof value !== "object") return value;
+  if (value instanceof Date) return new Date(value.getTime()) as T;
+  if (Array.isArray(value)) return value.map((item) => deepClone(item)) as T;
+
+  const result = {} as Record<string, unknown>;
+  for (const key of Object.keys(value as Record<string, unknown>)) {
+    result[key] = deepClone((value as Record<string, unknown>)[key]);
+  }
+  return result as T;
+};
+
+/**
  * 去除文件后缀名
  * @param filename 文件名
  * @returns 去除后缀的文件名

@@ -113,6 +113,7 @@ export const BlogLayout: React.FC<IBlogLayout> = (props) => {
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
           width={280}
+          className={`${prefixCls}-drawer`}
           styles={{ body: { padding: 0 } }}
           aria-label="侧边栏"
         >

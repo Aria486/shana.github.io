@@ -32,7 +32,7 @@
 >
 > - **[SECTION: CODE]** — 代码生成规范，适用于编写、修改、审查代码时
 > - **[SECTION: PR]** — Pull Request 规范，适用于生成 PR 标题、描述、Commit 信息时
-> - **[SECTION: REVIEW]** — Code Review 规范，适用于生成 Code Review 评论时
+> - **[SECTION: REVIEW]** — Code Review 规范，适用于生成 Code Review 评论时（完整流程请加载 Skill：`.github/skills/code-review/SKILL.md`，或输入 `/code-review`）
 
 ---
 
@@ -325,6 +325,12 @@ AI 在协助准备 PR 时，应确认以下各项均已满足：
 <!-- ============================================================ -->
 
 # [SECTION: REVIEW] Code Review 规范
+
+> **执行 Code Review 时，请加载并遵循专用技能：**
+> **[`.github/skills/code-review/SKILL.md`](.github/skills/code-review/SKILL.md)**
+>
+> 该 Skill 包含完整的审查流程、逐项检查清单、评论格式规范及禁止事项。
+> 在 Copilot Chat 中可通过输入 `/code-review` 直接调用。
 
 ## 语言要求
 

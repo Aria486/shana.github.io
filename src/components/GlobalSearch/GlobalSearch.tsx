@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import classnames from "classnames";
 import { useTranslation } from "react-i18next";
 import { useClsAddPrefix } from "@/hooks";
@@ -67,6 +67,16 @@ export const GlobalSearch: React.FC<IGlobalSearch> = (props) => {
       setIsExpanded(false);
     }
   };
+
+  // inline 模式下防止输入框在初始渲染时自动获得焦点
+  // 使用 useLayoutEffect 确保在浏览器绘制前执行，避免出现短暂的焦点闪烁
+  // isInline 由 props.variant 派生，在组件生命周期内不会改变，无需加入依赖数组
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useLayoutEffect(() => {
+    if (isInline && inputRef.current) {
+      inputRef.current.blur();
+    }
+  }, []);
 
   // 点击外部区域收起搜索框
   useEffect(() => {
